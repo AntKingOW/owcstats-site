@@ -20,8 +20,8 @@
   border-radius: var(--radius); overflow: hidden;
 }
 svg#scatter { width: 100%; height: 100%; display: block; }
-.dot { cursor: pointer; transition: r 0.1s; }
-.dot:hover { stroke: #fff; stroke-width: 1.5px; }
+.dot { cursor: pointer; transition: opacity 0.1s; font-size: 10px; font-weight: 600; font-family: "Pretendard","Segoe UI",sans-serif; }
+.dot:hover { opacity: 1 !important; text-decoration: underline; }
 
 .tooltip-box {
   position: absolute; pointer-events: none; display: none;
@@ -181,7 +181,7 @@ let currentRegion = 'All';
 let currentRole = 'All';
 let minMinutes = 20;
 
-const PAD = { top: 20, right: 20, bottom: 48, left: 56 };
+const PAD = { top: 28, right: 32, bottom: 48, left: 56 };
 
 async function loadData() {
   const res = await fetch('assets/data/player_stats.json');
@@ -255,14 +255,17 @@ function renderScatter(players, xKey, yKey) {
   svgContent += `<text x="${PAD.left + (W-PAD.left-PAD.right)/2}" y="${H-4}" text-anchor="middle" fill="#7a9bb5" font-size="11">${METRIC_LABELS[xKey]}</text>`;
   svgContent += `<text x="14" y="${PAD.top + (H-PAD.top-PAD.bottom)/2}" text-anchor="middle" fill="#7a9bb5" font-size="11" transform="rotate(-90,14,${PAD.top+(H-PAD.top-PAD.bottom)/2})">${METRIC_LABELS[yKey]}</text>`;
 
-  // Dots group (clipped)
+  // Name labels group (clipped)
   svgContent += `<g clip-path="url(#plot-clip)">`;
   players.forEach((p, i) => {
     const cx = scaleX(p[xKey]);
     const cy = scaleY(p[yKey]);
-    const color = ROLE_COLORS[p.role] || '#999';
-    const r = 5;
-    svgContent += `<circle class="dot" cx="${cx}" cy="${cy}" r="${r}" fill="${color}" fill-opacity="0.75" data-i="${i}"/>`;
+    const color = ROLE_COLORS[p.role] || '#aaa';
+    // Small anchor dot
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${color}" fill-opacity="0.6" pointer-events="none"/>`;
+    // Player name label
+    svgContent += `<text class="dot" x="${cx}" y="${cy - 5}" text-anchor="middle"
+      fill="${color}" fill-opacity="0.9" data-i="${i}">${p.player}</text>`;
   });
   svgContent += `</g>`;
 
@@ -274,10 +277,11 @@ function renderScatter(players, xKey, yKey) {
   svg.querySelectorAll('.dot').forEach(dot => {
     dot.addEventListener('mouseenter', e => {
       const p = players[+dot.dataset.i];
+      const color = ROLE_COLORS[p.role] || '#aaa';
       tooltip.innerHTML = `
-        <div style="font-weight:600;margin-bottom:4px">${p.player}</div>
-        <div style="color:var(--text-dim)">${p.team} · <span class="role-pill role-${p.role}">${p.role}</span></div>
-        <div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:4px;color:${color}">${p.player}</div>
+        <div style="color:var(--text-dim);margin-bottom:6px">${p.team} · <span class="role-pill role-${p.role}">${p.role}</span> · ${p.region}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:12px">
           <span style="color:var(--text-dim)">${METRIC_LABELS[xKey]}</span><span style="font-weight:700">${p[xKey]}</span>
           <span style="color:var(--text-dim)">${METRIC_LABELS[yKey]}</span><span style="font-weight:700">${p[yKey]}</span>
           <span style="color:var(--text-dim)">Minutes</span><span>${p.minutes}m</span>
@@ -285,11 +289,14 @@ function renderScatter(players, xKey, yKey) {
       `;
       const rect = wrap.getBoundingClientRect();
       const dotRect = dot.getBoundingClientRect();
-      let left = dotRect.left - rect.left + 12;
-      let top = dotRect.top - rect.top - 10;
+      let left = dotRect.left - rect.left + 14;
+      let top  = dotRect.top  - rect.top  - 14;
+      // Clamp so tooltip doesn't overflow right edge
       tooltip.style.display = 'block';
-      tooltip.style.left = left + 'px';
-      tooltip.style.top = top + 'px';
+      const ttW = tooltip.offsetWidth;
+      if (left + ttW > wrap.clientWidth - 8) left = dotRect.left - rect.left - ttW - 8;
+      tooltip.style.left = Math.max(4, left) + 'px';
+      tooltip.style.top  = Math.max(4, top)  + 'px';
     });
     dot.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
   });
