@@ -226,7 +226,7 @@ const LOGO_EXT = {
 };
 
 function slugify(name) {
-  return name.toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return name.toLowerCase().replace(/['']/g, '-').replace(/[^a-z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 function logoUrl(team) {
   const slug = slugify(team);
@@ -242,7 +242,7 @@ let minMinutes = 20;
 let currentView = 'scatter';   // 'scatter' | 'rankings'
 let currentMetric = 'dmg_per10';
 
-const PAD = { top: 32, right: 36, bottom: 48, left: 56 };
+const PAD = { top: 32, right: 36, bottom: 56, left: 56 };
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 async function loadData() {
@@ -340,12 +340,17 @@ function renderScatter(players, xKey, yKey) {
 
     // Role-colored outer ring
     svgContent += `<circle cx="${cx}" cy="${cy}" r="${R+2.5}" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="1.5"/>`;
-    // White background circle (for transparent logos)
+    // Dark background circle (for transparent logos)
     svgContent += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#0e2135"/>`;
     // Logo image clipped to circle — use transform so clipPath is origin-centred
     svgContent += `<image href="${url}" x="${-R}" y="${-R}" width="${LOGO_SIZE}" height="${LOGO_SIZE}"
       transform="translate(${cx},${cy})" clip-path="url(#lc${i})"
       class="dot" data-i="${i}" preserveAspectRatio="xMidYMid meet"/>`;
+    // Player name label below logo
+    const label = p.player.length > 12 ? p.player.slice(0, 11) + '…' : p.player;
+    svgContent += `<text x="${cx}" y="${cy + R + 11}" text-anchor="middle" fill="${color}"
+      font-size="8.5" font-family="inherit" pointer-events="none"
+      style="text-shadow:0 0 4px #08141f,0 0 4px #08141f">${label}</text>`;
   });
   svgContent += `</g>`;
 
