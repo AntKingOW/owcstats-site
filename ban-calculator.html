@@ -42,6 +42,69 @@
 .ban-chip { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; background: var(--panel2); border: 1px solid var(--border); color: var(--text-dim); }
 .ban-chip.hot { border-color: var(--accent); color: var(--accent); }
 
+/* ── Ban suggestion styles (inside modal) ───────────────── */
+/* A: Suggested chips at top of hero grid */
+#ban-calc-app .sugg-section {
+  padding: 12px 20px 6px;
+  border-bottom: 1px solid var(--bc-line);
+  background: var(--bc-panel-muted);
+}
+#ban-calc-app .sugg-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px;
+  color: var(--bc-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+#ban-calc-app .sugg-label span { color: var(--bc-accent); font-weight: 700; }
+#ban-calc-app .sugg-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+#ban-calc-app .sugg-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px 4px 4px; border-radius: 20px;
+  border: 1.5px solid; cursor: pointer;
+  font-size: 11px; font-weight: 600; transition: opacity 0.12s;
+  background: rgba(0,0,0,0.12);
+}
+#ban-calc-app .sugg-chip.made { border-color: var(--bc-accent); color: var(--bc-accent); }
+#ban-calc-app .sugg-chip.received { border-color: #4da6ff; color: #4da6ff; }
+#ban-calc-app .sugg-chip img {
+  width: 22px; height: 22px; border-radius: 50%; object-fit: cover;
+  background: var(--bc-logo-panel);
+}
+#ban-calc-app .sugg-chip .cnt {
+  font-size: 10px; opacity: 0.75; margin-left: 2px;
+}
+/* B: Side panel inside modal */
+#ban-calc-app .hero-layout {
+  display: grid; grid-template-columns: 1fr 220px;
+}
+#ban-calc-app .ban-insight-panel {
+  border-left: 1px solid var(--bc-line);
+  padding: 14px 14px 14px 14px;
+  overflow-y: auto; max-height: 480px;
+  background: var(--bc-panel-muted);
+  display: flex; flex-direction: column; gap: 14px;
+}
+#ban-calc-app .insight-section-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--bc-muted); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 4px;
+}
+#ban-calc-app .insight-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 0; font-size: 11px;
+}
+#ban-calc-app .insight-hero-img {
+  width: 22px; height: 22px; border-radius: 4px; object-fit: cover;
+  background: var(--bc-logo-panel); flex-shrink: 0;
+}
+#ban-calc-app .insight-bar-wrap {
+  flex: 1; height: 4px; background: rgba(0,0,0,0.2); border-radius: 2px;
+}
+#ban-calc-app .insight-bar-fill { height: 100%; border-radius: 2px; }
+#ban-calc-app .insight-cnt { font-weight: 700; font-size: 10px; width: 18px; text-align: right; }
+@media (max-width: 700px) {
+  #ban-calc-app .hero-layout { grid-template-columns: 1fr; }
+  #ban-calc-app .ban-insight-panel { display: none; }
+}
+
 /* ── Ban Calculator App (scoped to #ban-calc-app) ───────────────── */
 #ban-calc-app {
   color-scheme: light;
@@ -745,16 +808,95 @@ function renderMapModal() {
 }
 function renderHeroModal() {
   const {gameIndex,slot}=state.modal, game=state.games[gameIndex], current=game.bans[slot];
+  const team=teamName(slot), otherSlot=getOtherSlot(slot), otherTeam=teamName(otherSlot);
+
+  // ── Determine map mode for this game ────────────────────────
+  let mapMode='All';
+  if(game.map){
+    for(const[mode,maps] of Object.entries(mapsByMode)){
+      if(maps.some(m=>m.map_name===game.map)){mapMode=mode;break;}
+    }
+  }
+
+  // ── Ban insight helpers ──────────────────────────────────────
+  const getSugg=(teamName,modes,field,topN=6)=>{
+    if(!banSummary||!banSummary.length)return[];
+    const rows=banSummary.filter(r=>
+      r.team===teamName&&(modes==='All'||r.map_mode===modes)&&r[field]>0
+    );
+    const agg={};
+    rows.forEach(r=>{agg[r.hero]=(agg[r.hero]||0)+r[field];});
+    return Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,topN).map(([hero,cnt])=>({hero,cnt}));
+  };
+
+  const topMade     = getSugg(team,     mapMode, 'bans_made',     6);   // 내가 밴한 것
+  const topReceived = getSugg(team,     mapMode, 'bans_received',  6);   // 내가 밴당한 것 (상대가 우리에게 쓴 밴)
+  const oppMade     = getSugg(otherTeam,mapMode, 'bans_made',     6);   // 상대가 밴한 것
+
+  // ── A: Suggestion chips section ──────────────────────────────
+  const modeLabel=mapMode==='All'?(game.map?'':'All Maps'):`${mapMode} · ${game.map||''}`;
+  const chipHtml=(arr,cls)=>arr.map(({hero,cnt})=>
+    `<button class="sugg-chip ${cls}" data-bc-action="select-hero" data-index="${gameIndex}" data-slot="${slot}" data-hero="${hero}" type="button"
+      ${!canPickHero(gameIndex,slot,hero)&&current!==hero?' disabled':''}>
+      <img src="${heroAsset(hero)}" alt="" onerror="this.style.opacity=0.4">
+      ${hero}<span class="cnt">(${cnt})</span>
+    </button>`
+  ).join('');
+
+  const suggSection = (topMade.length||topReceived.length) ? `
+    <div class="sugg-section">
+      ${topMade.length?`
+        <div class="sugg-label">🔴 <span>${team}</span> 의 주요 밴 ${game.map?`(${modeLabel})`:'(전체)'}</div>
+        <div class="sugg-chips">${chipHtml(topMade,'made')}</div>
+      `:''}
+      ${topReceived.length?`
+        <div class="sugg-label" style="margin-top:${topMade.length?8:0}px">🛡️ <span>${team}</span>이 자주 밴당하는 영웅</div>
+        <div class="sugg-chips">${chipHtml(topReceived,'received')}</div>
+      `:''}
+    </div>` : '';
+
+  // ── B: Insight side panel ────────────────────────────────────
+  const insightRows=(arr,barColor)=>arr.length
+    ?arr.map(({hero,cnt},_i,a)=>`<div class="insight-row">
+        <img class="insight-hero-img" src="${heroAsset(hero)}" alt="" onerror="this.style.opacity=0.4">
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${hero}</span>
+        <div class="insight-bar-wrap"><div class="insight-bar-fill" style="width:${Math.round(cnt/a[0].cnt*100)}%;background:${barColor}"></div></div>
+        <span class="insight-cnt">${cnt}</span>
+      </div>`).join('')
+    :`<div style="color:var(--bc-muted);font-size:11px">데이터 없음</div>`;
+
+  const insightPanel=`<div class="ban-insight-panel">
+    <div>
+      <div class="insight-section-label">🔴 ${team}<br>주요 밴</div>
+      ${insightRows(topMade,'var(--bc-accent)')}
+    </div>
+    <div>
+      <div class="insight-section-label">🛡️ ${team}<br>자주 밴당하는 영웅</div>
+      ${insightRows(topReceived,'#4da6ff')}
+    </div>
+    ${oppMade.length?`<div>
+      <div class="insight-section-label">⚔️ ${otherTeam}<br>예상 밴</div>
+      ${insightRows(oppMade,'#3ddc84')}
+    </div>`:''}
+  </div>`;
+
   return `<div class="modal">
-    <div class="modal-header"><div><h2 class="modal-title">${teamName(slot)} Ban for Set ${gameIndex+1}</h2></div><button class="modal-close" data-bc-action="close-modal" type="button">×</button></div>
-    <div class="hero-layout"><div class="hero-group-list">
-      ${ROLE_ORDER.map(role=>`<section class="hero-group"><h3 class="role-heading"><img class="role-icon" src="${roleAsset(role)}" alt="" onerror="this.style.display='none'"><span>${role}</span></h3>
-        <div class="hero-grid">${reference.heroes.filter(h=>h.main_role_en===role).map(hero=>{
-          const sel=current===hero.hero_name_en, dis=!sel&&!canPickHero(gameIndex,slot,hero.hero_name_en);
-          return `<button class="hero-option${sel?" active":""}" data-bc-action="select-hero" data-index="${gameIndex}" data-slot="${slot}" data-hero="${hero.hero_name_en}" type="button"${dis?" disabled":""}><div class="hero-avatar" style="--hero-image:url('${heroAsset(hero.hero_name_en)}')"></div><div class="hero-copy"><strong>${hero.hero_name_en}</strong><span>${sel?"Tap to clear this ban":hero.hero_name_ko}</span></div></button>`;
-        }).join("")}</div></section>`).join("")}
-    </div></div>
-    <div class="modal-footer"><div class="footer-note"></div><div class="footer-actions">${current?`<button class="footer-btn" data-bc-action="clear-ban" data-index="${gameIndex}" data-slot="${slot}" type="button">Clear Ban</button>`:""}<button class="footer-btn primary" data-bc-action="close-modal" type="button">Done</button></div></div>
+    <div class="modal-header"><div><h2 class="modal-title">${team} — Set ${gameIndex+1} Ban${mapMode!=='All'?` · ${mapMode}`:''}</h2></div><button class="modal-close" data-bc-action="close-modal" type="button">×</button></div>
+    ${suggSection}
+    <div class="hero-layout">
+      <div class="hero-group-list">
+        ${ROLE_ORDER.map(role=>`<section class="hero-group"><h3 class="role-heading"><img class="role-icon" src="${roleAsset(role)}" alt="" onerror="this.style.display='none'"><span>${role}</span></h3>
+          <div class="hero-grid">${reference.heroes.filter(h=>h.main_role_en===role).map(hero=>{
+            const sel=current===hero.hero_name_en, dis=!sel&&!canPickHero(gameIndex,slot,hero.hero_name_en);
+            const isSuggMade=topMade.some(s=>s.hero===hero.hero_name_en);
+            const isSuggReceived=topReceived.some(s=>s.hero===hero.hero_name_en);
+            const suggBorder=isSuggMade?'outline:2px solid var(--bc-accent);outline-offset:1px':isSuggReceived?'outline:2px solid #4da6ff;outline-offset:1px':'';
+            return `<button class="hero-option${sel?" active":""}" data-bc-action="select-hero" data-index="${gameIndex}" data-slot="${slot}" data-hero="${hero.hero_name_en}" type="button"${dis?" disabled":""} style="${suggBorder}"><div class="hero-avatar" style="--hero-image:url('${heroAsset(hero.hero_name_en)}')"></div><div class="hero-copy"><strong>${hero.hero_name_en}</strong><span>${sel?"선택 취소":(isSuggMade?'🔴 주요 밴':isSuggReceived?'🛡️ 밴당함':hero.hero_name_ko)}</span></div></button>`;
+          }).join("")}</div></section>`).join("")}
+      </div>
+      ${insightPanel}
+    </div>
+    <div class="modal-footer"><div class="footer-note">${mapMode!=='All'?`<span style="color:var(--bc-muted);font-size:11px">🔴 주요 밴 · 🛡️ 자주 밴당함</span>`:''}</div><div class="footer-actions">${current?`<button class="footer-btn" data-bc-action="clear-ban" data-index="${gameIndex}" data-slot="${slot}" type="button">Clear Ban</button>`:""}<button class="footer-btn primary" data-bc-action="close-modal" type="button">Done</button></div></div>
   </div>`;
 }
 function renderModal() {
@@ -811,6 +953,7 @@ bcRender();
 // Prediction Panel
 // ═══════════════════════════════════════════════════════
 let banData = null;
+let banSummary = [];   // ban_summary.json: [{region,team,map_mode,hero,bans_made,bans_received,...}]
 let heroMeta = {};
 let predRegion = 'All';
 const MEDALS = ['🥇','🥈','🥉','4️⃣','5️⃣'];
@@ -823,8 +966,12 @@ if (window.OWCS_REFERENCE && window.OWCS_REFERENCE.heroes) {
 }
 
 async function loadBanData() {
-  const res = await fetch('assets/data/ban_history.json');
-  banData = await res.json();
+  const [histRes, summRes] = await Promise.all([
+    fetch('assets/data/ban_history.json'),
+    fetch('assets/data/ban_summary.json'),
+  ]);
+  banData    = await histRes.json();
+  banSummary = await summRes.json();
   renderTopBans();
   onTeamChanged(state.team1, state.team2);
 }
