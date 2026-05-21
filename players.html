@@ -97,10 +97,9 @@ select:focus { border-color: var(--accent2); }
       <div class="panel">
         <div class="filter-label">Region</div>
         <div class="tabs" id="region-tabs">
-          <button class="tab-btn active" data-region="All">All</button>
-          <button class="tab-btn" data-region="Korea">KR</button>
-          <button class="tab-btn" data-region="NA">NA</button>
-          <button class="tab-btn" data-region="EMEA">EMEA</button>
+          <button class="tab-btn region-btn active" data-region="Korea">KR</button>
+          <button class="tab-btn region-btn active" data-region="NA">NA</button>
+          <button class="tab-btn region-btn active" data-region="EMEA">EMEA</button>
         </div>
       </div>
 
@@ -147,7 +146,7 @@ select:focus { border-color: var(--accent2); }
       <div class="panel">
         <div class="filter-label">Min Minutes</div>
         <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" id="min-min" min="0" max="120" value="20" style="flex:1;accent-color:var(--accent)">
+          <input type="range" id="min-min" min="5" max="120" value="20" style="flex:1;accent-color:var(--accent)">
           <span id="min-min-val" style="font-size:12px;color:var(--accent);width:32px">20m</span>
         </div>
       </div>
@@ -176,7 +175,7 @@ const ROLE_DEFAULTS = {
 };
 
 let allPlayers = [];
-let currentRegion = 'All';
+let selectedRegions = new Set(['Korea', 'NA', 'EMEA']); // 기본: 전체 선택
 let currentRole = 'All';
 let minMinutes = 20;
 
@@ -197,7 +196,7 @@ function updateDefaults() {
 
 function getFiltered() {
   return allPlayers.filter(p => {
-    if (currentRegion !== 'All' && p.region !== currentRegion) return false;
+    if (selectedRegions.size > 0 && !selectedRegions.has(p.region)) return false;
     if (currentRole !== 'All' && p.role !== currentRole) return false;
     if (p.minutes < minMinutes) return false;
     return true;
@@ -338,11 +337,19 @@ function renderRankings(players, xKey, yKey) {
   document.getElementById('rankings-wrap').innerHTML = html || '<p style="color:var(--text-dim)">No data for current filters.</p>';
 }
 
-// Controls
+// Controls — Region: 토글 다중 선택 (최소 1개 유지)
 document.getElementById('region-tabs').addEventListener('click', e => {
-  const btn = e.target.closest('.tab-btn'); if (!btn) return;
-  currentRegion = btn.dataset.region;
-  document.querySelectorAll('#region-tabs .tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  const btn = e.target.closest('.region-btn'); if (!btn) return;
+  const r = btn.dataset.region;
+  if (selectedRegions.has(r)) {
+    // 마지막 1개면 해제 불가
+    if (selectedRegions.size === 1) return;
+    selectedRegions.delete(r);
+    btn.classList.remove('active');
+  } else {
+    selectedRegions.add(r);
+    btn.classList.add('active');
+  }
   render();
 });
 
