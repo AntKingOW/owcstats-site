@@ -13,22 +13,41 @@
 .sidebar .panel { padding: 14px 16px; }
 .filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 8px; }
 
+/* View tabs */
+.view-tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.view-tab {
+  padding: 8px 20px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--panel); color: var(--text-dim); font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.view-tab.active { background: var(--accent); color: #08141f; border-color: var(--accent); }
+.view-tab:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+
 /* Scatter */
+#scatter-section { display: block; }
+#rankings-section { display: none; }
+
 #scatter-canvas-wrap {
-  width: 100%; aspect-ratio: 3/2; position: relative;
+  width: 100%; aspect-ratio: 4/3; position: relative;
   background: var(--panel); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
 }
 svg#scatter { width: 100%; height: 100%; display: block; }
-.dot { cursor: pointer; transition: opacity 0.1s; font-size: 10px; font-weight: 600; font-family: "Pretendard","Segoe UI",sans-serif; }
-.dot:hover { opacity: 1 !important; text-decoration: underline; }
+
+.dot { cursor: pointer; transition: opacity 0.12s; }
+.dot:hover { opacity: 1 !important; }
 
 .tooltip-box {
   position: absolute; pointer-events: none; display: none;
-  background: rgba(8,20,31,0.95); border: 1px solid var(--border);
-  border-radius: 6px; padding: 8px 12px; font-size: 12px;
-  white-space: nowrap; z-index: 50;
+  background: rgba(8,20,31,0.96); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; font-size: 12px;
+  white-space: nowrap; z-index: 50; backdrop-filter: blur(4px);
 }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-dim); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
 /* Axis selects */
 .axis-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -39,32 +58,37 @@ select {
 }
 select:focus { border-color: var(--accent2); }
 
-/* Legend */
-.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
 /* Rankings table */
-.top5-role { margin-bottom: 16px; }
-.top5-role h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 8px; }
+.rankings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.top5-role { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.top5-role h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 10px; }
 .top5-row {
   display: flex; align-items: center; gap: 10px;
   padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px;
 }
 .top5-row:last-child { border-bottom: none; }
-.top5-rank { width: 20px; text-align: center; font-weight: 700; color: var(--text-dim); font-size: 11px; }
+.top5-rank { width: 18px; text-align: center; font-weight: 700; color: var(--text-dim); font-size: 11px; flex-shrink: 0; }
 .top5-rank.gold { color: var(--accent); }
-.top5-player { font-weight: 600; flex: 1; }
-.top5-team { color: var(--text-dim); font-size: 11px; }
+.top5-logo { width: 20px; height: 20px; border-radius: 50%; object-fit: contain; flex-shrink: 0; background: #122033; }
+.top5-player { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top5-team { color: var(--text-dim); font-size: 10px; }
 .top5-val { font-weight: 700; color: var(--accent); margin-left: auto; white-space: nowrap; }
 
 .role-pill {
-  display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+  display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600;
   border: 1px solid currentColor;
 }
 .role-Tank { color: #4da6ff; }
 .role-DPS { color: #ff6b6b; }
 .role-Support { color: #3ddc84; }
+
+/* Rankings metric selector */
+.metric-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.metric-btn {
+  padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--panel); color: var(--text-dim); font-size: 11px; cursor: pointer;
+}
+.metric-btn.active { background: var(--panel2); color: var(--text); border-color: var(--accent2); }
 </style>
 </head>
 <body>
@@ -76,19 +100,35 @@ select:focus { border-color: var(--accent2); }
   </div>
 
   <div class="layout">
-    <!-- Left: Scatter + Rankings -->
+    <!-- Left: View-switched content -->
     <div>
-      <!-- Scatter plot -->
-      <div id="scatter-canvas-wrap">
-        <svg id="scatter" xmlns="http://www.w3.org/2000/svg"></svg>
-        <div class="tooltip-box" id="tooltip"></div>
+      <!-- View tabs -->
+      <div class="view-tabs">
+        <button class="view-tab active" data-view="scatter">Scatter</button>
+        <button class="view-tab" data-view="rankings">Rankings</button>
       </div>
-      <div class="legend" id="legend"></div>
 
-      <!-- Rankings -->
-      <div class="mt-24">
-        <div class="section-title">Top 5 Rankings</div>
-        <div id="rankings-wrap" class="panel" style="padding:16px"></div>
+      <!-- SCATTER view -->
+      <div id="scatter-section">
+        <div id="scatter-canvas-wrap">
+          <svg id="scatter" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="tooltip-box" id="tooltip"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <!-- RANKINGS view -->
+      <div id="rankings-section">
+        <div class="metric-tabs" id="metric-tabs">
+          <button class="metric-btn active" data-metric="dmg_per10">DMG/10</button>
+          <button class="metric-btn" data-metric="elim_per10">Elim/10</button>
+          <button class="metric-btn" data-metric="heal_per10">Heal/10</button>
+          <button class="metric-btn" data-metric="assist_per10">Assist/10</button>
+          <button class="metric-btn" data-metric="mit_per10">MIT/10</button>
+          <button class="metric-btn" data-metric="ed_ratio">E/D</button>
+          <button class="metric-btn" data-metric="death_per10">Deaths/10</button>
+        </div>
+        <div class="rankings-grid" id="rankings-wrap"></div>
       </div>
     </div>
 
@@ -113,7 +153,7 @@ select:focus { border-color: var(--accent2); }
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="axes-panel">
         <div class="filter-label">Axes</div>
         <div class="axis-row">
           <div>
@@ -146,8 +186,8 @@ select:focus { border-color: var(--accent2); }
       <div class="panel">
         <div class="filter-label">Min Minutes</div>
         <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" id="min-min" min="5" max="120" value="20" style="flex:1;accent-color:var(--accent)">
-          <span id="min-min-val" style="font-size:12px;color:var(--accent);width:32px">20m</span>
+          <input type="range" id="min-min" min="5" max="200" value="20" style="flex:1;accent-color:var(--accent)">
+          <span id="min-min-val" style="font-size:12px;color:var(--accent);width:36px">20m</span>
         </div>
       </div>
 
@@ -160,13 +200,12 @@ select:focus { border-color: var(--accent2); }
 </div>
 
 <script>
+// ── Constants ─────────────────────────────────────────────────────────────────
 const METRIC_LABELS = {
   dmg_per10: 'DMG/10', heal_per10: 'Heal/10', elim_per10: 'Elim/10',
   assist_per10: 'Assist/10', death_per10: 'Deaths/10', ed_ratio: 'E/D Ratio', mit_per10: 'MIT/10',
 };
 const ROLE_COLORS = { Tank: '#4da6ff', DPS: '#ff6b6b', Support: '#3ddc84' };
-const REGION_SHAPES = { NA: 'circle', EMEA: 'diamond' };
-
 const ROLE_DEFAULTS = {
   Tank:    { x: 'dmg_per10', y: 'mit_per10' },
   DPS:     { x: 'dmg_per10', y: 'ed_ratio' },
@@ -174,13 +213,38 @@ const ROLE_DEFAULTS = {
   All:     { x: 'dmg_per10', y: 'heal_per10' },
 };
 
+// Team logo extension map (slug → ext)
+const LOGO_BASE = 'ban-calc/assets/teams/';
+const LOGO_EXT = {
+  'cheeseburger': 'webp', 'crazy-raccoon': 'png', 'new-era': 'webp',
+  'onside-gaming': 'png', 'poker-face': 'svg', 't1': 'png',
+  'team-falcons': 'svg', 'zan-esports': 'webp', 'zeta-division': 'png',
+  'al-qadsiah': 'png', 'anyone-s-legend': 'png', 'geekay-esports': 'png',
+  'team-peps': 'png', 'twisted-minds': 'png', 'virtus-pro': 'png',
+  'dallas-fuel': 'png', 'disguised': 'png', 'extinction': 'png',
+  'lunex-gaming': 'png', 'spacestation-gaming': 'png', 'team-liquid': 'png',
+};
+
+function slugify(name) {
+  return name.toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+function logoUrl(team) {
+  const slug = slugify(team);
+  const ext = LOGO_EXT[slug] || 'png';
+  return `${LOGO_BASE}${slug}.${ext}`;
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
 let allPlayers = [];
-let selectedRegions = new Set(['Korea', 'NA', 'EMEA']); // 기본: 전체 선택
+let selectedRegions = new Set(['Korea', 'NA', 'EMEA']);
 let currentRole = 'All';
 let minMinutes = 20;
+let currentView = 'scatter';   // 'scatter' | 'rankings'
+let currentMetric = 'dmg_per10';
 
-const PAD = { top: 28, right: 32, bottom: 48, left: 56 };
+const PAD = { top: 32, right: 36, bottom: 48, left: 56 };
 
+// ── Data ──────────────────────────────────────────────────────────────────────
 async function loadData() {
   const res = await fetch('assets/data/player_stats.json');
   allPlayers = await res.json();
@@ -203,6 +267,7 @@ function getFiltered() {
   });
 }
 
+// ── Render dispatcher ─────────────────────────────────────────────────────────
 function render() {
   const players = getFiltered();
   const xKey = document.getElementById('x-axis').value;
@@ -210,31 +275,45 @@ function render() {
 
   document.getElementById('player-count').textContent = players.length;
 
-  renderScatter(players, xKey, yKey);
-  renderLegend();
-  renderRankings(players, xKey, yKey);
+  if (currentView === 'scatter') {
+    renderScatter(players, xKey, yKey);
+    renderLegend();
+  } else {
+    renderRankings(players);
+  }
 }
 
+// ── Scatter ───────────────────────────────────────────────────────────────────
+const LOGO_SIZE = 22; // px diameter
+
 function renderScatter(players, xKey, yKey) {
-  const svg = document.getElementById('scatter');
-  const wrap = document.getElementById('scatter-canvas-wrap');
-  const W = wrap.clientWidth || 600;
-  const H = wrap.clientHeight || 400;
+  const svg   = document.getElementById('scatter');
+  const wrap  = document.getElementById('scatter-canvas-wrap');
+  const W = wrap.clientWidth  || 700;
+  const H = wrap.clientHeight || 525;
+
+  if (!players.length) { svg.innerHTML = ''; return; }
 
   const xs = players.map(p => p[xKey]);
   const ys = players.map(p => p[yKey]);
-  const xMin = Math.min(...xs) * 0.9, xMax = Math.max(...xs) * 1.05;
-  const yMin = Math.min(...ys) * 0.9, yMax = Math.max(...ys) * 1.05;
+  const xMin = Math.min(...xs) * 0.9,  xMax = Math.max(...xs) * 1.05;
+  const yMin = Math.min(...ys) * 0.9,  yMax = Math.max(...ys) * 1.05;
 
   const scaleX = v => PAD.left + (v - xMin) / (xMax - xMin) * (W - PAD.left - PAD.right);
   const scaleY = v => H - PAD.bottom - (v - yMin) / (yMax - yMin) * (H - PAD.top - PAD.bottom);
 
-  // Build SVG
-  let svgContent = `<defs>
-    <clipPath id="plot-clip"><rect x="${PAD.left}" y="${PAD.top}" width="${W-PAD.left-PAD.right}" height="${H-PAD.top-PAD.bottom}"/></clipPath>
-  </defs>`;
+  const R = LOGO_SIZE / 2;  // radius
 
-  // Grid
+  // Build defs: one clipPath per point
+  let defs = `<defs><clipPath id="plot-clip"><rect x="${PAD.left}" y="${PAD.top}" width="${W-PAD.left-PAD.right}" height="${H-PAD.top-PAD.bottom}"/></clipPath>`;
+  players.forEach((_, i) => {
+    defs += `<clipPath id="lc${i}"><circle r="${R}" cx="0" cy="0"/></clipPath>`;
+  });
+  defs += `</defs>`;
+
+  let svgContent = defs;
+
+  // Grid lines & axis labels
   const xTicks = 5, yTicks = 5;
   for (let i = 0; i <= xTicks; i++) {
     const v = xMin + (xMax - xMin) * i / xTicks;
@@ -248,22 +327,25 @@ function renderScatter(players, xKey, yKey) {
     svgContent += `<line x1="${PAD.left}" y1="${y}" x2="${W-PAD.right}" y2="${y}" stroke="#1a3a5c" stroke-width="1"/>`;
     svgContent += `<text x="${PAD.left-6}" y="${y+4}" text-anchor="end" fill="#7a9bb5" font-size="10">${v.toFixed(1)}</text>`;
   }
+  svgContent += `<text x="${PAD.left+(W-PAD.left-PAD.right)/2}" y="${H-4}" text-anchor="middle" fill="#7a9bb5" font-size="11">${METRIC_LABELS[xKey]}</text>`;
+  svgContent += `<text x="13" y="${PAD.top+(H-PAD.top-PAD.bottom)/2}" text-anchor="middle" fill="#7a9bb5" font-size="11" transform="rotate(-90,13,${PAD.top+(H-PAD.top-PAD.bottom)/2})">${METRIC_LABELS[yKey]}</text>`;
 
-  // Axis labels
-  svgContent += `<text x="${PAD.left + (W-PAD.left-PAD.right)/2}" y="${H-4}" text-anchor="middle" fill="#7a9bb5" font-size="11">${METRIC_LABELS[xKey]}</text>`;
-  svgContent += `<text x="14" y="${PAD.top + (H-PAD.top-PAD.bottom)/2}" text-anchor="middle" fill="#7a9bb5" font-size="11" transform="rotate(-90,14,${PAD.top+(H-PAD.top-PAD.bottom)/2})">${METRIC_LABELS[yKey]}</text>`;
-
-  // Name labels group (clipped)
+  // Logos (clipped to plot area)
   svgContent += `<g clip-path="url(#plot-clip)">`;
   players.forEach((p, i) => {
     const cx = scaleX(p[xKey]);
     const cy = scaleY(p[yKey]);
     const color = ROLE_COLORS[p.role] || '#aaa';
-    // Small anchor dot
-    svgContent += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${color}" fill-opacity="0.6" pointer-events="none"/>`;
-    // Player name label
-    svgContent += `<text class="dot" x="${cx}" y="${cy - 5}" text-anchor="middle"
-      fill="${color}" fill-opacity="0.9" data-i="${i}">${p.player}</text>`;
+    const url   = logoUrl(p.team);
+
+    // Role-colored outer ring
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="${R+2.5}" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="1.5"/>`;
+    // White background circle (for transparent logos)
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#0e2135"/>`;
+    // Logo image clipped to circle — use transform so clipPath is origin-centred
+    svgContent += `<image href="${url}" x="${-R}" y="${-R}" width="${LOGO_SIZE}" height="${LOGO_SIZE}"
+      transform="translate(${cx},${cy})" clip-path="url(#lc${i})"
+      class="dot" data-i="${i}" preserveAspectRatio="xMidYMid meet"/>`;
   });
   svgContent += `</g>`;
 
@@ -272,77 +354,98 @@ function renderScatter(players, xKey, yKey) {
 
   // Tooltip
   const tooltip = document.getElementById('tooltip');
-  svg.querySelectorAll('.dot').forEach(dot => {
-    dot.addEventListener('mouseenter', e => {
-      const p = players[+dot.dataset.i];
+  svg.querySelectorAll('.dot').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const p = players[+el.dataset.i];
       const color = ROLE_COLORS[p.role] || '#aaa';
       tooltip.innerHTML = `
-        <div style="font-weight:700;font-size:13px;margin-bottom:4px;color:${color}">${p.player}</div>
-        <div style="color:var(--text-dim);margin-bottom:6px">${p.team} · <span class="role-pill role-${p.role}">${p.role}</span> · ${p.region}</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:12px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <img src="${logoUrl(p.team)}" style="width:24px;height:24px;border-radius:50%;object-fit:contain;background:#0e2135">
+          <div>
+            <div style="font-weight:700;font-size:13px;color:${color}">${p.player}</div>
+            <div style="color:var(--text-dim);font-size:11px">${p.team} · <span class="role-pill role-${p.role}">${p.role}</span> · ${p.region}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:auto auto;gap:3px 16px;font-size:12px">
           <span style="color:var(--text-dim)">${METRIC_LABELS[xKey]}</span><span style="font-weight:700">${p[xKey]}</span>
           <span style="color:var(--text-dim)">${METRIC_LABELS[yKey]}</span><span style="font-weight:700">${p[yKey]}</span>
           <span style="color:var(--text-dim)">Minutes</span><span>${p.minutes}m</span>
-        </div>
-      `;
-      const rect = wrap.getBoundingClientRect();
-      const dotRect = dot.getBoundingClientRect();
-      let left = dotRect.left - rect.left + 14;
-      let top  = dotRect.top  - rect.top  - 14;
-      // Clamp so tooltip doesn't overflow right edge
+        </div>`;
       tooltip.style.display = 'block';
+      const rect   = wrap.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      let left = elRect.left - rect.left + 16;
+      let top  = elRect.top  - rect.top  - 16;
       const ttW = tooltip.offsetWidth;
-      if (left + ttW > wrap.clientWidth - 8) left = dotRect.left - rect.left - ttW - 8;
+      if (left + ttW > wrap.clientWidth - 8) left = elRect.left - rect.left - ttW - 8;
       tooltip.style.left = Math.max(4, left) + 'px';
       tooltip.style.top  = Math.max(4, top)  + 'px';
     });
-    dot.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
   });
 }
 
 function renderLegend() {
-  const roles = currentRole === 'All'
-    ? ['Tank', 'DPS', 'Support']
-    : [currentRole];
+  const roles = currentRole === 'All' ? ['Tank', 'DPS', 'Support'] : [currentRole];
   document.getElementById('legend').innerHTML = roles.map(r =>
     `<div class="legend-item"><div class="legend-dot" style="background:${ROLE_COLORS[r]}"></div>${r}</div>`
   ).join('');
 }
 
-function renderRankings(players, xKey, yKey) {
+// ── Rankings ──────────────────────────────────────────────────────────────────
+function renderRankings(players) {
   const roles = currentRole === 'All' ? ['Tank', 'DPS', 'Support'] : [currentRole];
-  const metrics = [xKey, yKey].filter((v, i, a) => a.indexOf(v) === i && v !== 'death_per10');
+  const metric = currentMetric;
+  const descending = metric !== 'death_per10';
 
-  let html = '';
+  let html = '<div class="rankings-grid">';
   for (const role of roles) {
-    const rp = players.filter(p => p.role === role).filter(p => p.minutes >= minMinutes);
+    const rp = players.filter(p => p.role === role);
     if (!rp.length) continue;
-    for (const metric of metrics) {
-      const sorted = [...rp].sort((a,b) => b[metric] - a[metric]).slice(0, 5);
-      html += `<div class="top5-role">
-        <h3><span class="role-pill role-${role}">${role}</span> — ${METRIC_LABELS[metric]}</h3>
-        ${sorted.map((p, i) => `
-          <div class="top5-row">
-            <div class="top5-rank ${i===0?'gold':''}">${i+1}</div>
-            <div>
-              <div class="top5-player">${p.player}</div>
-              <div class="top5-team">${p.team} · ${p.minutes}m</div>
-            </div>
-            <div class="top5-val">${p[metric]}</div>
+    const sorted = [...rp].sort((a, b) => descending ? b[metric] - a[metric] : a[metric] - b[metric]).slice(0, 10);
+    html += `<div class="top5-role">
+      <h3><span class="role-pill role-${role}">${role}</span> — ${METRIC_LABELS[metric]}</h3>
+      ${sorted.map((p, i) => `
+        <div class="top5-row">
+          <div class="top5-rank ${i===0?'gold':''}">${i+1}</div>
+          <img class="top5-logo" src="${logoUrl(p.team)}" alt="${p.team}" onerror="this.style.display='none'">
+          <div style="min-width:0">
+            <div class="top5-player">${p.player}</div>
+            <div class="top5-team">${p.team} · ${p.minutes}m</div>
           </div>
-        `).join('')}
-      </div>`;
-    }
+          <div class="top5-val">${p[metric]}</div>
+        </div>`).join('')}
+    </div>`;
   }
-  document.getElementById('rankings-wrap').innerHTML = html || '<p style="color:var(--text-dim)">No data for current filters.</p>';
+  html += '</div>';
+  document.getElementById('rankings-wrap').innerHTML = html || '<p style="color:var(--text-dim)">No data.</p>';
 }
 
-// Controls — Region: 토글 다중 선택 (최소 1개 유지)
+// ── View switching ────────────────────────────────────────────────────────────
+document.querySelectorAll('.view-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentView = btn.dataset.view;
+    document.querySelectorAll('.view-tab').forEach(b => b.classList.toggle('active', b === btn));
+    document.getElementById('scatter-section').style.display  = currentView === 'scatter'  ? 'block' : 'none';
+    document.getElementById('rankings-section').style.display = currentView === 'rankings' ? 'block' : 'none';
+    document.getElementById('axes-panel').style.display       = currentView === 'scatter'  ? 'block' : 'none';
+    render();
+  });
+});
+
+// Metric tabs (Rankings)
+document.getElementById('metric-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.metric-btn'); if (!btn) return;
+  currentMetric = btn.dataset.metric;
+  document.querySelectorAll('.metric-btn').forEach(b => b.classList.toggle('active', b === btn));
+  if (currentView === 'rankings') render();
+});
+
+// Region multi-toggle
 document.getElementById('region-tabs').addEventListener('click', e => {
   const btn = e.target.closest('.region-btn'); if (!btn) return;
   const r = btn.dataset.region;
   if (selectedRegions.has(r)) {
-    // 마지막 1개면 해제 불가
     if (selectedRegions.size === 1) return;
     selectedRegions.delete(r);
     btn.classList.remove('active');
@@ -353,6 +456,7 @@ document.getElementById('region-tabs').addEventListener('click', e => {
   render();
 });
 
+// Role
 document.getElementById('role-tabs').addEventListener('click', e => {
   const btn = e.target.closest('.tab-btn'); if (!btn) return;
   currentRole = btn.dataset.role;
@@ -361,16 +465,18 @@ document.getElementById('role-tabs').addEventListener('click', e => {
   render();
 });
 
+// Axes
 document.getElementById('x-axis').addEventListener('change', render);
 document.getElementById('y-axis').addEventListener('change', render);
 
+// Min minutes
 document.getElementById('min-min').addEventListener('input', e => {
   minMinutes = +e.target.value;
   document.getElementById('min-min-val').textContent = minMinutes + 'm';
   render();
 });
 
-window.addEventListener('resize', render);
+window.addEventListener('resize', () => { if (currentView === 'scatter') render(); });
 
 loadData();
 </script>
