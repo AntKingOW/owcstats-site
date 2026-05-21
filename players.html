@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Player Stats — OWCStats</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.layout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+.sidebar { position: sticky; top: calc(var(--nav-h) + 16px); display: flex; flex-direction: column; gap: 14px; }
+.sidebar .panel { padding: 14px 16px; }
+.filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 8px; }
+
+/* Scatter */
+#scatter-canvas-wrap {
+  width: 100%; aspect-ratio: 3/2; position: relative;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+svg#scatter { width: 100%; height: 100%; display: block; }
+.dot { cursor: pointer; transition: r 0.1s; }
+.dot:hover { stroke: #fff; stroke-width: 1.5px; }
+
+.tooltip-box {
+  position: absolute; pointer-events: none; display: none;
+  background: rgba(8,20,31,0.95); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 12px; font-size: 12px;
+  white-space: nowrap; z-index: 50;
+}
+
+/* Axis selects */
+.axis-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+select {
+  width: 100%; padding: 6px 8px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--panel2);
+  color: var(--text); font-size: 12px; outline: none; cursor: pointer;
+}
+select:focus { border-color: var(--accent2); }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* Rankings table */
+.top5-role { margin-bottom: 16px; }
+.top5-role h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 8px; }
+.top5-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px;
+}
+.top5-row:last-child { border-bottom: none; }
+.top5-rank { width: 20px; text-align: center; font-weight: 700; color: var(--text-dim); font-size: 11px; }
+.top5-rank.gold { color: var(--accent); }
+.top5-player { font-weight: 600; flex: 1; }
+.top5-team { color: var(--text-dim); font-size: 11px; }
+.top5-val { font-weight: 700; color: var(--accent); margin-left: auto; white-space: nowrap; }
+
+.role-pill {
+  display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+  border: 1px solid currentColor;
+}
+.role-Tank { color: #4da6ff; }
+.role-DPS { color: #ff6b6b; }
+.role-Support { color: #3ddc84; }
+</style>
+</head>
+<body>
+<script src="assets/nav.js"></script>
+
+<div class="page">
+  <div class="hero">
+    <h1>Player <span>Stats</span></h1>
+    <p>EMEA & NA player statistics — per-10-minute metrics. Select axes to explore.</p>
+  </div>
+
+  <div class="layout">
+    <!-- Left: Scatter + Rankings -->
+    <div>
+      <!-- Scatter plot -->
+      <div id="scatter-canvas-wrap">
+        <svg id="scatter" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="tooltip-box" id="tooltip"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+
+      <!-- Rankings -->
+      <div class="mt-24">
+        <div class="section-title">Top 5 Rankings</div>
+        <div id="rankings-wrap" class="panel" style="padding:16px"></div>
+      </div>
+    </div>
+
+    <!-- Right: Sidebar controls -->
+    <div class="sidebar">
+      <div class="panel">
+        <div class="filter-label">Region</div>
+        <div class="tabs" id="region-tabs">
+          <button class="tab-btn active" data-region="All">All</button>
+          <button class="tab-btn" data-region="NA">NA</button>
+          <button class="tab-btn" data-region="EMEA">EMEA</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="filter-label">Role</div>
+        <div class="tabs" id="role-tabs">
+          <button class="tab-btn active" data-role="All">All</button>
+          <button class="tab-btn" data-role="Tank">Tank</button>
+          <button class="tab-btn" data-role="DPS">DPS</button>
+          <button class="tab-btn" data-role="Support">Support</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="filter-label">Axes</div>
+        <div class="axis-row">
+          <div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">X Axis</div>
+            <select id="x-axis">
+              <option value="dmg_per10">DMG/10</option>
+              <option value="heal_per10">Heal/10</option>
+              <option value="elim_per10">Elim/10</option>
+              <option value="assist_per10">Assist/10</option>
+              <option value="death_per10">Deaths/10</option>
+              <option value="ed_ratio">E/D Ratio</option>
+              <option value="mit_per10">MIT/10</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Y Axis</div>
+            <select id="y-axis">
+              <option value="heal_per10">Heal/10</option>
+              <option value="dmg_per10">DMG/10</option>
+              <option value="elim_per10">Elim/10</option>
+              <option value="assist_per10">Assist/10</option>
+              <option value="death_per10">Deaths/10</option>
+              <option value="ed_ratio">E/D Ratio</option>
+              <option value="mit_per10">MIT/10</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="filter-label">Min Minutes</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="range" id="min-min" min="0" max="120" value="20" style="flex:1;accent-color:var(--accent)">
+          <span id="min-min-val" style="font-size:12px;color:var(--accent);width:32px">20m</span>
+        </div>
+      </div>
+
+      <div class="panel" style="padding:12px 16px">
+        <div class="filter-label">Players shown</div>
+        <div id="player-count" style="font-size:22px;font-weight:700;color:var(--accent)">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const METRIC_LABELS = {
+  dmg_per10: 'DMG/10', heal_per10: 'Heal/10', elim_per10: 'Elim/10',
+  assist_per10: 'Assist/10', death_per10: 'Deaths/10', ed_ratio: 'E/D Ratio', mit_per10: 'MIT/10',
+};
+const ROLE_COLORS = { Tank: '#4da6ff', DPS: '#ff6b6b', Support: '#3ddc84' };
+const REGION_SHAPES = { NA: 'circle', EMEA: 'diamond' };
+
+const ROLE_DEFAULTS = {
+  Tank:    { x: 'dmg_per10', y: 'mit_per10' },
+  DPS:     { x: 'dmg_per10', y: 'ed_ratio' },
+  Support: { x: 'dmg_per10', y: 'heal_per10' },
+  All:     { x: 'dmg_per10', y: 'heal_per10' },
+};
+
+let allPlayers = [];
+let currentRegion = 'All';
+let currentRole = 'All';
+let minMinutes = 20;
+
+const PAD = { top: 20, right: 20, bottom: 48, left: 56 };
+
+async function loadData() {
+  const res = await fetch('assets/data/player_stats.json');
+  allPlayers = await res.json();
+  updateDefaults();
+  render();
+}
+
+function updateDefaults() {
+  const def = ROLE_DEFAULTS[currentRole] || ROLE_DEFAULTS['All'];
+  document.getElementById('x-axis').value = def.x;
+  document.getElementById('y-axis').value = def.y;
+}
+
+function getFiltered() {
+  return allPlayers.filter(p => {
+    if (currentRegion !== 'All' && p.region !== currentRegion) return false;
+    if (currentRole !== 'All' && p.role !== currentRole) return false;
+    if (p.minutes < minMinutes) return false;
+    return true;
+  });
+}
+
+function render() {
+  const players = getFiltered();
+  const xKey = document.getElementById('x-axis').value;
+  const yKey = document.getElementById('y-axis').value;
+
+  document.getElementById('player-count').textContent = players.length;
+
+  renderScatter(players, xKey, yKey);
+  renderLegend();
+  renderRankings(players, xKey, yKey);
+}
+
+function renderScatter(players, xKey, yKey) {
+  const svg = document.getElementById('scatter');
+  const wrap = document.getElementById('scatter-canvas-wrap');
+  const W = wrap.clientWidth || 600;
+  const H = wrap.clientHeight || 400;
+
+  const xs = players.map(p => p[xKey]);
+  const ys = players.map(p => p[yKey]);
+  const xMin = Math.min(...xs) * 0.9, xMax = Math.max(...xs) * 1.05;
+  const yMin = Math.min(...ys) * 0.9, yMax = Math.max(...ys) * 1.05;
+
+  const scaleX = v => PAD.left + (v - xMin) / (xMax - xMin) * (W - PAD.left - PAD.right);
+  const scaleY = v => H - PAD.bottom - (v - yMin) / (yMax - yMin) * (H - PAD.top - PAD.bottom);
+
+  // Build SVG
+  let svgContent = `<defs>
+    <clipPath id="plot-clip"><rect x="${PAD.left}" y="${PAD.top}" width="${W-PAD.left-PAD.right}" height="${H-PAD.top-PAD.bottom}"/></clipPath>
+  </defs>`;
+
+  // Grid
+  const xTicks = 5, yTicks = 5;
+  for (let i = 0; i <= xTicks; i++) {
+    const v = xMin + (xMax - xMin) * i / xTicks;
+    const x = scaleX(v);
+    svgContent += `<line x1="${x}" y1="${PAD.top}" x2="${x}" y2="${H-PAD.bottom}" stroke="#1a3a5c" stroke-width="1"/>`;
+    svgContent += `<text x="${x}" y="${H-PAD.bottom+14}" text-anchor="middle" fill="#7a9bb5" font-size="10">${v.toFixed(1)}</text>`;
+  }
+  for (let i = 0; i <= yTicks; i++) {
+    const v = yMin + (yMax - yMin) * i / yTicks;
+    const y = scaleY(v);
+    svgContent += `<line x1="${PAD.left}" y1="${y}" x2="${W-PAD.right}" y2="${y}" stroke="#1a3a5c" stroke-width="1"/>`;
+    svgContent += `<text x="${PAD.left-6}" y="${y+4}" text-anchor="end" fill="#7a9bb5" font-size="10">${v.toFixed(1)}</text>`;
+  }
+
+  // Axis labels
+  svgContent += `<text x="${PAD.left + (W-PAD.left-PAD.right)/2}" y="${H-4}" text-anchor="middle" fill="#7a9bb5" font-size="11">${METRIC_LABELS[xKey]}</text>`;
+  svgContent += `<text x="14" y="${PAD.top + (H-PAD.top-PAD.bottom)/2}" text-anchor="middle" fill="#7a9bb5" font-size="11" transform="rotate(-90,14,${PAD.top+(H-PAD.top-PAD.bottom)/2})">${METRIC_LABELS[yKey]}</text>`;
+
+  // Dots group (clipped)
+  svgContent += `<g clip-path="url(#plot-clip)">`;
+  players.forEach((p, i) => {
+    const cx = scaleX(p[xKey]);
+    const cy = scaleY(p[yKey]);
+    const color = ROLE_COLORS[p.role] || '#999';
+    const r = 5;
+    svgContent += `<circle class="dot" cx="${cx}" cy="${cy}" r="${r}" fill="${color}" fill-opacity="0.75" data-i="${i}"/>`;
+  });
+  svgContent += `</g>`;
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = svgContent;
+
+  // Tooltip
+  const tooltip = document.getElementById('tooltip');
+  svg.querySelectorAll('.dot').forEach(dot => {
+    dot.addEventListener('mouseenter', e => {
+      const p = players[+dot.dataset.i];
+      tooltip.innerHTML = `
+        <div style="font-weight:600;margin-bottom:4px">${p.player}</div>
+        <div style="color:var(--text-dim)">${p.team} · <span class="role-pill role-${p.role}">${p.role}</span></div>
+        <div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
+          <span style="color:var(--text-dim)">${METRIC_LABELS[xKey]}</span><span style="font-weight:700">${p[xKey]}</span>
+          <span style="color:var(--text-dim)">${METRIC_LABELS[yKey]}</span><span style="font-weight:700">${p[yKey]}</span>
+          <span style="color:var(--text-dim)">Minutes</span><span>${p.minutes}m</span>
+        </div>
+      `;
+      const rect = wrap.getBoundingClientRect();
+      const dotRect = dot.getBoundingClientRect();
+      let left = dotRect.left - rect.left + 12;
+      let top = dotRect.top - rect.top - 10;
+      tooltip.style.display = 'block';
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+    });
+    dot.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+  });
+}
+
+function renderLegend() {
+  const roles = currentRole === 'All'
+    ? ['Tank', 'DPS', 'Support']
+    : [currentRole];
+  document.getElementById('legend').innerHTML = roles.map(r =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${ROLE_COLORS[r]}"></div>${r}</div>`
+  ).join('');
+}
+
+function renderRankings(players, xKey, yKey) {
+  const roles = currentRole === 'All' ? ['Tank', 'DPS', 'Support'] : [currentRole];
+  const metrics = [xKey, yKey].filter((v, i, a) => a.indexOf(v) === i && v !== 'death_per10');
+
+  let html = '';
+  for (const role of roles) {
+    const rp = players.filter(p => p.role === role).filter(p => p.minutes >= minMinutes);
+    if (!rp.length) continue;
+    for (const metric of metrics) {
+      const sorted = [...rp].sort((a,b) => b[metric] - a[metric]).slice(0, 5);
+      html += `<div class="top5-role">
+        <h3><span class="role-pill role-${role}">${role}</span> — ${METRIC_LABELS[metric]}</h3>
+        ${sorted.map((p, i) => `
+          <div class="top5-row">
+            <div class="top5-rank ${i===0?'gold':''}">${i+1}</div>
+            <div>
+              <div class="top5-player">${p.player}</div>
+              <div class="top5-team">${p.team} · ${p.minutes}m</div>
+            </div>
+            <div class="top5-val">${p[metric]}</div>
+          </div>
+        `).join('')}
+      </div>`;
+    }
+  }
+  document.getElementById('rankings-wrap').innerHTML = html || '<p style="color:var(--text-dim)">No data for current filters.</p>';
+}
+
+// Controls
+document.getElementById('region-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn'); if (!btn) return;
+  currentRegion = btn.dataset.region;
+  document.querySelectorAll('#region-tabs .tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  render();
+});
+
+document.getElementById('role-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn'); if (!btn) return;
+  currentRole = btn.dataset.role;
+  document.querySelectorAll('#role-tabs .tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  updateDefaults();
+  render();
+});
+
+document.getElementById('x-axis').addEventListener('change', render);
+document.getElementById('y-axis').addEventListener('change', render);
+
+document.getElementById('min-min').addEventListener('input', e => {
+  minMinutes = +e.target.value;
+  document.getElementById('min-min-val').textContent = minMinutes + 'm';
+  render();
+});
+
+window.addEventListener('resize', render);
+
+loadData();
+</script>
+</body>
+</html>

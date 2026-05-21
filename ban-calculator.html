@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ban Calculator — OWCStats</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+
+#ban-calc-frame {
+  width: 100%;
+  height: 880px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.sidebar { position: sticky; top: calc(var(--nav-h) + 16px); display: flex; flex-direction: column; gap: 14px; }
+.sidebar .panel { padding: 16px; }
+.filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 8px; }
+
+select.team-select {
+  width: 100%; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--panel2);
+  color: var(--text); font-size: 13px; outline: none; cursor: pointer;
+}
+select.team-select:focus { border-color: var(--accent2); }
+
+.pred-hero {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+}
+.pred-hero:last-child { border-bottom: none; }
+.pred-rank { width: 22px; font-size: 13px; text-align: center; }
+.pred-name { font-weight: 600; flex: 1; font-size: 13px; }
+.pred-role {
+  font-size: 10px; padding: 1px 7px; border-radius: 8px;
+  border: 1px solid currentColor; font-weight: 600;
+}
+.role-Damage { color: #ff6b6b; }
+.role-Tank   { color: #4da6ff; }
+.role-Support{ color: #3ddc84; }
+.pred-pct {
+  font-size: 12px; font-weight: 700; color: var(--text-dim);
+  min-width: 36px; text-align: right;
+}
+.conf-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-top: 4px; }
+.conf-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+
+.no-data { color: var(--text-dim); font-size: 13px; padding: 12px 0; }
+
+.matchup-note {
+  font-size: 11px; color: var(--text-dim); margin-top: 6px;
+  padding: 6px 8px; background: var(--panel2); border-radius: 4px;
+}
+
+.hero-icon {
+  width: 28px; height: 28px; border-radius: 4px;
+  object-fit: cover; background: var(--panel2);
+}
+.hero-icon-placeholder {
+  width: 28px; height: 28px; border-radius: 4px;
+  background: var(--panel2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+.top-bans-overall {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+}
+.ban-chip {
+  padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+  background: var(--panel2); border: 1px solid var(--border); color: var(--text-dim);
+}
+.ban-chip.hot { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+<script src="assets/nav.js"></script>
+
+<div class="page">
+  <div class="hero">
+    <h1>Ban <span>Calculator</span></h1>
+    <p>Track hero bans for OWCS matches. The prediction panel uses historical ban data from Korea, NA & EMEA 2026.</p>
+  </div>
+
+  <div class="layout">
+    <!-- Left: Embedded ban calculator -->
+    <div>
+      <iframe id="ban-calc-frame" src="ban-calc/index.html" title="Ban Calculator" scrolling="yes"></iframe>
+    </div>
+
+    <!-- Right: Prediction sidebar -->
+    <div class="sidebar">
+      <!-- Team selectors -->
+      <div class="panel">
+        <div class="filter-label">Ban Prediction</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Team A</div>
+            <select class="team-select" id="team-a"></select>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Team B</div>
+            <select class="team-select" id="team-b"></select>
+          </div>
+        </div>
+        <div class="matchup-note" id="matchup-note"></div>
+      </div>
+
+      <!-- Team A prediction -->
+      <div class="panel">
+        <div class="filter-label" id="pred-a-title">Team A — Expected Bans</div>
+        <div id="pred-a-list"><div class="no-data">Select teams above</div></div>
+      </div>
+
+      <!-- Team B prediction -->
+      <div class="panel">
+        <div class="filter-label" id="pred-b-title">Team B — Expected Bans</div>
+        <div id="pred-b-list"><div class="no-data">Select teams above</div></div>
+      </div>
+
+      <!-- Most banned heroes overall -->
+      <div class="panel">
+        <div class="filter-label">Most Banned Heroes (All Regions)</div>
+        <div class="top-bans-overall" id="top-bans-overall"></div>
+      </div>
+
+      <!-- Region filter for prediction -->
+      <div class="panel">
+        <div class="filter-label">Prediction Region</div>
+        <div class="tabs" id="pred-region-tabs">
+          <button class="tab-btn active" data-region="All">All</button>
+          <button class="tab-btn" data-region="Korea">KR</button>
+          <button class="tab-btn" data-region="NA">NA</button>
+          <button class="tab-btn" data-region="EMEA">EMEA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let banData = null;
+let heroMeta = {};  // name -> { role }
+let predRegion = 'All';
+
+const MEDALS = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+
+async function loadData() {
+  const res = await fetch('assets/data/ban_history.json');
+  banData = await res.json();
+
+  // Load hero metadata from ban-calc reference
+  try {
+    await loadScript('ban-calc/data/shared_owcs_reference.js');
+    if (window.OWCS_REFERENCE && window.OWCS_REFERENCE.heroes) {
+      window.OWCS_REFERENCE.heroes.forEach(h => {
+        heroMeta[h.hero_name_en] = { role: h.main_role_en };
+      });
+    }
+  } catch(e) {}
+
+  buildTeamSelects();
+  renderTopBans();
+  updatePrediction();
+}
+
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+function getTeams() {
+  if (!banData) return [];
+  return Object.keys(banData.team_ban_rates).sort();
+}
+
+function buildTeamSelects() {
+  const teams = getTeams();
+  const opts = `<option value="">— Select Team —</option>` +
+    teams.map(t => `<option value="${t}">${t}</option>`).join('');
+  document.getElementById('team-a').innerHTML = opts;
+  document.getElementById('team-b').innerHTML = opts;
+
+  // Set defaults
+  if (teams.includes('ZETA DIVISION')) document.getElementById('team-a').value = 'ZETA DIVISION';
+  if (teams.includes('T1')) document.getElementById('team-b').value = 'T1';
+
+  document.getElementById('team-a').addEventListener('change', updatePrediction);
+  document.getElementById('team-b').addEventListener('change', updatePrediction);
+  updatePrediction();
+}
+
+function getFilteredRates(teamBanRates) {
+  if (predRegion === 'All' || !banData) return teamBanRates;
+
+  // Re-calculate from records filtered by region
+  const filtered = banData.records.filter(r => r.region === predRegion);
+  const rates = {};
+  const counts = {};
+
+  filtered.forEach(r => {
+    [[r.team_initial, r.hero_initial], [r.team_followup, r.hero_followup]].forEach(([team, hero]) => {
+      if (!team || !hero) return;
+      if (!rates[team]) { rates[team] = {}; counts[team] = 0; }
+      rates[team][hero] = (rates[team][hero] || 0) + 1;
+      counts[team]++;
+    });
+  });
+
+  const result = {};
+  for (const [team, heroes] of Object.entries(rates)) {
+    const total = counts[team];
+    result[team] = {};
+    for (const [hero, cnt] of Object.entries(heroes)) {
+      result[team][hero] = cnt / total;
+    }
+  }
+  return result;
+}
+
+function predictBans(teamA, teamB, topN = 5) {
+  if (!banData || !teamA || !teamB) return [];
+
+  const rates = getFilteredRates(banData.team_ban_rates);
+  const matchupRates = banData.matchup_ban_rates;
+
+  const overall = rates[teamA] || {};
+  const matchupKey = `${teamA}||${teamB}`;
+  const matchup = matchupRates[matchupKey] || {};
+  const hasMatchup = Object.keys(matchup).length > 0;
+
+  // Combine: 60% overall + 40% matchup-specific (if available)
+  const allHeroes = new Set([...Object.keys(overall), ...Object.keys(matchup)]);
+  const scores = {};
+  allHeroes.forEach(hero => {
+    const base = overall[hero] || 0;
+    const specific = matchup[hero] || 0;
+    scores[hero] = hasMatchup
+      ? (0.6 * base + 0.4 * specific)
+      : base;
+  });
+
+  return Object.entries(scores)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, topN)
+    .map(([hero, score]) => ({ hero, score, hasMatchupData: hasMatchup }));
+}
+
+function renderPredList(containerId, preds, teamName) {
+  const el = document.getElementById(containerId);
+  if (!preds.length) {
+    el.innerHTML = '<div class="no-data">No historical data for this team.</div>';
+    return;
+  }
+  const maxScore = preds[0].score || 1;
+  el.innerHTML = preds.map((p, i) => {
+    const role = (heroMeta[p.hero] || {}).role || '';
+    const pct = Math.round(p.score * 100);
+    const barW = Math.round((p.score / maxScore) * 100);
+    return `
+      <div class="pred-hero">
+        <div class="pred-rank">${MEDALS[i] || (i+1)}</div>
+        <div class="hero-icon-placeholder">⚔️</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="pred-name">${p.hero}</span>
+            ${role ? `<span class="pred-role role-${role}">${role}</span>` : ''}
+          </div>
+          <div class="conf-bar"><div class="conf-fill" style="width:${barW}%"></div></div>
+        </div>
+        <div class="pred-pct">${pct}%</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updatePrediction() {
+  const teamA = document.getElementById('team-a').value;
+  const teamB = document.getElementById('team-b').value;
+
+  document.getElementById('pred-a-title').textContent = teamA ? `${teamA} — Expected Bans` : 'Team A — Expected Bans';
+  document.getElementById('pred-b-title').textContent = teamB ? `${teamB} — Expected Bans` : 'Team B — Expected Bans';
+
+  if (!banData) return;
+
+  const predA = predictBans(teamA, teamB);
+  const predB = predictBans(teamB, teamA);
+
+  renderPredList('pred-a-list', predA, teamA);
+  renderPredList('pred-b-list', predB, teamB);
+
+  // Matchup note
+  const matchupKey = `${teamA}||${teamB}`;
+  const hasMatchup = banData.matchup_ban_rates[matchupKey] &&
+    Object.keys(banData.matchup_ban_rates[matchupKey]).length > 0;
+  const note = hasMatchup
+    ? `Head-to-head ban data found for this matchup — using 60/40 weighted prediction.`
+    : `No direct matchup history. Prediction based on overall ban tendencies.`;
+  document.getElementById('matchup-note').textContent = note;
+}
+
+function renderTopBans() {
+  if (!banData) return;
+  const heroCounts = {};
+  banData.records.forEach(r => {
+    if (r.hero_initial) heroCounts[r.hero_initial] = (heroCounts[r.hero_initial] || 0) + 1;
+    if (r.hero_followup) heroCounts[r.hero_followup] = (heroCounts[r.hero_followup] || 0) + 1;
+  });
+  const sorted = Object.entries(heroCounts).sort((a,b) => b[1]-a[1]).slice(0, 12);
+  const max = sorted[0]?.[1] || 1;
+  document.getElementById('top-bans-overall').innerHTML = sorted.map(([hero, cnt], i) =>
+    `<div class="ban-chip ${i < 5 ? 'hot' : ''}">${hero} <span style="opacity:0.7">${cnt}</span></div>`
+  ).join('');
+}
+
+// Region filter
+document.getElementById('pred-region-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn'); if (!btn) return;
+  predRegion = btn.dataset.region;
+  document.querySelectorAll('#pred-region-tabs .tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderTopBans();
+  updatePrediction();
+});
+
+loadData();
+</script>
+</body>
+</html>
