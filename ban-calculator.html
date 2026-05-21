@@ -6,32 +6,18 @@
 <title>Ban Calculator — OWCStats</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
-.layout {
+/* ── Page layout ────────────────────────────────────────────────── */
+.bc-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 20px;
   align-items: start;
 }
-@media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
-
-#ban-calc-frame {
-  width: 100%;
-  height: 880px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: #fff;
-}
+@media (max-width: 1100px) { .bc-layout { grid-template-columns: 1fr; } }
 
 .sidebar { position: sticky; top: calc(var(--nav-h) + 16px); display: flex; flex-direction: column; gap: 14px; }
 .sidebar .panel { padding: 16px; }
 .filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 8px; }
-
-select.team-select {
-  width: 100%; padding: 8px 10px; border-radius: 6px;
-  border: 1px solid var(--border); background: var(--panel2);
-  color: var(--text); font-size: 13px; outline: none; cursor: pointer;
-}
-select.team-select:focus { border-color: var(--accent2); }
 
 .pred-hero {
   display: flex; align-items: center; gap: 10px;
@@ -47,39 +33,383 @@ select.team-select:focus { border-color: var(--accent2); }
 .role-Damage { color: #ff6b6b; }
 .role-Tank   { color: #4da6ff; }
 .role-Support{ color: #3ddc84; }
-.pred-pct {
-  font-size: 12px; font-weight: 700; color: var(--text-dim);
-  min-width: 36px; text-align: right;
-}
+.pred-pct { font-size: 12px; font-weight: 700; color: var(--text-dim); min-width: 36px; text-align: right; }
 .conf-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-top: 4px; }
 .conf-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
-
 .no-data { color: var(--text-dim); font-size: 13px; padding: 12px 0; }
-
-.matchup-note {
-  font-size: 11px; color: var(--text-dim); margin-top: 6px;
-  padding: 6px 8px; background: var(--panel2); border-radius: 4px;
-}
-
-.hero-icon {
-  width: 28px; height: 28px; border-radius: 4px;
-  object-fit: cover; background: var(--panel2);
-}
-.hero-icon-placeholder {
-  width: 28px; height: 28px; border-radius: 4px;
-  background: var(--panel2); flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-}
-
-.top-bans-overall {
-  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
-}
-.ban-chip {
-  padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
-  background: var(--panel2); border: 1px solid var(--border); color: var(--text-dim);
-}
+.matchup-note { font-size: 11px; color: var(--text-dim); margin-top: 6px; padding: 6px 8px; background: var(--panel2); border-radius: 4px; }
+.top-bans-overall { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.ban-chip { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; background: var(--panel2); border: 1px solid var(--border); color: var(--text-dim); }
 .ban-chip.hot { border-color: var(--accent); color: var(--accent); }
+
+/* ── Ban Calculator App (scoped to #ban-calc-app) ───────────────── */
+#ban-calc-app {
+  color-scheme: light;
+  --bc-page-bg: #eef1f5;
+  --bc-page-bg-2: rgba(255, 255, 255, 0.75);
+  --bc-header-bg: rgba(255, 255, 255, 0.94);
+  --bc-panel: rgba(255, 255, 255, 0.88);
+  --bc-panel-strong: rgba(255, 255, 255, 0.96);
+  --bc-panel-muted: rgba(244, 247, 250, 0.9);
+  --bc-logo-panel: #c9d1d9;
+  --bc-text: #11151d;
+  --bc-muted: #617082;
+  --bc-line: rgba(22, 31, 45, 0.11);
+  --bc-shadow: 0 18px 40px rgba(15, 27, 42, 0.12);
+  --bc-accent: #ff8f42;
+  --bc-accent-strong: #f56d17;
+  --bc-green: #2ecc71;
+  --bc-red: #ff4d5a;
+  --bc-overlay: rgba(10, 14, 20, 0.56);
+  --bc-disabled: rgba(12, 16, 24, 0.52);
+
+  position: relative;
+  font-family: "Pretendard", "Segoe UI", sans-serif;
+  color: var(--bc-text);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(0,0,0,0.05) 0 2px, transparent 2px 100%),
+    linear-gradient(145deg, transparent 0 16%, var(--bc-page-bg-2) 16% 20%, transparent 20% 100%),
+    linear-gradient(325deg, transparent 0 58%, var(--bc-page-bg-2) 58% 62%, transparent 62% 100%),
+    var(--bc-page-bg);
+  background-size: 28px 28px, 100% 100%, 100% 100%, auto;
+  border-radius: 12px;
+  overflow: hidden;
+}
+#ban-calc-app.dark {
+  color-scheme: dark;
+  --bc-page-bg: #0d1118;
+  --bc-page-bg-2: rgba(255, 255, 255, 0.03);
+  --bc-header-bg: rgba(10, 12, 18, 0.92);
+  --bc-panel: rgba(15, 18, 27, 0.9);
+  --bc-panel-strong: rgba(14, 18, 26, 0.95);
+  --bc-panel-muted: rgba(29, 35, 47, 0.84);
+  --bc-logo-panel: #4a5360;
+  --bc-text: #f7f8fb;
+  --bc-muted: #a4aebc;
+  --bc-line: rgba(255, 255, 255, 0.12);
+  --bc-shadow: 0 22px 50px rgba(0, 0, 0, 0.34);
+  --bc-accent: #ff9b4b;
+  --bc-accent-strong: #ff7a1f;
+  --bc-green: #2ed573;
+  --bc-red: #ff4757;
+  --bc-overlay: rgba(0, 0, 0, 0.6);
+  --bc-disabled: rgba(3, 5, 11, 0.62);
+}
+
+#ban-calc-app * { box-sizing: border-box; }
+#ban-calc-app button, #ban-calc-app input { font: inherit; }
+#ban-calc-app button { border: 0; background: none; color: inherit; cursor: pointer; }
+#ban-calc-app button:disabled { cursor: not-allowed; }
+#ban-calc-app .app-shell { min-height: 500px; }
+
+#ban-calc-app .leaderboard {
+  position: sticky;
+  top: var(--nav-h, 56px);
+  z-index: 20;
+  background: var(--bc-header-bg);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 2px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.1);
+}
+#ban-calc-app .leaderboard-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 20px 14px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  gap: 18px;
+  align-items: center;
+}
+#ban-calc-app .team-side {
+  display: grid;
+  grid-template-columns: 82px minmax(0,1fr);
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+#ban-calc-app .team-side.right { grid-template-columns: minmax(0,1fr) 82px; text-align: right; }
+#ban-calc-app .team-logo {
+  position: relative;
+  width: 82px; height: 82px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--bc-line);
+  box-shadow: var(--bc-shadow);
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0)), var(--bc-logo-panel);
+  flex-shrink: 0;
+}
+#ban-calc-app .hero-avatar span,
+#ban-calc-app .ban-trigger-fallback {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-weight: 900;
+}
+#ban-calc-app .lock-toggle {
+  position: absolute; top: 8px; right: 8px;
+  width: 18px; height: 18px;
+  display: grid; place-items: center;
+  background: transparent; border: 0;
+  color: #8b929b; font-size: 14px; text-shadow: none;
+}
+#ban-calc-app .lock-toggle.active { color: #8b929b; }
+#ban-calc-app .lock-toggle svg { width: 14px; height: 14px; display: block; fill: currentColor; }
+#ban-calc-app .team-logo-image,
+#ban-calc-app .mini-logo-image {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
+  transform: scale(0.88);
+}
+#ban-calc-app .mini-logo-image { transform: scale(0.9); }
+#ban-calc-app .team-meta { min-width: 0; display: grid; gap: 2px; }
+#ban-calc-app .team-label { font-size: 13px; color: var(--bc-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+#ban-calc-app .team-name-btn {
+  padding: 0; text-align: left;
+  font-size: clamp(22px, 3vw, 42px);
+  font-weight: 900; line-height: 1;
+  letter-spacing: -0.04em;
+  white-space: normal; overflow: visible;
+  text-overflow: clip; word-break: keep-all; overflow-wrap: anywhere;
+}
+#ban-calc-app .team-side.right .team-name-btn { text-align: right; }
+#ban-calc-app .team-name-btn:disabled { opacity: 0.72; }
+#ban-calc-app .scoreboard { display: grid; justify-items: center; gap: 4px; min-width: 210px; }
+#ban-calc-app .format-btn,
+#ban-calc-app .action-btn,
+#ban-calc-app .theme-btn,
+#ban-calc-app .footer-btn {
+  border-radius: 999px;
+  border: 1px solid var(--bc-line);
+  background: var(--bc-panel-strong);
+  box-shadow: var(--bc-shadow);
+  font-weight: 800;
+}
+#ban-calc-app .format-btn { min-width: 74px; height: 28px; padding: 0 14px; font-size: 13px; }
+#ban-calc-app .score-line { display: flex; align-items: baseline; gap: 10px; font-weight: 900; }
+#ban-calc-app .score-value { font-size: clamp(28px, 3vw, 48px); line-height: 1; }
+#ban-calc-app .score-vs { font-size: 20px; color: var(--bc-accent-strong); text-transform: uppercase; letter-spacing: 0.06em; }
+#ban-calc-app .leaderboard-actions { display: flex; gap: 8px; align-items: center; }
+#ban-calc-app .action-btn { min-height: 34px; padding: 0 12px; font-size: 12px; letter-spacing: 0.03em; }
+#ban-calc-app .theme-btn {
+  position: absolute; top: 14px; right: 20px;
+  width: 38px; height: 38px;
+  padding: 0; display: grid; place-items: center; z-index: 21;
+}
+#ban-calc-app .theme-btn svg { width: 16px; height: 16px; display: block; fill: currentColor; }
+#ban-calc-app .content { max-width: 1180px; margin: 0 auto; padding: 22px 20px 80px; }
+#ban-calc-app .set-list { display: grid; gap: 22px; }
+#ban-calc-app .set-block { display: grid; gap: 8px; position: relative; }
+#ban-calc-app .set-label { font-size: 18px; font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; }
+#ban-calc-app .set-card {
+  position: relative; min-height: 136px;
+  display: grid;
+  grid-template-columns: minmax(170px,1fr) 64px minmax(180px,max-content) 64px minmax(170px,1fr);
+  align-items: center; gap: 10px; padding: 20px 22px;
+  border-radius: 30px; border: 1px solid var(--bc-line);
+  background: linear-gradient(180deg,rgba(255,255,255,0.2),rgba(0,0,0,0.06)),
+              linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0)),
+              var(--bc-panel);
+  box-shadow: var(--bc-shadow); overflow: hidden; isolation: isolate;
+}
+#ban-calc-app .set-card.mapped::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: linear-gradient(90deg,rgba(10,12,18,0.44),rgba(10,12,18,0.18),rgba(10,12,18,0.44)), var(--map-image);
+  background-size: cover; background-position: center;
+  opacity: 0.92; z-index: -2;
+}
+#ban-calc-app .set-card.mapped::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.14)),
+              linear-gradient(90deg,rgba(255,255,255,0.08),transparent 18%,transparent 82%,rgba(255,255,255,0.08));
+  z-index: -1;
+}
+#ban-calc-app .ban-slot, #ban-calc-app .side-meta, #ban-calc-app .map-slot { min-width: 0; align-content: center; }
+#ban-calc-app .ban-slot { width: 100%; display: flex; align-items: center; gap: 14px; }
+#ban-calc-app .ban-slot.left { justify-self: stretch; justify-content: flex-start; text-align: left; }
+#ban-calc-app .ban-slot.right { justify-self: stretch; justify-content: flex-end; text-align: right; }
+#ban-calc-app .side-meta { justify-items: center; }
+#ban-calc-app .map-slot { position: relative; display: grid; justify-items: center; align-items: center; min-height: 96px; }
+#ban-calc-app .ban-copy { display: grid; gap: 4px; align-content: center; width: 128px; flex: 0 0 128px; }
+#ban-calc-app .ban-slot.right .ban-copy { order: -1; justify-items: end; text-align: right; }
+#ban-calc-app .ban-slot.left .ban-copy { justify-items: start; text-align: left; }
+#ban-calc-app .ban-trigger {
+  position: relative; width: 78px; height: 78px;
+  border-radius: 999px;
+  border: 3px dashed rgba(255,143,66,0.88);
+  background: rgba(255,255,255,0.16);
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+#ban-calc-app.dark .ban-trigger { border-color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.08); }
+#ban-calc-app .ban-trigger.has-hero { border-style: solid; border-color: rgba(255,255,255,0.72); }
+#ban-calc-app .ban-trigger::before,
+#ban-calc-app .hero-avatar::before,
+#ban-calc-app .mini-logo::before {
+  content: ""; position: absolute; inset: 0;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+#ban-calc-app .ban-trigger::before { background-image: var(--hero-image); opacity: 0.96; }
+#ban-calc-app .hero-avatar::before { background-image: var(--hero-image); }
+#ban-calc-app .mini-logo::before { background-image: var(--logo-image); }
+#ban-calc-app .ban-trigger-empty { position: absolute; inset: 0; display: grid; place-items: center; font-size: 28px; }
+#ban-calc-app .ban-trigger-fallback { font-size: 18px; letter-spacing: 0.02em; }
+#ban-calc-app .ban-role-label, #ban-calc-app .ban-hero-name { text-shadow: 0 2px 14px rgba(0,0,0,0.3); }
+#ban-calc-app .ban-role-label { font-size: 18px; font-weight: 800; color: var(--bc-muted); line-height: 1; }
+#ban-calc-app .set-card.mapped .ban-role-label,
+#ban-calc-app .set-card.mapped .ban-hero-name,
+#ban-calc-app .set-card.mapped .map-reset { color: rgba(255,255,255,0.88); }
+#ban-calc-app .ban-hero-name { font-size: 14px; font-weight: 700; line-height: 1.05; width: 100%; }
+#ban-calc-app .result-btn {
+  width: 54px; height: 54px; display: grid; place-items: center;
+  border-radius: 14px; border: 1px solid var(--bc-line);
+  background: rgba(255,255,255,0.68);
+  font-size: 28px; font-weight: 900; color: var(--bc-muted);
+  box-shadow: var(--bc-shadow);
+}
+#ban-calc-app.dark .result-btn { background: rgba(255,255,255,0.12); }
+#ban-calc-app .result-btn.win { background: var(--bc-green); color: #fff; border-color: transparent; }
+#ban-calc-app .result-btn.loss { background: var(--bc-red); color: #fff; border-color: transparent; }
+#ban-calc-app .map-trigger {
+  min-width: min(100%, 320px); min-height: 62px;
+  padding: 8px 10px; border-radius: 18px;
+  border: 1px solid var(--bc-line);
+  background: rgba(255,255,255,0.68);
+  box-shadow: var(--bc-shadow);
+  display: grid; justify-items: center; align-content: center;
+  gap: 3px; text-align: center;
+}
+#ban-calc-app.dark .map-trigger { background: rgba(255,255,255,0.12); }
+#ban-calc-app .set-card.mapped .map-trigger { min-height: auto; padding: 0; border: 0; background: transparent; box-shadow: none; border-radius: 0; }
+#ban-calc-app .map-name { font-size: clamp(15px,1.4vw,32px); font-weight: 900; line-height: 0.95; letter-spacing: -0.05em; color: var(--bc-accent); }
+#ban-calc-app .map-reset {
+  position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  font-size: 12px; color: var(--bc-muted); white-space: nowrap;
+  font-weight: 800; text-decoration: underline; text-underline-offset: 2px;
+}
+#ban-calc-app .series-lock {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  border-radius: 30px; background: var(--bc-disabled);
+  backdrop-filter: blur(4px); text-align: center; padding: 20px;
+}
+#ban-calc-app .set-card.disabled .series-lock { display: flex; }
+#ban-calc-app .series-lock strong {
+  padding: 12px 18px; border-radius: 999px;
+  background: rgba(0,0,0,0.42); color: #fff;
+  font-size: 17px; box-shadow: var(--bc-shadow);
+}
+#ban-calc-app .set-card.disabled button { pointer-events: none; }
+#ban-calc-app .modal-shell {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  background: var(--bc-overlay); padding: 24px;
+}
+#ban-calc-app .modal-shell.open { display: flex; }
+#ban-calc-app .modal {
+  width: min(960px,100%); max-height: min(82vh,900px);
+  overflow: auto; border-radius: 28px;
+  background: var(--bc-panel-strong);
+  border: 1px solid var(--bc-line);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.28);
+  padding: 20px; display: grid; gap: 18px;
+}
+#ban-calc-app .modal-header, #ban-calc-app .modal-footer {
+  display: flex; justify-content: space-between; gap: 12px; align-items: start;
+}
+#ban-calc-app .modal-title { margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
+#ban-calc-app .modal-subtitle,
+#ban-calc-app .footer-note,
+#ban-calc-app .option-note,
+#ban-calc-app .hero-copy span { color: var(--bc-muted); }
+#ban-calc-app .modal-subtitle { margin-top: 6px; font-size: 14px; }
+#ban-calc-app .modal-close {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border-radius: 999px; background: var(--bc-panel-muted);
+  border: 1px solid var(--bc-line); font-size: 20px; font-weight: 900;
+}
+#ban-calc-app .search-input {
+  width: 100%; height: 54px; padding: 0 16px;
+  border-radius: 18px; border: 1px solid var(--bc-line);
+  background: var(--bc-panel-muted); color: var(--bc-text);
+  font-size: 15px; font-weight: 600;
+}
+#ban-calc-app .team-grid, #ban-calc-app .map-grid, #ban-calc-app .hero-grid,
+#ban-calc-app .hero-group-list, #ban-calc-app .hero-layout, #ban-calc-app .map-group { display: grid; gap: 12px; }
+#ban-calc-app .region-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+#ban-calc-app .region-chip {
+  min-height: 34px; padding: 0 12px; border-radius: 999px;
+  border: 1px solid var(--bc-line); background: var(--bc-panel-muted);
+  font-size: 12px; font-weight: 800; color: var(--bc-muted);
+}
+#ban-calc-app .region-chip.active {
+  color: var(--bc-text);
+  border-color: rgba(245,109,23,0.3);
+  background: rgba(255,143,66,0.14);
+}
+#ban-calc-app .team-grid { grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); }
+#ban-calc-app .map-grid { grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); }
+#ban-calc-app .hero-grid { grid-template-columns: repeat(auto-fit, minmax(148px,1fr)); gap: 10px; }
+#ban-calc-app .hero-group-list { gap: 16px; }
+#ban-calc-app .team-option, #ban-calc-app .hero-option {
+  border-radius: 18px; border: 1px solid var(--bc-line);
+  background: var(--bc-panel-muted); text-align: left;
+}
+#ban-calc-app .team-option {
+  min-height: 86px; padding: 12px;
+  display: grid; grid-template-columns: 58px minmax(0,1fr);
+  gap: 12px; align-items: center;
+}
+#ban-calc-app .team-option.selected, #ban-calc-app .hero-option.active { outline: 2px solid rgba(245,109,23,0.42); }
+#ban-calc-app .mini-logo, #ban-calc-app .hero-avatar {
+  position: relative; overflow: hidden;
+  border: 1px solid var(--bc-line);
+  background: linear-gradient(135deg,rgba(255,255,255,0.22),rgba(255,255,255,0)), var(--bc-panel);
+}
+#ban-calc-app .mini-logo { width: 58px; height: 58px; border-radius: 14px; background: linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0)), var(--bc-logo-panel); }
+#ban-calc-app .option-name { font-size: 18px; font-weight: 800; line-height: 1; }
+#ban-calc-app .option-note { margin-top: 4px; font-size: 12px; }
+#ban-calc-app .map-group h3, #ban-calc-app .hero-group h3 { margin: 0; font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--bc-muted); }
+#ban-calc-app .role-heading { display: inline-flex; align-items: center; gap: 8px; }
+#ban-calc-app .role-icon { width: 18px; height: 18px; object-fit: contain; flex: 0 0 auto; }
+#ban-calc-app .map-option {
+  min-height: 96px; padding: 14px;
+  position: relative; overflow: hidden;
+  border-radius: 22px; border: 1px solid var(--bc-line);
+  background-image: linear-gradient(90deg,rgba(10,12,18,0.42),rgba(10,12,18,0.18)), var(--map-image);
+  background-size: cover; background-position: center;
+  color: #fff; text-align: left;
+}
+#ban-calc-app .map-option:disabled, #ban-calc-app .hero-option:disabled { opacity: 0.42; }
+#ban-calc-app .map-option strong { display: block; font-size: 22px; line-height: 1; letter-spacing: -0.04em; }
+#ban-calc-app .map-option span { display: block; margin-top: 6px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+#ban-calc-app .rule-box { padding: 14px 16px; border-radius: 20px; background: var(--bc-panel-muted); border: 1px solid var(--bc-line); color: var(--bc-muted); font-size: 13px; line-height: 1.5; }
+#ban-calc-app .hero-option { min-height: 72px; padding: 10px; display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 10px; align-items: center; }
+#ban-calc-app .hero-avatar { width: 46px; height: 46px; border-radius: 999px; }
+#ban-calc-app .hero-avatar span { font-size: 12px; }
+#ban-calc-app .hero-copy strong { display: block; font-size: 14px; line-height: 1.1; }
+#ban-calc-app .hero-copy span { display: block; margin-top: 3px; font-size: 11px; }
+#ban-calc-app .footer-note { font-size: 13px; }
+#ban-calc-app .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+#ban-calc-app .footer-btn { min-height: 42px; padding: 0 14px; font-size: 13px; }
+#ban-calc-app .footer-btn.primary { background: var(--bc-accent-strong); border-color: transparent; color: #fff; }
+#ban-calc-app .empty-state { padding: 28px 20px; border-radius: 22px; border: 1px dashed var(--bc-line); color: var(--bc-muted); text-align: center; }
+
+@media (max-width: 980px) {
+  #ban-calc-app .leaderboard-inner { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  #ban-calc-app .team-side,
+  #ban-calc-app .team-side.right { grid-template-columns: 82px minmax(0,1fr); width: 100%; text-align: left; }
+  #ban-calc-app .team-side.right .team-name-btn { text-align: left; }
+  #ban-calc-app .theme-btn { top: 12px; right: 12px; }
+  #ban-calc-app .set-card { grid-template-columns: 1fr; justify-items: center; gap: 14px; text-align: center; }
+  #ban-calc-app .ban-slot.left, #ban-calc-app .ban-slot.right,
+  #ban-calc-app .side-meta, #ban-calc-app .map-slot { justify-items: center; text-align: center; }
+  #ban-calc-app .ban-slot, #ban-calc-app .ban-slot.right { justify-content: center; flex-direction: column; }
+  #ban-calc-app .ban-slot.right .ban-copy { order: 0; justify-items: center; text-align: center; }
+  #ban-calc-app .ban-slot.left .ban-copy { justify-items: center; text-align: center; }
+  #ban-calc-app .ban-copy { width: auto; flex: 0 1 auto; }
+  #ban-calc-app .ban-hero-name { max-width: none; }
+  #ban-calc-app .side-meta { order: 2; }
+  #ban-calc-app .map-slot { order: 1; }
+}
 </style>
 </head>
 <body>
@@ -88,53 +418,76 @@ select.team-select:focus { border-color: var(--accent2); }
 <div class="page">
   <div class="hero">
     <h1>Ban <span>Calculator</span></h1>
-    <p>Track hero bans for OWCS matches. The prediction panel uses historical ban data from Korea, NA & EMEA 2026.</p>
+    <p>Track hero bans for OWCS matches. The prediction panel uses historical ban data from Korea, NA &amp; EMEA 2026.</p>
   </div>
 
-  <div class="layout">
-    <!-- Left: Embedded ban calculator -->
-    <div>
-      <iframe id="ban-calc-frame" src="ban-calc/index.html" title="Ban Calculator" scrolling="yes"></iframe>
+  <div class="bc-layout">
+    <!-- Left: Ban Calculator (embedded directly, no iframe) -->
+    <div id="ban-calc-app">
+      <div class="app-shell">
+        <button class="theme-btn" id="bc-theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3a9 9 0 1 0 0 18V3Z"/>
+            <path d="M12 3a9 9 0 0 1 0 18V3Z" opacity="0.2"/>
+            <path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16v16Z"/>
+          </svg>
+        </button>
+        <header class="leaderboard">
+          <div class="leaderboard-inner">
+            <div class="team-side" id="team1-side"></div>
+            <div class="scoreboard">
+              <button class="format-btn" id="bc-format-trigger" type="button">Bo5</button>
+              <div class="score-line">
+                <span class="score-value" id="bc-score-team1">0</span>
+                <span class="score-vs">vs</span>
+                <span class="score-value" id="bc-score-team2">0</span>
+              </div>
+              <div class="leaderboard-actions">
+                <button class="action-btn" id="bc-reset-series" type="button">모든 세트 초기화</button>
+              </div>
+            </div>
+            <div class="team-side right" id="team2-side"></div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="set-list" id="bc-set-list"></section>
+        </main>
+      </div>
+      <div class="modal-shell" id="bc-modal-shell"></div>
     </div>
 
     <!-- Right: Prediction sidebar -->
     <div class="sidebar">
-      <!-- Team display (synced from ban calculator) -->
       <div class="panel">
         <div class="filter-label">Ban Prediction</div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:11px;color:var(--text-dim)">Team A</span>
+            <span style="font-size:11px;color:var(--text-dim)">Team 1</span>
             <span id="team-a-label" style="font-size:13px;font-weight:700;color:var(--text)">—</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:11px;color:var(--text-dim)">Team B</span>
+            <span style="font-size:11px;color:var(--text-dim)">Team 2</span>
             <span id="team-b-label" style="font-size:13px;font-weight:700;color:var(--text)">—</span>
           </div>
         </div>
-        <div class="matchup-note" style="margin-top:8px">밴 계산기에서 팀을 선택하면 자동으로 반영됩니다.</div>
-        <div class="matchup-note" id="matchup-note" style="margin-top:4px"></div>
+        <div class="matchup-note" id="matchup-note" style="margin-top:8px">밴 계산기에서 팀을 선택하면 자동으로 반영됩니다.</div>
       </div>
 
-      <!-- Team A prediction -->
       <div class="panel">
-        <div class="filter-label" id="pred-a-title">Team A — Expected Bans</div>
+        <div class="filter-label" id="pred-a-title">Team 1 — Expected Bans</div>
         <div id="pred-a-list"><div class="no-data">Select teams above</div></div>
       </div>
 
-      <!-- Team B prediction -->
       <div class="panel">
-        <div class="filter-label" id="pred-b-title">Team B — Expected Bans</div>
+        <div class="filter-label" id="pred-b-title">Team 2 — Expected Bans</div>
         <div id="pred-b-list"><div class="no-data">Select teams above</div></div>
       </div>
 
-      <!-- Most banned heroes overall -->
       <div class="panel">
         <div class="filter-label">Most Banned Heroes (All Regions)</div>
         <div class="top-bans-overall" id="top-bans-overall"></div>
       </div>
 
-      <!-- Region filter for prediction -->
       <div class="panel">
         <div class="filter-label">Prediction Region</div>
         <div class="tabs" id="pred-region-tabs">
@@ -148,196 +501,435 @@ select.team-select:focus { border-color: var(--accent2); }
   </div>
 </div>
 
+<script src="ban-calc/data/shared_owcs_reference.js"></script>
 <script>
-let banData = null;
-let heroMeta = {};  // name -> { role }
-let predRegion = 'All';
+// ═══════════════════════════════════════════════════════
+// Ban Calculator
+// ═══════════════════════════════════════════════════════
+const reference = window.OWCS_REFERENCE || { teams: [], heroes: [], maps: [] };
+const FORMATS = [
+  { id: "bo3", label: "Bo3", winsToClinch: 2, visibleSets: 3 },
+  { id: "bo5", label: "Bo5", winsToClinch: 3, visibleSets: 5 },
+  { id: "bo7", label: "Bo7", winsToClinch: 4, visibleSets: 7 },
+];
+const ROLE_ORDER = ["Tank", "Damage", "Support"];
+const TEAM_ASSET_ROOT = "ban-calc/assets/teams";
+const HERO_ASSET_ROOT = "ban-calc/assets/heroes";
+const MAP_ASSET_ROOT  = "ban-calc/assets/maps";
+const ROLE_ASSET_ROOT = "ban-calc/assets/roles";
+const TEAM_REGION_GROUPS = {
+  All: [
+    "Cheeseburger","Crazy Raccoon","New Era","ONSIDE GAMING","Poker Face","T1","Team Falcons","ZAN Esports","ZETA DIVISION",
+    "99DIVINE","ENTER FORCE.36","Lazuli","Nyam Gaming","Please Not Hero Ban","Telomere","Tokyo Ta1yos","Varrel",
+    "Fury","MMY","Quasar Esports","Rankers","Team Secret","The Gatos Guapos",
+    "All Gamers","JDG Gaming","Milk Tea","Naive Piggy","Solus Victorem","Weibo Gaming",
+    "Al Qadsiah","Anyone's Legend","Geekay Esports","Team Peps","Twisted Mind","Virtus.pro",
+    "Dallas Fuel","Disguised","Extinction","LuneX Gaming","Spacestation Gaming","Team Liquid"
+  ],
+  Korea:   ["Cheeseburger","Crazy Raccoon","New Era","ONSIDE GAMING","Poker Face","T1","Team Falcons","ZAN Esports","ZETA DIVISION"],
+  Japan:   ["99DIVINE","ENTER FORCE.36","Lazuli","Nyam Gaming","Please Not Hero Ban","Telomere","Tokyo Ta1yos","Varrel"],
+  Pacific: ["Fury","MMY","Quasar Esports","Rankers","Team Secret","The Gatos Guapos"],
+  China:   ["All Gamers","JDG Gaming","Milk Tea","Naive Piggy","Solus Victorem","Weibo Gaming"],
+  EMEA:    ["Al Qadsiah","Anyone's Legend","Geekay Esports","Team Peps","Twisted Mind","Virtus.pro"],
+  NA:      ["Dallas Fuel","Disguised","Extinction","LuneX Gaming","Spacestation Gaming","Team Liquid"],
+};
 
-const MEDALS = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+const heroByName = new Map(reference.heroes.map(h => [h.hero_name_en, h]));
+const mapsByMode = reference.maps.reduce((acc, map) => {
+  if (!acc[map.map_mode]) acc[map.map_mode] = [];
+  acc[map.map_mode].push(map);
+  return acc;
+}, {});
 
-async function loadData() {
-  const res = await fetch('assets/data/ban_history.json');
-  banData = await res.json();
+const bcApp = document.getElementById("ban-calc-app");
+const els = {
+  app:          bcApp,
+  team1Side:    document.getElementById("team1-side"),
+  team2Side:    document.getElementById("team2-side"),
+  scoreTeam1:   document.getElementById("bc-score-team1"),
+  scoreTeam2:   document.getElementById("bc-score-team2"),
+  formatTrigger:document.getElementById("bc-format-trigger"),
+  resetSeries:  document.getElementById("bc-reset-series"),
+  themeToggle:  document.getElementById("bc-theme-toggle"),
+  setList:      document.getElementById("bc-set-list"),
+  modalShell:   document.getElementById("bc-modal-shell"),
+};
 
-  // Load hero metadata from ban-calc reference
-  try {
-    await loadScript('ban-calc/data/shared_owcs_reference.js');
-    if (window.OWCS_REFERENCE && window.OWCS_REFERENCE.heroes) {
-      window.OWCS_REFERENCE.heroes.forEach(h => {
-        heroMeta[h.hero_name_en] = { role: h.main_role_en };
-      });
+const state = {
+  theme: "light",
+  format: "bo5",
+  team1: reference.teams[0] || "TEAM 1",
+  team2: reference.teams[1] || reference.teams[0] || "TEAM 2",
+  lockedTeams: { team1: false, team2: false },
+  games: createGames(),
+  modal: null,
+};
+
+function createGames() {
+  return Array.from({ length: 7 }, (_, index) => ({
+    index, map: "", winner: "",
+    bans: { team1: "", team2: "" }, banOrder: [],
+  }));
+}
+function slugify(v) { return String(v||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+function initials(v) { const w=String(v||"").split(/\s+/).filter(Boolean); if(!w.length)return"T"; return w.slice(0,2).map(x=>x[0]).join("").toUpperCase(); }
+function formatMeta() { return FORMATS.find(f=>f.id===state.format)||FORMATS[1]; }
+function visibleGames() { return state.games.slice(0, formatMeta().visibleSets); }
+
+function getSeriesState() {
+  let t1=0,t2=0,winnerSlot="",clinchIndex=-1;
+  visibleGames().forEach((game, index) => {
+    if (clinchIndex!==-1) return;
+    if (game.winner==="team1") t1++;
+    if (game.winner==="team2") t2++;
+    if (t1>=formatMeta().winsToClinch||t2>=formatMeta().winsToClinch) {
+      winnerSlot = t1>t2?"team1":"team2";
+      clinchIndex = index;
     }
-  } catch(e) {}
+  });
+  return { team1Wins:t1, team2Wins:t2, winnerSlot, clinchIndex };
+}
+function isGameDisabled(index) { const s=getSeriesState(); return s.clinchIndex!==-1&&index>s.clinchIndex; }
+function teamName(slot) { return state[slot]; }
+function getOtherSlot(slot) { return slot==="team1"?"team2":"team1"; }
+function teamAsset(slot) { return `${TEAM_ASSET_ROOT}/${slugify(teamName(slot))}`; }
+function heroAsset(n) { return `${HERO_ASSET_ROOT}/${slugify(n)}.png`; }
+function mapAsset(n) { const s=slugify(n); return `image-set(url('${MAP_ASSET_ROOT}/${s}.webp') type('image/webp'),url('${MAP_ASSET_ROOT}/${s}.jpg') type('image/jpeg'),url('${MAP_ASSET_ROOT}/${s}.png') type('image/png'))`; }
+function roleAsset(n) { return `${ROLE_ASSET_ROOT}/${slugify(n)}.webp`; }
+function teamLogoImg(base, alt, cls="team-logo-image") {
+  return `<img class="${cls}" src="${base}.svg" alt="${alt}" onerror="if(this.dataset.fallback==='webp'){this.onerror=null;this.src='${base}.png';}else{this.dataset.fallback='webp';this.src='${base}.webp';}">`;
+}
+function getBanMeta(game) {
+  const first=game.banOrder[0]||"", second=game.banOrder[1]||"";
+  return {
+    team1: first==="team1"?"Initial Ban":second==="team1"?"Follow-up Ban":"",
+    team2: first==="team2"?"Initial Ban":second==="team2"?"Follow-up Ban":"",
+  };
+}
+function ownPreviousBans(slot, gameIndex) {
+  const picks=[]; visibleGames().forEach((game,i)=>{ if(i>=gameIndex)return; if(game.bans[slot])picks.push(game.bans[slot]); }); return picks;
+}
+function usedMapsExcept(gameIndex) {
+  const used=new Set(); visibleGames().forEach((game,i)=>{ if(i!==gameIndex&&game.map)used.add(game.map); }); return used;
+}
+function scoreSearch(query, candidate) {
+  const q=query.trim().toLowerCase(), c=candidate.toLowerCase();
+  if(!q)return 1; if(c===q)return 200; if(c.startsWith(q))return 130-(c.length-q.length);
+  if(c.includes(q))return 90-c.indexOf(q);
+  let score=0,cursor=0;
+  for(const ch of q){const f=c.indexOf(ch,cursor);if(f===-1)return -1;score+=10;if(f===cursor)score+=6;cursor=f+1;}
+  return score;
+}
+function resetAllSets() { state.games=createGames(); closeModal(); bcRender(); }
+function setFormat(next) { if(state.format===next){closeModal();return;} state.format=next; resetAllSets(); }
 
-  buildTeamSelects();
-  renderTopBans();
-  updatePrediction();
+function setTeam(slot, team) {
+  const other=getOtherSlot(slot);
+  if(!team||team===state[other])return;
+  state[slot]=team;
+  closeModal();
+  bcRender();
+  // Update prediction panel directly (no postMessage needed)
+  onTeamChanged(state.team1, state.team2);
 }
 
-function loadScript(src) {
-  return new Promise((res, rej) => {
-    const s = document.createElement('script');
-    s.src = src; s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
+function toggleTeamLock(slot) { state.lockedTeams[slot]=!state.lockedTeams[slot]; bcRender(); }
+function clearSet(index) {
+  state.games[index]={index,map:"",winner:"",bans:{team1:"",team2:""},banOrder:[]};
+  closeModal(); bcRender();
+}
+function setMap(index, mapName) { state.games[index].map=mapName; closeModal(); bcRender(); }
+function updateBanOrder(game,slot,hasSel) { game.banOrder=game.banOrder.filter(x=>x!==slot); if(hasSel)game.banOrder.push(slot); }
+function clearBan(index,slot) { const game=state.games[index]; game.bans[slot]=""; updateBanOrder(game,slot,false); closeModal(); bcRender(); }
+function canPickHero(index,slot,heroName) {
+  const hero=heroByName.get(heroName); if(!hero)return false;
+  const game=state.games[index], other=getOtherSlot(slot);
+  const otherHero=heroByName.get(game.bans[other]);
+  if(ownPreviousBans(slot,index).includes(heroName))return false;
+  if(otherHero&&otherHero.main_role_en===hero.main_role_en)return false;
+  return true;
+}
+function setBan(index,slot,heroName) {
+  const game=state.games[index];
+  if(game.bans[slot]===heroName){clearBan(index,slot);return;}
+  if(!canPickHero(index,slot,heroName))return;
+  game.bans[slot]=heroName;
+  if(!game.banOrder.includes(slot))game.banOrder.push(slot);
+  closeModal(); bcRender();
+}
+function setWinner(index,slot) { const game=state.games[index]; if(!game.map||isGameDisabled(index))return; game.winner=game.winner===slot?"":slot; bcRender(); }
+function openTeamModal(slot) { if(state.lockedTeams[slot])return; state.modal={type:"team",slot,query:"",region:"All"}; bcRender(); const inp=document.getElementById("team-search-input"); if(inp)inp.focus(); }
+function openFormatModal() { state.modal={type:"format"}; bcRender(); }
+function openMapModal(gi) { if(isGameDisabled(gi))return; state.modal={type:"map",gameIndex:gi}; bcRender(); }
+function openHeroModal(gi,slot) { if(isGameDisabled(gi))return; state.modal={type:"hero",gameIndex:gi,slot}; bcRender(); }
+function closeModal() { state.modal=null; renderModal(); }
+
+function renderTeamSide(slot) {
+  const side=slot==="team1"?els.team1Side:els.team2Side;
+  const right=slot==="team2", locked=state.lockedTeams[slot];
+  side.className=right?"team-side right":"team-side";
+  side.innerHTML=`
+    ${right?`<div class="team-meta"><div class="team-label">${slot==="team1"?"Team 1":"Team 2"}</div><button class="team-name-btn" data-bc-action="open-team" data-slot="${slot}" type="button"${locked?" disabled":""}>${teamName(slot)}</button></div>`:""}
+    <div class="team-logo">${teamLogoImg(teamAsset(slot),teamName(slot))}
+      <button class="lock-toggle${locked?" active":""}" data-bc-action="toggle-lock" data-slot="${slot}" type="button" aria-label="Toggle team lock">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm-6 0V7a2 2 0 1 1 4 0v2h-4Z"/></svg>
+      </button>
+    </div>
+    ${right?"":` <div class="team-meta"><div class="team-label">${slot==="team1"?"Team 1":"Team 2"}</div><button class="team-name-btn" data-bc-action="open-team" data-slot="${slot}" type="button"${locked?" disabled":""}>${teamName(slot)}</button></div>`}
+  `;
+}
+
+function renderSetList() {
+  const series=getSeriesState(); els.setList.innerHTML="";
+  visibleGames().forEach((game,index) => {
+    const disabled=isGameDisabled(index), winnerName=series.winnerSlot?teamName(series.winnerSlot):"";
+    const banMeta=getBanMeta(game), mapSelected=Boolean(game.map), mapLabel=game.map||"Select Map";
+    const t1h=game.bans.team1, t2h=game.bans.team2;
+    const block=document.createElement("article"); block.className="set-block";
+    block.innerHTML=`
+      <div class="set-label">Set ${index+1}</div>
+      <div class="set-card${mapSelected?" mapped":""}${disabled?" disabled":""}" style="--map-image:${mapAsset(game.map)}">
+        <div class="ban-slot left">
+          <button class="ban-trigger${t1h?" has-hero":""}" data-bc-action="open-hero" data-index="${index}" data-slot="team1" type="button" style="--hero-image:url('${t1h?heroAsset(t1h):""}')">
+            ${t1h?"":`<div class="ban-trigger-empty">+</div>`}
+          </button>
+          ${t1h?`<div class="ban-copy"><div class="ban-hero-name">${t1h}</div><div class="ban-role-label">${banMeta.team1}</div></div>`:""}
+        </div>
+        <div class="side-meta">
+          <button class="result-btn${game.winner==="team1"?" win":game.winner==="team2"?" loss":""}" data-bc-action="set-winner" data-index="${index}" data-slot="team1" type="button"${!mapSelected||disabled?" disabled":""}>${game.winner==="team2"?"L":"W"}</button>
+        </div>
+        <div class="map-slot">
+          <button class="map-trigger" data-bc-action="open-map" data-index="${index}" type="button"><div class="map-name">${mapLabel}</div></button>
+          <button class="map-reset" data-bc-action="clear-set" data-index="${index}" type="button"${disabled?" disabled":""}>세트 초기화</button>
+        </div>
+        <div class="side-meta">
+          <button class="result-btn${game.winner==="team2"?" win":game.winner==="team1"?" loss":""}" data-bc-action="set-winner" data-index="${index}" data-slot="team2" type="button"${!mapSelected||disabled?" disabled":""}>${game.winner==="team1"?"L":"W"}</button>
+        </div>
+        <div class="ban-slot right">
+          ${t2h?`<div class="ban-copy"><div class="ban-hero-name">${t2h}</div><div class="ban-role-label">${banMeta.team2}</div></div>`:""}
+          <button class="ban-trigger${t2h?" has-hero":""}" data-bc-action="open-hero" data-index="${index}" data-slot="team2" type="button" style="--hero-image:url('${t2h?heroAsset(t2h):""}')">
+            ${t2h?"":`<div class="ban-trigger-empty">+</div>`}
+          </button>
+        </div>
+        <div class="series-lock"><strong>${winnerName} Win</strong></div>
+      </div>`;
+    els.setList.appendChild(block);
   });
 }
 
-function getTeams() {
-  if (!banData) return [];
-  return Object.keys(banData.team_ban_rates).sort();
+function renderTeamModal() {
+  const {slot,query,region}=state.modal, other=getOtherSlot(slot);
+  const scoped=TEAM_REGION_GROUPS[region]||TEAM_REGION_GROUPS.All;
+  const matches=scoped.filter(t=>t!==state[other])
+    .map(t=>({team:t,score:scoreSearch(query,t)}))
+    .filter(x=>x.score>=0).sort((a,b)=>b.score-a.score||a.team.localeCompare(b.team))
+    .map(x=>x.team);
+  return `<div class="modal">
+    <div class="modal-header"><div><h2 class="modal-title">Choose ${slot==="team1"?"Team 1":"Team 2"}</h2></div><button class="modal-close" data-bc-action="close-modal" type="button">×</button></div>
+    <div class="region-filter">${Object.keys(TEAM_REGION_GROUPS).map(r=>`<button class="region-chip${region===r?" active":""}" data-bc-action="select-region" data-region="${r}" type="button">${r}</button>`).join("")}</div>
+    <input class="search-input" id="team-search-input" data-bc-action="team-query" type="text" placeholder="Search team name..." value="${query}">
+    <div class="team-grid">${matches.length?matches.map(t=>`<button class="team-option${state[slot]===t?" selected":""}" data-bc-action="select-team" data-slot="${slot}" data-team="${t}" type="button"><div class="mini-logo">${teamLogoImg(`${TEAM_ASSET_ROOT}/${slugify(t)}`,t,"mini-logo-image")}</div><div><div class="option-name">${t}</div><div class="option-note">${state[slot]===t?"Selected":""}</div></div></button>`).join(""):`<div class="empty-state">No matching teams found.</div>`}</div>
+  </div>`;
+}
+function renderFormatModal() {
+  return `<div class="modal">
+    <div class="modal-header"><div><h2 class="modal-title">Choose Series Format</h2></div><button class="modal-close" data-bc-action="close-modal" type="button">×</button></div>
+    <div class="team-grid">${FORMATS.map(f=>`<button class="team-option${state.format===f.id?" selected":""}" data-bc-action="select-format" data-format="${f.id}" type="button"><div><div class="option-name">${f.label}</div><div class="option-note">${f.visibleSets} Sets</div></div></button>`).join("")}</div>
+  </div>`;
+}
+function renderMapModal() {
+  const {gameIndex}=state.modal, usedMaps=usedMapsExcept(gameIndex);
+  return `<div class="modal">
+    <div class="modal-header"><div><h2 class="modal-title">Choose Map for Set ${gameIndex+1}</h2></div><button class="modal-close" data-bc-action="close-modal" type="button">×</button></div>
+    ${Object.entries(mapsByMode).map(([mode,maps])=>`<div class="map-group"><h3>${mode}</h3><div class="map-grid">${maps.map(map=>`<button class="map-option" data-bc-action="select-map" data-index="${gameIndex}" data-map="${map.map_name}" type="button" style="--map-image:${mapAsset(map.map_name)}"${usedMaps.has(map.map_name)?" disabled":""}><strong>${map.map_name}</strong><span>${usedMaps.has(map.map_name)?"Used":mode}</span></button>`).join("")}</div></div>`).join("")}
+  </div>`;
+}
+function renderHeroModal() {
+  const {gameIndex,slot}=state.modal, game=state.games[gameIndex], current=game.bans[slot];
+  return `<div class="modal">
+    <div class="modal-header"><div><h2 class="modal-title">${teamName(slot)} Ban for Set ${gameIndex+1}</h2></div><button class="modal-close" data-bc-action="close-modal" type="button">×</button></div>
+    <div class="hero-layout"><div class="hero-group-list">
+      ${ROLE_ORDER.map(role=>`<section class="hero-group"><h3 class="role-heading"><img class="role-icon" src="${roleAsset(role)}" alt="" onerror="this.style.display='none'"><span>${role}</span></h3>
+        <div class="hero-grid">${reference.heroes.filter(h=>h.main_role_en===role).map(hero=>{
+          const sel=current===hero.hero_name_en, dis=!sel&&!canPickHero(gameIndex,slot,hero.hero_name_en);
+          return `<button class="hero-option${sel?" active":""}" data-bc-action="select-hero" data-index="${gameIndex}" data-slot="${slot}" data-hero="${hero.hero_name_en}" type="button"${dis?" disabled":""}><div class="hero-avatar" style="--hero-image:url('${heroAsset(hero.hero_name_en)}')"></div><div class="hero-copy"><strong>${hero.hero_name_en}</strong><span>${sel?"Tap to clear this ban":hero.hero_name_ko}</span></div></button>`;
+        }).join("")}</div></section>`).join("")}
+    </div></div>
+    <div class="modal-footer"><div class="footer-note"></div><div class="footer-actions">${current?`<button class="footer-btn" data-bc-action="clear-ban" data-index="${gameIndex}" data-slot="${slot}" type="button">Clear Ban</button>`:""}<button class="footer-btn primary" data-bc-action="close-modal" type="button">Done</button></div></div>
+  </div>`;
+}
+function renderModal() {
+  if(!state.modal){els.modalShell.classList.remove("open");els.modalShell.innerHTML="";return;}
+  if(state.modal.type==="team")   els.modalShell.innerHTML=renderTeamModal();
+  if(state.modal.type==="format") els.modalShell.innerHTML=renderFormatModal();
+  if(state.modal.type==="map")    els.modalShell.innerHTML=renderMapModal();
+  if(state.modal.type==="hero")   els.modalShell.innerHTML=renderHeroModal();
+  els.modalShell.classList.add("open");
+}
+function bcRender() {
+  els.app.classList.toggle("dark", state.theme==="dark");
+  els.formatTrigger.textContent=formatMeta().label;
+  const series=getSeriesState();
+  els.scoreTeam1.textContent=String(series.team1Wins);
+  els.scoreTeam2.textContent=String(series.team2Wins);
+  renderTeamSide("team1"); renderTeamSide("team2");
+  renderSetList(); renderModal();
 }
 
-let currentTeamA = '';
-let currentTeamB = '';
-
-function buildTeamSelects() {
-  // No dropdowns — teams come from iframe via postMessage
-  updatePrediction();
-}
-
-// Listen for team changes from the ban calculator iframe
-window.addEventListener('message', e => {
-  if (!e.data || e.data.type !== 'owcs-teams') return;
-  currentTeamA = e.data.team1 || '';
-  currentTeamB = e.data.team2 || '';
-  document.getElementById('team-a-label').textContent = currentTeamA || '—';
-  document.getElementById('team-b-label').textContent = currentTeamB || '—';
-  updatePrediction();
+bcApp.addEventListener("click", e => {
+  const t=e.target.closest("[data-bc-action]"); if(!t)return;
+  const {bcAction:action,...ds}=Object.fromEntries(Object.entries(t.dataset).map(([k,v])=>[k,v]));
+  const act=t.dataset.bcAction;
+  if(act==="open-team")    openTeamModal(t.dataset.slot);
+  if(act==="toggle-lock")  toggleTeamLock(t.dataset.slot);
+  if(act==="open-map")     openMapModal(Number(t.dataset.index));
+  if(act==="open-hero")    openHeroModal(Number(t.dataset.index),t.dataset.slot);
+  if(act==="set-winner")   setWinner(Number(t.dataset.index),t.dataset.slot);
+  if(act==="clear-set")    clearSet(Number(t.dataset.index));
+  if(act==="select-team")  setTeam(t.dataset.slot,t.dataset.team);
+  if(act==="select-region"&&state.modal?.type==="team"){state.modal.region=t.dataset.region;renderModal();}
+  if(act==="select-format") setFormat(t.dataset.format);
+  if(act==="select-map")   setMap(Number(t.dataset.index),t.dataset.map);
+  if(act==="select-hero")  setBan(Number(t.dataset.index),t.dataset.slot,t.dataset.hero);
+  if(act==="clear-ban")    clearBan(Number(t.dataset.index),t.dataset.slot);
+  if(act==="close-modal")  closeModal();
 });
+bcApp.addEventListener("input", e => {
+  if(e.target.dataset.bcAction==="team-query"&&state.modal?.type==="team"){
+    state.modal.query=e.target.value; renderModal();
+    const inp=document.getElementById("team-search-input");
+    if(inp){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);}
+  }
+});
+els.formatTrigger.addEventListener("click", openFormatModal);
+els.resetSeries.addEventListener("click", resetAllSets);
+els.themeToggle.addEventListener("click", ()=>{ state.theme=state.theme==="dark"?"light":"dark"; bcRender(); });
+els.modalShell.addEventListener("click", e=>{ if(e.target===els.modalShell)closeModal(); });
+
+bcRender();
+
+// ═══════════════════════════════════════════════════════
+// Prediction Panel
+// ═══════════════════════════════════════════════════════
+let banData = null;
+let heroMeta = {};
+let predRegion = 'All';
+const MEDALS = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+
+// Populate heroMeta from already-loaded reference
+if (window.OWCS_REFERENCE && window.OWCS_REFERENCE.heroes) {
+  window.OWCS_REFERENCE.heroes.forEach(h => {
+    heroMeta[h.hero_name_en] = { role: h.main_role_en };
+  });
+}
+
+async function loadBanData() {
+  const res = await fetch('assets/data/ban_history.json');
+  banData = await res.json();
+  renderTopBans();
+  onTeamChanged(state.team1, state.team2);
+}
+
+function onTeamChanged(teamA, teamB) {
+  document.getElementById('team-a-label').textContent = teamA || '—';
+  document.getElementById('team-b-label').textContent = teamB || '—';
+  updatePrediction(teamA, teamB);
+}
 
 function getFilteredRates(teamBanRates) {
   if (predRegion === 'All' || !banData) return teamBanRates;
-
-  // Re-calculate from records filtered by region
   const filtered = banData.records.filter(r => r.region === predRegion);
-  const rates = {};
-  const counts = {};
-
+  const rates = {}, counts = {};
   filtered.forEach(r => {
-    [[r.team_initial, r.hero_initial], [r.team_followup, r.hero_followup]].forEach(([team, hero]) => {
-      if (!team || !hero) return;
-      if (!rates[team]) { rates[team] = {}; counts[team] = 0; }
-      rates[team][hero] = (rates[team][hero] || 0) + 1;
+    [[r.team_initial,r.hero_initial],[r.team_followup,r.hero_followup]].forEach(([team,hero]) => {
+      if(!team||!hero)return;
+      if(!rates[team]){rates[team]={};counts[team]=0;}
+      rates[team][hero]=(rates[team][hero]||0)+1;
       counts[team]++;
     });
   });
-
   const result = {};
-  for (const [team, heroes] of Object.entries(rates)) {
-    const total = counts[team];
-    result[team] = {};
-    for (const [hero, cnt] of Object.entries(heroes)) {
-      result[team][hero] = cnt / total;
-    }
+  for(const [team,heroes] of Object.entries(rates)){
+    const total=counts[team]; result[team]={};
+    for(const [hero,cnt] of Object.entries(heroes)) result[team][hero]=cnt/total;
   }
   return result;
 }
 
-function predictBans(teamA, teamB, topN = 5) {
-  if (!banData || !teamA || !teamB) return [];
-
-  const rates = getFilteredRates(banData.team_ban_rates);
-  const matchupRates = banData.matchup_ban_rates;
-
-  const overall = rates[teamA] || {};
-  const matchupKey = `${teamA}||${teamB}`;
-  const matchup = matchupRates[matchupKey] || {};
-  const hasMatchup = Object.keys(matchup).length > 0;
-
-  // Combine: 60% overall + 40% matchup-specific (if available)
-  const allHeroes = new Set([...Object.keys(overall), ...Object.keys(matchup)]);
-  const scores = {};
-  allHeroes.forEach(hero => {
-    const base = overall[hero] || 0;
-    const specific = matchup[hero] || 0;
-    scores[hero] = hasMatchup
-      ? (0.6 * base + 0.4 * specific)
-      : base;
+function predictBans(teamA, teamB, topN=5) {
+  if(!banData||!teamA||!teamB)return [];
+  const rates=getFilteredRates(banData.team_ban_rates);
+  const matchupRates=banData.matchup_ban_rates;
+  const overall=rates[teamA]||{};
+  const matchupKey=`${teamA}||${teamB}`;
+  const matchup=matchupRates[matchupKey]||{};
+  const hasMatchup=Object.keys(matchup).length>0;
+  const allHeroes=new Set([...Object.keys(overall),...Object.keys(matchup)]);
+  const scores={};
+  allHeroes.forEach(hero=>{
+    const base=overall[hero]||0, specific=matchup[hero]||0;
+    scores[hero]=hasMatchup?(0.6*base+0.4*specific):base;
   });
-
-  return Object.entries(scores)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, topN)
-    .map(([hero, score]) => ({ hero, score, hasMatchupData: hasMatchup }));
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,topN)
+    .map(([hero,score])=>({hero,score,hasMatchupData:hasMatchup}));
 }
 
-function renderPredList(containerId, preds, teamName) {
-  const el = document.getElementById(containerId);
-  if (!preds.length) {
-    el.innerHTML = '<div class="no-data">No historical data for this team.</div>';
-    return;
-  }
-  const maxScore = preds[0].score || 1;
-  el.innerHTML = preds.map((p, i) => {
-    const role = (heroMeta[p.hero] || {}).role || '';
-    const pct = Math.round(p.score * 100);
-    const barW = Math.round((p.score / maxScore) * 100);
-    return `
-      <div class="pred-hero">
-        <div class="pred-rank">${MEDALS[i] || (i+1)}</div>
-        <div class="hero-icon-placeholder">⚔️</div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span class="pred-name">${p.hero}</span>
-            ${role ? `<span class="pred-role role-${role}">${role}</span>` : ''}
-          </div>
-          <div class="conf-bar"><div class="conf-fill" style="width:${barW}%"></div></div>
+function renderPredList(containerId, preds) {
+  const el=document.getElementById(containerId);
+  if(!preds.length){el.innerHTML='<div class="no-data">No historical data for this team.</div>';return;}
+  const maxScore=preds[0].score||1;
+  el.innerHTML=preds.map((p,i)=>{
+    const role=(heroMeta[p.hero]||{}).role||'';
+    const pct=Math.round(p.score*100), barW=Math.round((p.score/maxScore)*100);
+    return `<div class="pred-hero">
+      <div class="pred-rank">${MEDALS[i]||(i+1)}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="pred-name">${p.hero}</span>
+          ${role?`<span class="pred-role role-${role}">${role}</span>`:''}
         </div>
-        <div class="pred-pct">${pct}%</div>
+        <div class="conf-bar"><div class="conf-fill" style="width:${barW}%"></div></div>
       </div>
-    `;
+      <div class="pred-pct">${pct}%</div>
+    </div>`;
   }).join('');
 }
 
-function updatePrediction() {
-  const teamA = currentTeamA;
-  const teamB = currentTeamB;
-
-  document.getElementById('pred-a-title').textContent = teamA ? `${teamA} — Expected Bans` : 'Team A — Expected Bans';
-  document.getElementById('pred-b-title').textContent = teamB ? `${teamB} — Expected Bans` : 'Team B — Expected Bans';
-
-  if (!banData) return;
-
-  const predA = predictBans(teamA, teamB);
-  const predB = predictBans(teamB, teamA);
-
-  renderPredList('pred-a-list', predA, teamA);
-  renderPredList('pred-b-list', predB, teamB);
-
-  // Matchup note
-  const matchupKey = `${teamA}||${teamB}`;
-  const hasMatchup = banData.matchup_ban_rates[matchupKey] &&
-    Object.keys(banData.matchup_ban_rates[matchupKey]).length > 0;
-  const note = hasMatchup
-    ? `Head-to-head ban data found for this matchup — using 60/40 weighted prediction.`
-    : `No direct matchup history. Prediction based on overall ban tendencies.`;
-  document.getElementById('matchup-note').textContent = note;
+function updatePrediction(teamA, teamB) {
+  document.getElementById('pred-a-title').textContent = teamA ? `${teamA} — Expected Bans` : 'Team 1 — Expected Bans';
+  document.getElementById('pred-b-title').textContent = teamB ? `${teamB} — Expected Bans` : 'Team 2 — Expected Bans';
+  if(!banData)return;
+  renderPredList('pred-a-list', predictBans(teamA, teamB));
+  renderPredList('pred-b-list', predictBans(teamB, teamA));
+  const matchupKey=`${teamA}||${teamB}`;
+  const hasMatchup=banData.matchup_ban_rates[matchupKey]&&Object.keys(banData.matchup_ban_rates[matchupKey]).length>0;
+  document.getElementById('matchup-note').textContent = hasMatchup
+    ? 'Head-to-head ban data found — using 60/40 weighted prediction.'
+    : 'No direct matchup history. Prediction based on overall ban tendencies.';
 }
 
 function renderTopBans() {
-  if (!banData) return;
-  const heroCounts = {};
-  banData.records.forEach(r => {
-    if (r.hero_initial) heroCounts[r.hero_initial] = (heroCounts[r.hero_initial] || 0) + 1;
-    if (r.hero_followup) heroCounts[r.hero_followup] = (heroCounts[r.hero_followup] || 0) + 1;
+  if(!banData)return;
+  const heroCounts={};
+  banData.records.forEach(r=>{
+    if(r.hero_initial)heroCounts[r.hero_initial]=(heroCounts[r.hero_initial]||0)+1;
+    if(r.hero_followup)heroCounts[r.hero_followup]=(heroCounts[r.hero_followup]||0)+1;
   });
-  const sorted = Object.entries(heroCounts).sort((a,b) => b[1]-a[1]).slice(0, 12);
-  const max = sorted[0]?.[1] || 1;
-  document.getElementById('top-bans-overall').innerHTML = sorted.map(([hero, cnt], i) =>
-    `<div class="ban-chip ${i < 5 ? 'hot' : ''}">${hero} <span style="opacity:0.7">${cnt}</span></div>`
+  const sorted=Object.entries(heroCounts).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  document.getElementById('top-bans-overall').innerHTML=sorted.map(([hero,cnt],i)=>
+    `<div class="ban-chip ${i<5?'hot':''}">${hero} <span style="opacity:0.7">${cnt}</span></div>`
   ).join('');
 }
 
-// Region filter
 document.getElementById('pred-region-tabs').addEventListener('click', e => {
-  const btn = e.target.closest('.tab-btn'); if (!btn) return;
-  predRegion = btn.dataset.region;
-  document.querySelectorAll('#pred-region-tabs .tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  const btn=e.target.closest('.tab-btn'); if(!btn)return;
+  predRegion=btn.dataset.region;
+  document.querySelectorAll('#pred-region-tabs .tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
   renderTopBans();
-  updatePrediction();
+  updatePrediction(state.team1, state.team2);
 });
 
-loadData();
+loadBanData();
 </script>
 </body>
 </html>
