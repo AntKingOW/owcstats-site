@@ -99,20 +99,21 @@ select.team-select:focus { border-color: var(--accent2); }
 
     <!-- Right: Prediction sidebar -->
     <div class="sidebar">
-      <!-- Team selectors -->
+      <!-- Team display (synced from ban calculator) -->
       <div class="panel">
         <div class="filter-label">Ban Prediction</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div>
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Team A</div>
-            <select class="team-select" id="team-a"></select>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:11px;color:var(--text-dim)">Team A</span>
+            <span id="team-a-label" style="font-size:13px;font-weight:700;color:var(--text)">—</span>
           </div>
-          <div>
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Team B</div>
-            <select class="team-select" id="team-b"></select>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:11px;color:var(--text-dim)">Team B</span>
+            <span id="team-b-label" style="font-size:13px;font-weight:700;color:var(--text)">—</span>
           </div>
         </div>
-        <div class="matchup-note" id="matchup-note"></div>
+        <div class="matchup-note" style="margin-top:8px">밴 계산기에서 팀을 선택하면 자동으로 반영됩니다.</div>
+        <div class="matchup-note" id="matchup-note" style="margin-top:4px"></div>
       </div>
 
       <!-- Team A prediction -->
@@ -186,21 +187,23 @@ function getTeams() {
   return Object.keys(banData.team_ban_rates).sort();
 }
 
+let currentTeamA = '';
+let currentTeamB = '';
+
 function buildTeamSelects() {
-  const teams = getTeams();
-  const opts = `<option value="">— Select Team —</option>` +
-    teams.map(t => `<option value="${t}">${t}</option>`).join('');
-  document.getElementById('team-a').innerHTML = opts;
-  document.getElementById('team-b').innerHTML = opts;
-
-  // Set defaults
-  if (teams.includes('ZETA DIVISION')) document.getElementById('team-a').value = 'ZETA DIVISION';
-  if (teams.includes('T1')) document.getElementById('team-b').value = 'T1';
-
-  document.getElementById('team-a').addEventListener('change', updatePrediction);
-  document.getElementById('team-b').addEventListener('change', updatePrediction);
+  // No dropdowns — teams come from iframe via postMessage
   updatePrediction();
 }
+
+// Listen for team changes from the ban calculator iframe
+window.addEventListener('message', e => {
+  if (!e.data || e.data.type !== 'owcs-teams') return;
+  currentTeamA = e.data.team1 || '';
+  currentTeamB = e.data.team2 || '';
+  document.getElementById('team-a-label').textContent = currentTeamA || '—';
+  document.getElementById('team-b-label').textContent = currentTeamB || '—';
+  updatePrediction();
+});
 
 function getFilteredRates(teamBanRates) {
   if (predRegion === 'All' || !banData) return teamBanRates;
@@ -287,8 +290,8 @@ function renderPredList(containerId, preds, teamName) {
 }
 
 function updatePrediction() {
-  const teamA = document.getElementById('team-a').value;
-  const teamB = document.getElementById('team-b').value;
+  const teamA = currentTeamA;
+  const teamB = currentTeamB;
 
   document.getElementById('pred-a-title').textContent = teamA ? `${teamA} — Expected Bans` : 'Team A — Expected Bans';
   document.getElementById('pred-b-title').textContent = teamB ? `${teamB} — Expected Bans` : 'Team B — Expected Bans';

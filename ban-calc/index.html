@@ -904,6 +904,14 @@
       state[slot] = team;
       closeModal();
       render();
+      // Notify parent page so prediction panel stays in sync
+      try {
+        window.parent.postMessage({
+          type: "owcs-teams",
+          team1: state.team1,
+          team2: state.team2,
+        }, "*");
+      } catch(e) {}
     }
 
     function toggleTeamLock(slot) {
