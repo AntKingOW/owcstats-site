@@ -6,7 +6,7 @@
 <title>Player Stats — OWCStats</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
-.layout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
+.layout { display: grid; grid-template-columns: 240px 1fr; gap: 20px; align-items: start; }
 @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
 
 .sidebar { position: sticky; top: calc(var(--nav-h) + 16px); display: flex; flex-direction: column; gap: 14px; }
@@ -14,14 +14,14 @@
 .filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 8px; }
 
 /* View tabs */
-.view-tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.view-tabs { display: flex; flex-direction: column; gap: 4px; }
 .view-tab {
-  padding: 8px 20px; border-radius: 8px; border: 1px solid var(--border);
-  background: var(--panel); color: var(--text-dim); font-size: 13px;
-  font-weight: 600; cursor: pointer; transition: all 0.15s;
+  padding: 9px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim); font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all 0.15s; text-align: left;
 }
 .view-tab.active { background: var(--accent); color: #08141f; border-color: var(--accent); }
-.view-tab:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+.view-tab:hover:not(.active) { border-color: var(--accent); color: var(--text); background: var(--panel); }
 
 /* Scatter */
 #scatter-section { display: block; }
@@ -100,40 +100,17 @@ select:focus { border-color: var(--accent2); }
   </div>
 
   <div class="layout">
-    <!-- Left: View-switched content -->
-    <div>
-      <!-- View tabs -->
-      <div class="view-tabs">
-        <button class="view-tab active" data-view="scatter">Scatter</button>
-        <button class="view-tab" data-view="rankings">Rankings</button>
-      </div>
-
-      <!-- SCATTER view -->
-      <div id="scatter-section">
-        <div id="scatter-canvas-wrap">
-          <svg id="scatter" xmlns="http://www.w3.org/2000/svg"></svg>
-          <div class="tooltip-box" id="tooltip"></div>
-        </div>
-        <div class="legend" id="legend"></div>
-      </div>
-
-      <!-- RANKINGS view -->
-      <div id="rankings-section">
-        <div class="metric-tabs" id="metric-tabs">
-          <button class="metric-btn active" data-metric="dmg_per10">DMG/10</button>
-          <button class="metric-btn" data-metric="elim_per10">Elim/10</button>
-          <button class="metric-btn" data-metric="heal_per10">Heal/10</button>
-          <button class="metric-btn" data-metric="assist_per10">Assist/10</button>
-          <button class="metric-btn" data-metric="mit_per10">MIT/10</button>
-          <button class="metric-btn" data-metric="ed_ratio">E/D</button>
-          <button class="metric-btn" data-metric="death_per10">Deaths/10</button>
-        </div>
-        <div class="rankings-grid" id="rankings-wrap"></div>
-      </div>
-    </div>
-
-    <!-- Right: Sidebar controls -->
+    <!-- Left: Sidebar controls -->
     <div class="sidebar">
+      <!-- View tabs at top -->
+      <div class="panel" style="padding:10px 12px">
+        <div class="filter-label">View</div>
+        <div class="view-tabs">
+          <button class="view-tab active" data-view="scatter">📊 Scatter</button>
+          <button class="view-tab" data-view="rankings">🏆 Rankings</button>
+        </div>
+      </div>
+
       <div class="panel">
         <div class="filter-label">Region</div>
         <div class="tabs" id="region-tabs">
@@ -194,6 +171,32 @@ select:focus { border-color: var(--accent2); }
       <div class="panel" style="padding:12px 16px">
         <div class="filter-label">Players shown</div>
         <div id="player-count" style="font-size:22px;font-weight:700;color:var(--accent)">—</div>
+      </div>
+    </div>
+
+    <!-- Right: View-switched content -->
+    <div>
+      <!-- SCATTER view -->
+      <div id="scatter-section">
+        <div id="scatter-canvas-wrap">
+          <svg id="scatter" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="tooltip-box" id="tooltip"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <!-- RANKINGS view -->
+      <div id="rankings-section">
+        <div class="metric-tabs" id="metric-tabs">
+          <button class="metric-btn active" data-metric="dmg_per10">DMG/10</button>
+          <button class="metric-btn" data-metric="elim_per10">Elim/10</button>
+          <button class="metric-btn" data-metric="heal_per10">Heal/10</button>
+          <button class="metric-btn" data-metric="assist_per10">Assist/10</button>
+          <button class="metric-btn" data-metric="mit_per10">MIT/10</button>
+          <button class="metric-btn" data-metric="ed_ratio">E/D</button>
+          <button class="metric-btn" data-metric="death_per10">Deaths/10</button>
+        </div>
+        <div class="rankings-grid" id="rankings-wrap"></div>
       </div>
     </div>
   </div>

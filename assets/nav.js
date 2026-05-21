@@ -2,6 +2,7 @@
 (function() {
   const pages = [
     { href: 'index.html', label: 'Home' },
+    { href: 'clash.html', label: '🌏 Champion Clash', special: true },
     { href: 'elo.html',   label: 'ELO Rankings' },
     { href: 'players.html', label: 'Player Stats' },
     { href: 'ban-calculator.html', label: 'Ban Calculator' },
@@ -14,7 +15,7 @@
     <a class="nav-logo" href="index.html">OWCStats</a>
     <ul class="nav-links">
       ${pages.map(p => `
-        <li><a href="${p.href}" class="${current === p.href ? 'active' : ''}">${p.label}</a></li>
+        <li><a href="${p.href}" class="${current === p.href ? 'active' : ''}${p.special ? ' nav-special' : ''}">${p.label}</a></li>
       `).join('')}
     </ul>
   `;
