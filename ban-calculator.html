@@ -105,57 +105,31 @@
   #ban-calc-app .ban-insight-panel { display: none; }
 }
 
-/* ── Ban Calculator App (scoped to #ban-calc-app) ───────────────── */
+/* ── Ban Calculator App — site-integrated dark theme ────────────── */
 #ban-calc-app {
-  color-scheme: light;
-  --bc-page-bg: #eef1f5;
-  --bc-page-bg-2: rgba(255, 255, 255, 0.75);
-  --bc-header-bg: rgba(255, 255, 255, 0.94);
-  --bc-panel: rgba(255, 255, 255, 0.88);
-  --bc-panel-strong: rgba(255, 255, 255, 0.96);
-  --bc-panel-muted: rgba(244, 247, 250, 0.9);
-  --bc-logo-panel: #c9d1d9;
-  --bc-text: #11151d;
-  --bc-muted: #617082;
-  --bc-line: rgba(22, 31, 45, 0.11);
-  --bc-shadow: 0 18px 40px rgba(15, 27, 42, 0.12);
-  --bc-accent: #ff8f42;
-  --bc-accent-strong: #f56d17;
-  --bc-green: #2ecc71;
-  --bc-red: #ff4d5a;
-  --bc-overlay: rgba(10, 14, 20, 0.56);
-  --bc-disabled: rgba(12, 16, 24, 0.52);
+  color-scheme: dark;
+  /* Map bc vars → site design tokens */
+  --bc-header-bg:    rgba(8, 20, 31, 0.97);
+  --bc-panel:        var(--panel);
+  --bc-panel-strong: var(--panel2);
+  --bc-panel-muted:  var(--panel);
+  --bc-logo-panel:   #122033;
+  --bc-text:         var(--text);
+  --bc-muted:        var(--text-dim);
+  --bc-line:         var(--border);
+  --bc-shadow:       0 4px 20px rgba(0,0,0,0.45);
+  --bc-accent:       var(--accent);
+  --bc-accent-strong:#e09318;
+  --bc-green:        var(--good);
+  --bc-red:          var(--bad);
+  --bc-overlay:      rgba(8, 20, 31, 0.88);
+  --bc-disabled:     rgba(8, 20, 31, 0.75);
 
   position: relative;
-  font-family: "Pretendard", "Segoe UI", sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   color: var(--bc-text);
-  background:
-    radial-gradient(circle at 12% 18%, rgba(0,0,0,0.05) 0 2px, transparent 2px 100%),
-    linear-gradient(145deg, transparent 0 16%, var(--bc-page-bg-2) 16% 20%, transparent 20% 100%),
-    linear-gradient(325deg, transparent 0 58%, var(--bc-page-bg-2) 58% 62%, transparent 62% 100%),
-    var(--bc-page-bg);
-  background-size: 28px 28px, 100% 100%, 100% 100%, auto;
+  background: transparent;
   border-radius: 12px;
-}
-#ban-calc-app.dark {
-  color-scheme: dark;
-  --bc-page-bg: #0d1118;
-  --bc-page-bg-2: rgba(255, 255, 255, 0.03);
-  --bc-header-bg: rgba(10, 12, 18, 0.92);
-  --bc-panel: rgba(15, 18, 27, 0.9);
-  --bc-panel-strong: rgba(14, 18, 26, 0.95);
-  --bc-panel-muted: rgba(29, 35, 47, 0.84);
-  --bc-logo-panel: #4a5360;
-  --bc-text: #f7f8fb;
-  --bc-muted: #a4aebc;
-  --bc-line: rgba(255, 255, 255, 0.12);
-  --bc-shadow: 0 22px 50px rgba(0, 0, 0, 0.34);
-  --bc-accent: #ff9b4b;
-  --bc-accent-strong: #ff7a1f;
-  --bc-green: #2ed573;
-  --bc-red: #ff4757;
-  --bc-overlay: rgba(0, 0, 0, 0.6);
-  --bc-disabled: rgba(3, 5, 11, 0.62);
 }
 
 #ban-calc-app * { box-sizing: border-box; }
@@ -192,11 +166,11 @@
 #ban-calc-app .team-logo {
   position: relative;
   width: 82px; height: 82px;
-  border-radius: 20px;
+  border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--bc-line);
   box-shadow: var(--bc-shadow);
-  background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0)), var(--bc-logo-panel);
+  background: var(--bc-logo-panel);
   flex-shrink: 0;
 }
 #ban-calc-app .hero-avatar span,
@@ -251,12 +225,7 @@
 #ban-calc-app .score-vs { font-size: 20px; color: var(--bc-accent-strong); text-transform: uppercase; letter-spacing: 0.06em; }
 #ban-calc-app .leaderboard-actions { display: flex; gap: 8px; align-items: center; }
 #ban-calc-app .action-btn { min-height: 34px; padding: 0 12px; font-size: 12px; letter-spacing: 0.03em; }
-#ban-calc-app .theme-btn {
-  position: absolute; top: 14px; right: 20px;
-  width: 38px; height: 38px;
-  padding: 0; display: grid; place-items: center; z-index: 21;
-}
-#ban-calc-app .theme-btn svg { width: 16px; height: 16px; display: block; fill: currentColor; }
+#ban-calc-app .theme-btn { display: none; } /* hidden — site uses fixed dark theme */
 #ban-calc-app .content { max-width: 1180px; margin: 0 auto; padding: 22px 20px 80px; }
 #ban-calc-app .set-list { display: grid; gap: 22px; }
 #ban-calc-app .set-block { display: grid; gap: 8px; position: relative; }
@@ -266,10 +235,8 @@
   display: grid;
   grid-template-columns: minmax(170px,1fr) 64px minmax(180px,max-content) 64px minmax(170px,1fr);
   align-items: center; gap: 10px; padding: 20px 22px;
-  border-radius: 30px; border: 1px solid var(--bc-line);
-  background: linear-gradient(180deg,rgba(255,255,255,0.2),rgba(0,0,0,0.06)),
-              linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0)),
-              var(--bc-panel);
+  border-radius: 20px; border: 1px solid var(--bc-line);
+  background: var(--bc-panel);
   box-shadow: var(--bc-shadow); overflow: hidden; isolation: isolate;
 }
 #ban-calc-app .set-card.mapped::before {
@@ -296,13 +263,12 @@
 #ban-calc-app .ban-trigger {
   position: relative; width: 78px; height: 78px;
   border-radius: 999px;
-  border: 3px dashed rgba(255,143,66,0.88);
-  background: rgba(255,255,255,0.16);
-  box-shadow: inset 0 0 0 5px rgba(255,255,255,0.08);
+  border: 3px dashed var(--accent);
+  background: rgba(245,165,36,0.08);
+  box-shadow: inset 0 0 0 5px rgba(245,165,36,0.06);
   overflow: hidden;
 }
-#ban-calc-app.dark .ban-trigger { border-color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.08); }
-#ban-calc-app .ban-trigger.has-hero { border-style: solid; border-color: rgba(255,255,255,0.72); }
+#ban-calc-app .ban-trigger.has-hero { border-style: solid; border-color: var(--accent2); }
 #ban-calc-app .ban-trigger::before,
 #ban-calc-app .hero-avatar::before,
 #ban-calc-app .mini-logo::before {
@@ -323,23 +289,21 @@
 #ban-calc-app .result-btn {
   width: 54px; height: 54px; display: grid; place-items: center;
   border-radius: 14px; border: 1px solid var(--bc-line);
-  background: rgba(255,255,255,0.68);
+  background: var(--panel2);
   font-size: 28px; font-weight: 900; color: var(--bc-muted);
   box-shadow: var(--bc-shadow);
 }
-#ban-calc-app.dark .result-btn { background: rgba(255,255,255,0.12); }
-#ban-calc-app .result-btn.win { background: var(--bc-green); color: #fff; border-color: transparent; }
+#ban-calc-app .result-btn.win { background: var(--bc-green); color: #08141f; border-color: transparent; }
 #ban-calc-app .result-btn.loss { background: var(--bc-red); color: #fff; border-color: transparent; }
 #ban-calc-app .map-trigger {
   min-width: min(100%, 320px); min-height: 62px;
   padding: 8px 10px; border-radius: 18px;
   border: 1px solid var(--bc-line);
-  background: rgba(255,255,255,0.68);
+  background: var(--panel2);
   box-shadow: var(--bc-shadow);
   display: grid; justify-items: center; align-content: center;
   gap: 3px; text-align: center;
 }
-#ban-calc-app.dark .map-trigger { background: rgba(255,255,255,0.12); }
 #ban-calc-app .set-card.mapped .map-trigger { min-height: auto; padding: 0; border: 0; background: transparent; box-shadow: none; border-radius: 0; }
 #ban-calc-app .map-name { font-size: clamp(15px,1.4vw,32px); font-weight: 900; line-height: 0.95; letter-spacing: -0.05em; color: var(--bc-accent); }
 #ban-calc-app .map-reset {
@@ -404,8 +368,8 @@
 }
 #ban-calc-app .region-chip.active {
   color: var(--bc-text);
-  border-color: rgba(245,109,23,0.3);
-  background: rgba(255,143,66,0.14);
+  border-color: var(--accent);
+  background: rgba(245,165,36,0.15);
 }
 #ban-calc-app .team-grid { grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); }
 #ban-calc-app .map-grid { grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); }
@@ -424,9 +388,9 @@
 #ban-calc-app .mini-logo, #ban-calc-app .hero-avatar {
   position: relative; overflow: hidden;
   border: 1px solid var(--bc-line);
-  background: linear-gradient(135deg,rgba(255,255,255,0.22),rgba(255,255,255,0)), var(--bc-panel);
+  background: var(--bc-panel);
 }
-#ban-calc-app .mini-logo { width: 58px; height: 58px; border-radius: 14px; background: linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0)), var(--bc-logo-panel); }
+#ban-calc-app .mini-logo { width: 58px; height: 58px; border-radius: 14px; background: var(--bc-logo-panel); }
 #ban-calc-app .option-name { font-size: 18px; font-weight: 800; line-height: 1; }
 #ban-calc-app .option-note { margin-top: 4px; font-size: 12px; }
 #ban-calc-app .map-group h3, #ban-calc-app .hero-group h3 { margin: 0; font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--bc-muted); }
@@ -452,7 +416,7 @@
 #ban-calc-app .footer-note { font-size: 13px; }
 #ban-calc-app .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 #ban-calc-app .footer-btn { min-height: 42px; padding: 0 14px; font-size: 13px; }
-#ban-calc-app .footer-btn.primary { background: var(--bc-accent-strong); border-color: transparent; color: #fff; }
+#ban-calc-app .footer-btn.primary { background: var(--accent); border-color: transparent; color: #08141f; font-weight: 800; }
 #ban-calc-app .empty-state { padding: 28px 20px; border-radius: 22px; border: 1px dashed var(--bc-line); color: var(--bc-muted); text-align: center; }
 
 @media (max-width: 980px) {
@@ -480,7 +444,7 @@
 <div class="page">
   <div class="hero">
     <h1>Ban <span>Calculator</span></h1>
-    <p>Track hero bans for OWCS matches. The prediction panel uses historical ban data from Korea, NA &amp; EMEA 2026.</p>
+    <p>OWCS 2026 밴 시뮬레이터. 맵 선택 후 밴 클릭 시 팀별 역대 밴 경향(밴을 한 것 · 밴을 당한 것)이 인라인으로 추천됩니다.</p>
   </div>
 
   <div class="bc-layout">
@@ -618,7 +582,7 @@ const els = {
 };
 
 const state = {
-  theme: "light",
+  theme: "dark",
   format: "bo5",
   team1: reference.teams[0] || "TEAM 1",
   team2: reference.teams[1] || reference.teams[0] || "TEAM 2",

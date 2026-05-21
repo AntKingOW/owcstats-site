@@ -381,7 +381,7 @@ const MAP_MODES = ["All","Control","Escort","Hybrid","Flashpoint","Push"];
 const LOGO_BASE = "ban-calc/assets/teams/";
 const HERO_BASE = "ban-calc/assets/heroes/";
 function logoUrl(t) { return `${LOGO_BASE}${t.slug}.${t.ext}`; }
-function heroSlug(h){ return h.toLowerCase().replace(/['.]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+function heroSlug(h){ return h.toLowerCase().replace(/['.]/g,'-').replace(/[^a-z0-9-]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
 
 // ── State ──────────────────────────────────────────────────────────────────
 let eloData=[], playerData=[], banData=[];
