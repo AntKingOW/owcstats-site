@@ -19,9 +19,21 @@
         <li><a href="${p.href}" class="${current === p.href ? 'active' : ''}${p.special ? ' nav-special' : ''}">${p.label}</a></li>
       `).join('')}
     </ul>
-    <button class="nav-hamburger" aria-label="메뉴 열기" aria-expanded="false">&#9776;</button>
+    <button id="lang-toggle" class="nav-lang-toggle" title="Toggle language / 언어 전환">한</button>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
   `;
   document.body.prepend(nav);
+
+  // Language toggle
+  const langBtn = nav.querySelector('#lang-toggle');
+  if (langBtn) {
+    // Show correct initial label
+    langBtn.textContent = (window.SITE_LANG === 'ko') ? 'EN' : '한';
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (typeof window.toggleLang === 'function') window.toggleLang();
+    });
+  }
 
   const hamburger = nav.querySelector('.nav-hamburger');
 

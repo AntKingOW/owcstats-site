@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -185,6 +185,7 @@ svg#clash-scatter { width: 100%; height: 100%; display: block; }
 </style>
 </head>
 <body>
+<script src="assets/i18n.js"></script>
 <script src="assets/nav.js"></script>
 
 <div class="page">
@@ -349,10 +350,10 @@ svg#clash-scatter { width: 100%; height: 100%; display: block; }
         <div class="sec-header">Ban Analysis · Clash Teams</div>
         <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
           <div style="font-size:12px;color:var(--text-dim);padding:8px 12px;background:var(--panel);border-radius:6px;border:1px solid var(--border)">
-            🔴 <strong style="color:var(--text)">밴을 한 것</strong> — 이 팀이 직접 사용한 밴
+            🔴 <strong style="color:var(--text)" data-i18n="bans.made">Bans Made</strong> — <span data-i18n="clash.made.desc">Bans this team used</span>
           </div>
           <div style="font-size:12px;color:var(--text-dim);padding:8px 12px;background:var(--panel);border-radius:6px;border:1px solid var(--border)">
-            🛡️ <strong style="color:var(--text)">밴을 당한 것</strong> — 상대가 이 팀 상대로 사용한 밴
+            🛡️ <strong style="color:var(--text)" data-i18n="bans.received">Bans Received</strong> — <span data-i18n="clash.recv.desc">Bans opponents used against this team</span>
           </div>
         </div>
         <div class="ban-grid" id="ban-grid"></div>
@@ -539,8 +540,8 @@ function buildBanCard(t) {
       <div class="region-sm" style="color:${REGION_COLORS[t.region]||'#aaa'}">${t.region}</div>
     </div>
     <div class="ban-type-toggle">
-      <button class="ban-type-btn active made" data-team="${t.name}" data-type="made">🔴 밴을 한 것</button>
-      <button class="ban-type-btn received" data-team="${t.name}" data-type="received">🛡️ 밴을 당한 것</button>
+      <button class="ban-type-btn active made" data-team="${t.name}" data-type="made" data-i18n-btn="clash.made.btn">🔴 Bans Made</button>
+      <button class="ban-type-btn received" data-team="${t.name}" data-type="received" data-i18n-btn="clash.recv.btn">🛡️ Bans Received</button>
     </div>
     <div class="ban-mode-tabs">
       ${MAP_MODES.map(m=>`<button class="ban-mode-btn${m==='All'?' active':''}" data-team="${t.name}" data-mode="${m}">${m}</button>`).join('')}
@@ -557,7 +558,7 @@ function buildBanHeroRows(teamName, mode, type) {
   const agg={};
   rows.forEach(b=>{agg[b.hero]=(agg[b.hero]||0)+b[field];});
   const sorted=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  if(!sorted.length) return `<div style="color:var(--text-dim);font-size:11px">데이터 없음</div>`;
+  if(!sorted.length) return `<div style="color:var(--text-dim);font-size:11px">${t("no.data")}</div>`;
   const maxV=sorted[0][1];
   return sorted.map(([hero,cnt])=>`<div class="ban-hero-row">
     <img class="ban-hero-icon" src="${HERO_BASE}${heroSlug(hero)}.png" alt="${hero}" onerror="this.style.background='#1a3a5c'">
@@ -746,6 +747,10 @@ function bindEvents() {
 }
 
 init();
+document.addEventListener('langchange', () => {
+  buildBanGrid();
+  applyI18n();
+});
 </script>
 </body>
 </html>

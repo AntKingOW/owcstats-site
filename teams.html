@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -195,12 +195,13 @@
 </style>
 </head>
 <body>
+<script src="assets/i18n.js"></script>
 <script src="assets/nav.js"></script>
 
 <div class="page">
   <div class="hero" style="padding-bottom:16px;">
     <h1>OWCS <span>Teams</span></h1>
-    <p>지역별 팀 프로필 — ELO 이력, 로스터, 밴 통계</p>
+    <p data-i18n="teams.hero.desc">Regional team profiles — ELO history, roster &amp; ban stats</p>
   </div>
 
   <div class="teams-layout">
@@ -426,7 +427,7 @@ function renderNavContent() {
         <div class="year-tab${y === selectedYear ? ' active' : ''}" data-year="${y}">${y}</div>
       `).join('')}
     </div>
-    <div class="region-nav-header">지역</div>
+    <div class="region-nav-header" data-i18n="teams.region.header">Region</div>
     <div class="region-nav-item${selectedRegion === 'All' ? ' active' : ''}" data-region="All">
       🌐 All <span class="team-count">${total}</span>
     </div>
@@ -479,6 +480,7 @@ function renderGrid() {
     updateURL();
     renderDetail(selectedTeam);
   });
+  applyI18n();
 }
 
 function teamCard(t) {
@@ -518,7 +520,7 @@ function renderDetail(teamName) {
   const history = eloHistory[teamName]||[];
 
   document.getElementById('main-area').innerHTML = `
-    <div class="detail-back" id="back-btn">← ${selectedYear} ${selectedRegion === 'All' ? '전체' : selectedRegion} 목록으로</div>
+    <div class="detail-back" id="back-btn">← ${selectedYear} ${t('teams.back')}</div>
 
     <div class="team-header-bar">
       <div>${teamLogoImg(teamName, 56).replace('class="team-logo-img"', 'class="team-header-logo"')}</div>
@@ -539,18 +541,18 @@ function renderDetail(teamName) {
 
     <div class="detail-grid">
       <div class="panel" style="padding:0;">
-        <div class="panel-title">시즌 기록 (${latestYear})</div>
+        <div class="panel-title">t('teams.season.record')} (${latestYear}</div>
         <div class="stat-row"><span class="lbl">ELO</span><span class="val" style="color:var(--accent)">${d.elo}</span></div>
-        <div class="stat-row"><span class="lbl">랭킹</span><span class="val">#${d.rank}</span></div>
-        <div class="stat-row"><span class="lbl">승 / 패</span><span class="val">${d.maps_won}W / ${d.maps_lost}L</span></div>
-        <div class="stat-row"><span class="lbl">승률</span><span class="val">${d.win_pct}%</span></div>
+        <div class="stat-row"><span class="lbl" data-i18n="teams.rank">Rank</span><span class="val">#${d.rank}</span></div>
+        <div class="stat-row"><span class="lbl" data-i18n="teams.wl">W / L</span><span class="val">${d.maps_won}W / ${d.maps_lost}L</span></div>
+        <div class="stat-row"><span class="lbl" data-i18n="teams.winpct">Win %</span><span class="val">${d.win_pct}%</span></div>
       </div>
 
       ${roster.length > 0 ? `
       <div class="panel" style="padding:0;">
-        <div class="panel-title">로스터</div>
+        <div class="panel-title">${t("teams.roster")}</div>
         <table class="roster-table">
-          <thead><tr><th>플레이어</th><th>포지션</th><th>게임</th><th>K/D</th></tr></thead>
+          <thead><tr><th data-i18n="teams.player">Player</th><th data-i18n="teams.role">Role</th><th data-i18n="teams.games">Games</th><th>K/D</th></tr></thead>
           <tbody>
             ${roster.map(p=>`
               <tr>
@@ -563,13 +565,13 @@ function renderDetail(teamName) {
           </tbody>
         </table>
       </div>
-      ` : `<div class="panel" style="padding:16px;color:var(--text-dim);font-size:13px;">선수 데이터 없음</div>`}
+      ` : `<div class="panel" style="padding:16px;color:var(--text-dim);font-size:13px;">${t('teams.no.players')}</div>`}
     </div>
 
     ${history.length > 0 ? `
     <div class="panel" style="padding:0;margin-bottom:16px;">
       <div class="panel-title">
-        ELO 추이 — 첫 등장부터 현재까지
+        ${t('teams.elo.trend')}
         <span style="font-weight:400;margin-left:8px;">
           <span style="color:#4da6ff">■</span> 2024
           <span style="color:#3ddc84;margin-left:6px">■</span> 2025
@@ -583,7 +585,7 @@ function renderDetail(teamName) {
     ${topMade.length > 0 ? `
     <div class="detail-grid">
       <div class="panel" style="padding:0;">
-        <div class="panel-title">🔴 많이 밴한 영웅</div>
+        <div class="panel-title">${t("teams.bans.made")}</div>
         ${topMade.map(([h,c])=>`
           <div class="ban-row">
             <span class="ban-hero">${h}</span>
@@ -593,7 +595,7 @@ function renderDetail(teamName) {
         `).join('')}
       </div>
       <div class="panel" style="padding:0;">
-        <div class="panel-title">🛡️ 많이 당한 밴</div>
+        <div class="panel-title">${t("teams.bans.received")}</div>
         ${topReceived.map(([h,c])=>`
           <div class="ban-row">
             <span class="ban-hero">${h}</span>
@@ -613,6 +615,7 @@ function renderDetail(teamName) {
   });
 
   if (history.length > 0) renderTrendChart(history, teamName);
+  applyI18n();
 }
 
 function renderTrendChart(history, teamName) {
@@ -694,7 +697,7 @@ function renderTrendChart(history, teamName) {
             title: items => labels[items[0].dataIndex],
             label: item => {
               const idx = item.dataIndex;
-              if (!isReal[idx]) return '미출전 (ELO 유지)';
+              if (!isReal[idx]) return t('teams.no.part');
               const d = raw[idx];
               return [`ELO: ${d.elo}`, `Year: ${d.year}`];
             }
@@ -727,6 +730,10 @@ function updateURL() {
 }
 
 loadData();
+document.addEventListener('langchange', () => {
+  renderNavContent();
+  if (selectedTeam) renderDetail(selectedTeam); else renderGrid();
+});
 </script>
 </body>
 </html>

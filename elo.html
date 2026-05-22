@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -103,12 +103,13 @@
 </style>
 </head>
 <body>
+<script src="assets/i18n.js"></script>
 <script src="assets/nav.js"></script>
 
 <div class="page">
   <div class="hero">
     <h1>OWCS <span>ELO Rating</span></h1>
-    <p>Global team ratings based on map-by-map results. K=24, Base=1400.</p>
+    <p data-i18n="elo.hero.desc">Global team ratings based on map-by-map results. K=24, Base=1400.</p>
   </div>
 
   <div id="stat-cards" class="stat-cards"></div>
@@ -116,13 +117,13 @@
   <div class="elo-layout">
     <!-- Left nav -->
     <div class="season-nav" id="season-nav">
-      <div class="nav-section-label">📊 Rankings</div>
-      <div class="season-nav-item active" data-mode="rankings" data-year="overall">Overall</div>
+      <div class="nav-section-label" data-i18n="nav.rankings">📊 Rankings</div>
+      <div class="season-nav-item active" data-mode="rankings" data-year="overall" data-i18n="nav.overall">Overall</div>
       <div class="season-nav-item" data-mode="rankings" data-year="2026">2026</div>
       <div class="season-nav-item" data-mode="rankings" data-year="2025">2025</div>
       <div class="season-nav-item" data-mode="rankings" data-year="2024">2024</div>
-      <div class="nav-section-label">📈 ELO Trend</div>
-      <div class="season-nav-item" data-mode="trend" data-year="overall">Overall</div>
+      <div class="nav-section-label" data-i18n="nav.trend">📈 ELO Trend</div>
+      <div class="season-nav-item" data-mode="trend" data-year="overall" data-i18n="nav.overall">Overall</div>
       <div class="season-nav-item" data-mode="trend" data-year="2026">2026</div>
       <div class="season-nav-item" data-mode="trend" data-year="2025">2025</div>
       <div class="season-nav-item" data-mode="trend" data-year="2024">2024</div>
@@ -183,6 +184,7 @@ function render() {
   renderStatCards();
   if (currentMode === 'rankings') renderRankings();
   else renderTrend();
+  applyI18n();
 }
 
 /* ── STAT CARDS ── */
@@ -256,7 +258,7 @@ function renderRankings() {
       <div class="tabs" id="region-tabs">
         ${regions.map(r => `<button class="tab-btn ${r===currentRegion?'active':''}" data-region="${r}">${r}</button>`).join('')}
       </div>
-      <input id="search-input" placeholder="팀 검색..." style="max-width:200px" value="${searchQ}">
+      <input id="search-input" placeholder="Search team..." data-i18n-ph="search.placeholder" style="max-width:200px" value="${searchQ}">
     </div>
 
     <div class="panel table-wrap">
@@ -521,6 +523,7 @@ document.getElementById('season-nav').addEventListener('click', e => {
 });
 
 loadData();
+document.addEventListener('langchange', render);
 </script>
 </body>
 </html>

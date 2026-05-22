@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -439,12 +439,13 @@
 </style>
 </head>
 <body>
+<script src="assets/i18n.js"></script>
 <script src="assets/nav.js"></script>
 
 <div class="page">
   <div class="hero">
     <h1>Ban <span>Calculator</span></h1>
-    <p>OWCS 2026 밴 시뮬레이터. 맵 선택 후 밴 클릭 시 팀별 역대 밴 경향(밴을 한 것 · 밴을 당한 것)이 인라인으로 추천됩니다.</p>
+    <p>OWCS 2026 ban simulator — select a map, click a ban slot to see historical ban tendencies inline.</p>
   </div>
 
   <div class="bc-layout">
@@ -469,7 +470,7 @@
                 <span class="score-value" id="bc-score-team2">0</span>
               </div>
               <div class="leaderboard-actions">
-                <button class="action-btn" id="bc-reset-series" type="button">모든 세트 초기화</button>
+                <button class="action-btn" id="bc-reset-series" type="button" data-i18n="bc.reset.all">Reset All Sets</button>
               </div>
             </div>
             <div class="team-side right" id="team2-side"></div>
@@ -496,7 +497,7 @@
             <span id="team-b-label" style="font-size:13px;font-weight:700;color:var(--text)">—</span>
           </div>
         </div>
-        <div class="matchup-note" id="matchup-note" style="margin-top:8px">밴 계산기에서 팀을 선택하면 자동으로 반영됩니다.</div>
+        <div class="matchup-note" id="matchup-note" style="margin-top:8px" data-i18n="bc.matchup.note">Select teams in the ban calculator to auto-fill.</div>
       </div>
 
       <div class="panel">
@@ -726,7 +727,7 @@ function renderSetList() {
         </div>
         <div class="map-slot">
           <button class="map-trigger" data-bc-action="open-map" data-index="${index}" type="button"><div class="map-name">${mapLabel}</div></button>
-          <button class="map-reset" data-bc-action="clear-set" data-index="${index}" type="button"${disabled?" disabled":""}>세트 초기화</button>
+          <button class="map-reset" data-bc-action="clear-set" data-index="${index}" type="button"${disabled?" disabled":""} data-i18n="bc.reset.set">Reset Set</button>
         </div>
         <div class="side-meta">
           <button class="result-btn${game.winner==="team2"?" win":game.winner==="team1"?" loss":""}" data-bc-action="set-winner" data-index="${index}" data-slot="team2" type="button"${!mapSelected||disabled?" disabled":""}>${game.winner==="team1"?"L":"W"}</button>
@@ -810,11 +811,11 @@ function renderHeroModal() {
   const suggSection = (topMade.length||topReceived.length) ? `
     <div class="sugg-section">
       ${topMade.length?`
-        <div class="sugg-label">🔴 <span>${team}</span> 의 주요 밴 ${game.map?`(${modeLabel})`:'(전체)'}</div>
+        <div class="sugg-label">${t('bc.sugg.made',{team:`<span>${team}</span>`})} ${game.map?`(${modeLabel})`:''}</div>
         <div class="sugg-chips">${chipHtml(topMade,'made')}</div>
       `:''}
       ${topReceived.length?`
-        <div class="sugg-label" style="margin-top:${topMade.length?8:0}px">🛡️ <span>${team}</span>이 자주 밴당하는 영웅</div>
+        <div class="sugg-label" style="margin-top:${topMade.length?8:0}px">${t('bc.sugg.recv',{team:`<span>${team}</span>`})} ${game.map?`(${modeLabel})`:''}</div>
         <div class="sugg-chips">${chipHtml(topReceived,'received')}</div>
       `:''}
     </div>` : '';
@@ -827,19 +828,19 @@ function renderHeroModal() {
         <div class="insight-bar-wrap"><div class="insight-bar-fill" style="width:${Math.round(cnt/a[0].cnt*100)}%;background:${barColor}"></div></div>
         <span class="insight-cnt">${cnt}</span>
       </div>`).join('')
-    :`<div style="color:var(--bc-muted);font-size:11px">데이터 없음</div>`;
+    :`<div style="color:var(--bc-muted);font-size:11px">${t("no.data")}</div>`;
 
   const insightPanel=`<div class="ban-insight-panel">
     <div>
-      <div class="insight-section-label">🔴 ${team}<br>주요 밴</div>
+      <div class="insight-section-label">${t('bc.insight.made',{team})}</div>
       ${insightRows(topMade,'var(--bc-accent)')}
     </div>
     <div>
-      <div class="insight-section-label">🛡️ ${team}<br>자주 밴당하는 영웅</div>
+      <div class="insight-section-label">${t('bc.insight.recv',{team})}</div>
       ${insightRows(topReceived,'#4da6ff')}
     </div>
     ${oppMade.length?`<div>
-      <div class="insight-section-label">⚔️ ${otherTeam}<br>예상 밴</div>
+      <div class="insight-section-label">${t('bc.insight.opp',{opp:otherTeam})}</div>
       ${insightRows(oppMade,'#3ddc84')}
     </div>`:''}
   </div>`;
@@ -855,12 +856,12 @@ function renderHeroModal() {
             const isSuggMade=topMade.some(s=>s.hero===hero.hero_name_en);
             const isSuggReceived=topReceived.some(s=>s.hero===hero.hero_name_en);
             const suggBorder=isSuggMade?'outline:2px solid var(--bc-accent);outline-offset:1px':isSuggReceived?'outline:2px solid #4da6ff;outline-offset:1px':'';
-            return `<button class="hero-option${sel?" active":""}" data-bc-action="select-hero" data-index="${gameIndex}" data-slot="${slot}" data-hero="${hero.hero_name_en}" type="button"${dis?" disabled":""} style="${suggBorder}"><div class="hero-avatar" style="--hero-image:url('${heroAsset(hero.hero_name_en)}')"></div><div class="hero-copy"><strong>${hero.hero_name_en}</strong><span>${sel?"선택 취소":(isSuggMade?'🔴 주요 밴':isSuggReceived?'🛡️ 밴당함':hero.hero_name_ko)}</span></div></button>`;
+            return `<button class="hero-option${sel?" active":""}" data-bc-action="select-hero" data-index="${gameIndex}" data-slot="${slot}" data-hero="${hero.hero_name_en}" type="button"${dis?" disabled":""} style="${suggBorder}"><div class="hero-avatar" style="--hero-image:url('${heroAsset(hero.hero_name_en)}')"></div><div class="hero-copy"><strong>${hero.hero_name_en}</strong><span>${sel?t('bc.hero.deselect'):(isSuggMade?t('bc.hero.key.ban'):isSuggReceived?t('bc.hero.often.banned'):hero.hero_name_en)}</span></div></button>`;
           }).join("")}</div></section>`).join("")}
       </div>
       ${insightPanel}
     </div>
-    <div class="modal-footer"><div class="footer-note">${mapMode!=='All'?`<span style="color:var(--bc-muted);font-size:11px">🔴 주요 밴 · 🛡️ 자주 밴당함</span>`:''}</div><div class="footer-actions">${current?`<button class="footer-btn" data-bc-action="clear-ban" data-index="${gameIndex}" data-slot="${slot}" type="button">Clear Ban</button>`:""}<button class="footer-btn primary" data-bc-action="close-modal" type="button">Done</button></div></div>
+    <div class="modal-footer"><div class="footer-note">${mapMode!=='All'?`<span style="color:var(--bc-muted);font-size:11px">🔴 Key ban · 🛡️ Often banned against</span>`:''}</div><div class="footer-actions">${current?`<button class="footer-btn" data-bc-action="clear-ban" data-index="${gameIndex}" data-slot="${slot}" type="button">Clear Ban</button>`:""}<button class="footer-btn primary" data-bc-action="close-modal" type="button">Done</button></div></div>
   </div>`;
 }
 function renderModal() {
@@ -1040,6 +1041,7 @@ document.getElementById('pred-region-tabs').addEventListener('click', e => {
 });
 
 loadBanData();
+document.addEventListener('langchange', () => { bcRender(); applyI18n(); });
 </script>
 </body>
 </html>
