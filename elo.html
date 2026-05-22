@@ -395,18 +395,32 @@ function renderOverallChart(ctx, baseRows) {
     const eventElo = {};
     for (const pt of history) eventElo[pt.event] = pt.elo;
 
-    const data = allStages.map(stage => {
+    const rawData = allStages.map(stage => {
       let elo = null;
       for (const ev of stage.events) if (eventElo[ev] !== undefined) elo = eventElo[ev];
       return elo;
     });
 
+    // Forward-fill nulls → flat horizontal line for stages the team didn't play.
+    // Track which indices are real data (show dot) vs filled (no dot).
+    const filledData = [], isReal = [];
+    let lastElo = null;
+    for (const v of rawData) {
+      if (v !== null) { filledData.push(v); isReal.push(true); lastElo = v; }
+      else if (lastElo !== null) { filledData.push(lastElo); isReal.push(false); }
+      else { filledData.push(null); isReal.push(false); }
+    }
+
     return {
       label: team,
-      data,
+      data: filledData,
       borderColor: PALETTE[i % PALETTE.length],
       backgroundColor: 'transparent',
-      borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true,
+      borderWidth: 2,
+      pointRadius: isReal.map(r => r ? 4 : 0),
+      pointHoverRadius: isReal.map(r => r ? 6 : 0),
+      tension: 0,
+      spanGaps: true,
     };
   });
 
@@ -443,12 +457,28 @@ function renderYearChart(ctx, year, baseRows) {
       for (const ev of stage.events) if (eventElo[ev] !== undefined) elo = eventElo[ev];
       return elo;
     });
+
+    // Forward-fill: carry last ELO forward for stages the team didn't play.
+    // Start point is always real; track subsequent points.
+    const rawData = [startElo, ...stageElos];
+    const filledData = [startElo], isReal = [true];
+    let lastElo = startElo;
+    for (let k = 1; k < rawData.length; k++) {
+      const v = rawData[k];
+      if (v !== null) { filledData.push(v); isReal.push(true); lastElo = v; }
+      else             { filledData.push(lastElo); isReal.push(false); }
+    }
+
     return {
       label: team,
-      data: [startElo, ...stageElos],
+      data: filledData,
       borderColor: PALETTE[i % PALETTE.length],
       backgroundColor: 'transparent',
-      borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true,
+      borderWidth: 2,
+      pointRadius: isReal.map(r => r ? 4 : 0),
+      pointHoverRadius: isReal.map(r => r ? 6 : 0),
+      tension: 0,
+      spanGaps: true,
     };
   });
 
