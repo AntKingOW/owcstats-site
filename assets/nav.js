@@ -19,6 +19,61 @@
         <li><a href="${p.href}" class="${current === p.href ? 'active' : ''}${p.special ? ' nav-special' : ''}">${p.label}</a></li>
       `).join('')}
     </ul>
+    <button class="nav-hamburger" aria-label="메뉴 열기" aria-expanded="false">&#9776;</button>
   `;
   document.body.prepend(nav);
+
+  const hamburger = nav.querySelector('.nav-hamburger');
+
+  function openMenu() {
+    nav.classList.add('nav-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.innerHTML = '&#10005;';
+  }
+  function closeMenu() {
+    nav.classList.remove('nav-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.innerHTML = '&#9776;';
+  }
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    nav.classList.contains('nav-open') ? closeMenu() : openMenu();
+  });
+
+  nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', closeMenu));
+
+  document.addEventListener('click', (e) => { if (!nav.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+  // ── Mobile sidebar toggle ──────────────────────────────────────────────────
+  // Runs after DOM is ready; injects a "▾ 필터" button above any sidebar layout.
+  const LAYOUT_SELECTORS = '.elo-layout, .teams-layout, .clash-layout, .layout';
+  const SIDEBAR_LABELS = {
+    'elo-layout':   '📊 시즌 선택',
+    'teams-layout': '🗂️ 지역 / 년도',
+    'clash-layout': '🗂️ 팀 메뉴',
+    'layout':       '⚙️ 필터',
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll(LAYOUT_SELECTORS).forEach(layout => {
+      const sidebar = layout.firstElementChild;
+      if (!sidebar) return;
+
+      // Determine label
+      const layoutClass = Array.from(layout.classList).find(c => SIDEBAR_LABELS[c]) || '';
+      const label = SIDEBAR_LABELS[layoutClass] || '☰ 메뉴';
+
+      const btn = document.createElement('button');
+      btn.className = 'mobile-sidebar-toggle';
+      btn.innerHTML = `<span class="mst-arrow">▾</span> ${label}`;
+      layout.parentNode.insertBefore(btn, layout);
+
+      btn.addEventListener('click', () => {
+        const isOpen = sidebar.classList.toggle('mob-sidebar-open');
+        btn.querySelector('.mst-arrow').textContent = isOpen ? '▴' : '▾';
+      });
+    });
+  });
 })();

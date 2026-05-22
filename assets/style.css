@@ -300,3 +300,111 @@ tr:last-child td { border-bottom: none; }
 .flex-col { flex-direction: column; }
 .align-center { align-items: center; }
 .wrap { flex-wrap: wrap; }
+
+/* ── Mobile sidebar toggle (hidden on desktop) ── */
+.mobile-sidebar-toggle { display: none; }
+
+/* ── Hamburger (hidden on desktop) ──────── */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1;
+  padding: 5px 11px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE  (≤ 640px)
+   ═══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Nav: logo + hamburger in one row, links drop down */
+  nav { padding: 0 16px; }
+  .nav-logo { margin-right: 0; }
+  .nav-hamburger { display: block; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    flex-direction: column;
+    gap: 2px;
+    background: rgba(8,20,31,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+  nav.nav-open .nav-links { display: flex; }
+  .nav-links a { padding: 10px 14px; font-size: 14px; border-radius: 8px; }
+
+  /* Remove sticky from all sidebars */
+  .season-nav,
+  .region-nav,
+  .clash-sidebar,
+  .sidebar {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Sidebar toggle button */
+  .mobile-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+  .mobile-sidebar-toggle:hover { border-color: var(--accent2); }
+  .mst-arrow { color: var(--accent); font-size: 12px; }
+
+  /* Sidebar hidden by default on mobile; shown when toggled */
+  .elo-layout   > *:first-child,
+  .teams-layout > *:first-child,
+  .clash-layout > *:first-child,
+  .layout       > *:first-child {
+    display: none;
+  }
+  .elo-layout   > .mob-sidebar-open,
+  .teams-layout > .mob-sidebar-open,
+  .clash-layout > .mob-sidebar-open,
+  .layout       > .mob-sidebar-open {
+    display: block;
+  }
+
+  /* Page width: leave 12px on each side */
+  .page { width: calc(100vw - 24px); padding: 12px 0 40px; }
+
+  /* Top-3 medal cards: 2+ per row */
+  .top3-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+
+  /* Charts: shorten on phones */
+  .chart-container-lg { height: 240px !important; }
+
+  /* Tables: compact */
+  td, th { padding: 7px 8px !important; font-size: 12px !important; }
+
+  /* Stat cards */
+  .stat-card { min-width: 80px; padding: 10px 14px; }
+  .stat-card .value { font-size: 20px; }
+
+  /* Miscellaneous */
+  .section-title { font-size: 13px; }
+  .hero h1 { font-size: 20px; }
+}
