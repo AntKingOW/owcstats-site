@@ -14,6 +14,17 @@ DATA_OUT.mkdir(parents=True, exist_ok=True)
 ELO_DIR = BASE / "Elo-Rating"
 STATS_DIR = BASE / "OWCStats" / "OWCStats"
 
+# ── Data quality filters ──────────────────────────────────────────────────────
+
+# Teams with no proper regional affiliation (international/misc) — exclude entirely
+INTL_TEAMS = {"LGD.OA", "Sign Esports", "ZoKorp Esports"}
+
+# Teams whose home_region in the CSV is wrong — override with the correct region
+REGION_OVERRIDES = {
+    "Spacestation Gaming": "NA",   # always NA; 2024 CSV had them as EMEA by mistake
+    "VEC": "Japan",                # always Japan; 2024 CSV had them as Korea by mistake
+}
+
 # ── ELO rankings (2024/2025/2026) ────────────────────────────────────────────
 
 def build_elo_rankings():
@@ -27,11 +38,15 @@ def build_elo_rankings():
         with open(path, encoding="utf-8") as f:
             for r in csv.DictReader(f):
                 try:
+                    team = r["team"]
+                    if team in INTL_TEAMS:
+                        continue  # skip unaffiliated teams
+                    region = REGION_OVERRIDES.get(team, r.get("home_region", ""))
                     rows.append({
                         "rank": int(r.get("rank", 0)),
-                        "team": r["team"],
+                        "team": team,
                         "elo": round(float(r["elo"]), 1),
-                        "region": r.get("home_region", ""),
+                        "region": region,
                         "maps_played": int(r.get("maps_played", 0)),
                         "maps_won": int(r.get("maps_won", 0)),
                         "maps_lost": int(r.get("maps_lost", 0)),
@@ -71,6 +86,8 @@ def build_elo_history():
                 event = r.get("event_id", "")
                 if not team or not event:
                     continue
+                if team in INTL_TEAMS:
+                    continue  # skip unaffiliated teams
                 try:
                     order = int(r["global_map_order"])
                     elo   = round(float(r["elo_after"]), 1)
