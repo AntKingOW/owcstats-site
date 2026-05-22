@@ -3,45 +3,103 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ELO Rankings — OWCStats</title>
+<title>ELO Rating — OWCStats</title>
 <link rel="stylesheet" href="assets/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-.layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-
-.sidebar { position: sticky; top: calc(var(--nav-h) + 16px); display: flex; flex-direction: column; gap: 16px; }
-
-.filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 8px; }
-
-.year-toggle { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-.year-toggle button {
-  flex: 1; padding: 7px 0; border: none; background: transparent; color: var(--text-dim);
-  cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s;
-  border-right: 1px solid var(--border);
+.elo-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 20px;
+  align-items: start;
 }
-.year-toggle button:last-child { border-right: none; }
-.year-toggle button.active { background: var(--accent); color: #000; }
-.year-toggle button:hover:not(.active) { background: var(--panel2); color: var(--text); }
+@media (max-width: 900px) {
+  .elo-layout { grid-template-columns: 1fr; }
+  .season-nav { position: static !important; }
+}
 
-.chart-container { height: 280px; position: relative; }
+/* Left nav */
+.season-nav {
+  position: sticky;
+  top: calc(var(--nav-h) + 16px);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.nav-section-label {
+  padding: 9px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-dim);
+  background: var(--panel2);
+  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+.nav-section-label:first-child { border-top: none; }
+.season-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 9px 14px 9px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.1s;
+  border-left: 3px solid transparent;
+  gap: 8px;
+}
+.season-nav-item:last-child { border-bottom: none; }
+.season-nav-item:hover { background: var(--panel2); color: var(--text); }
+.season-nav-item.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: rgba(245,165,36,0.07);
+  font-weight: 700;
+}
 
+/* Top3 */
+.top3-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
 .top3-card {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.15s;
 }
-.top3-card:last-child { border-bottom: none; }
-.top3-medal { font-size: 20px; width: 28px; text-align: center; }
-.top3-info .team { font-weight: 600; font-size: 14px; }
-.top3-info .details { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-.top3-elo { margin-left: auto; font-size: 18px; font-weight: 700; color: var(--accent); }
+.top3-card:hover { border-color: var(--accent); }
+.top3-card .medal { font-size: 24px; }
+.top3-card .team-name { font-weight: 700; font-size: 14px; margin-top: 4px; }
+.top3-card .team-elo { font-size: 22px; font-weight: 700; color: var(--accent); }
+.top3-card .team-detail { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
 
+/* Table */
+.elo-row { cursor: pointer; }
+.elo-row:hover td { background: var(--panel2); }
 #search-input {
   width: 100%; padding: 8px 12px; border-radius: 6px;
   border: 1px solid var(--border); background: var(--panel2);
   color: var(--text); font-size: 13px; outline: none;
 }
 #search-input:focus { border-color: var(--accent2); }
+
+/* Trend view */
+.trend-controls {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.chart-container-lg { height: 420px; position: relative; }
+.filter-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px;
+  color: var(--text-dim); margin-bottom: 8px;
+}
+.year-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 700; background: var(--panel2); color: var(--text-dim); margin: 1px;
+}
+.top-n-select {
+  padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--panel2); color: var(--text); font-size: 12px; outline: none; cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -49,81 +107,54 @@
 
 <div class="page">
   <div class="hero">
-    <h1>OWCS <span>ELO Rankings</span></h1>
+    <h1>OWCS <span>ELO Rating</span></h1>
     <p>Global team ratings based on map-by-map results. K=24, Base=1400.</p>
   </div>
 
   <div id="stat-cards" class="stat-cards"></div>
 
-  <div class="layout">
-    <!-- Left: Table -->
-    <div>
-      <div class="flex align-center gap-12 mt-16" style="margin-bottom:12px; flex-wrap:wrap;">
-        <div class="tabs" id="region-tabs"></div>
-        <input id="search-input" placeholder="팀 검색..." style="max-width:200px">
-      </div>
-      <div class="panel table-wrap">
-        <table id="elo-table">
-          <thead>
-            <tr>
-              <th data-col="rank">#</th>
-              <th data-col="team">Team</th>
-              <th data-col="region">Region</th>
-              <th data-col="elo">ELO</th>
-              <th data-col="maps_played">Maps</th>
-              <th data-col="win_pct">Win%</th>
-            </tr>
-          </thead>
-          <tbody id="elo-tbody"></tbody>
-        </table>
-      </div>
+  <div class="elo-layout">
+    <!-- Left nav -->
+    <div class="season-nav" id="season-nav">
+      <div class="nav-section-label">📊 Rankings</div>
+      <div class="season-nav-item active" data-mode="rankings" data-year="overall">Overall</div>
+      <div class="season-nav-item" data-mode="rankings" data-year="2026">2026</div>
+      <div class="season-nav-item" data-mode="rankings" data-year="2025">2025</div>
+      <div class="season-nav-item" data-mode="rankings" data-year="2024">2024</div>
+      <div class="nav-section-label">📈 ELO Trend</div>
+      <div class="season-nav-item" data-mode="trend" data-year="overall">Overall</div>
+      <div class="season-nav-item" data-mode="trend" data-year="2026">2026</div>
+      <div class="season-nav-item" data-mode="trend" data-year="2025">2025</div>
+      <div class="season-nav-item" data-mode="trend" data-year="2024">2024</div>
     </div>
 
-    <!-- Right: Sidebar -->
-    <div class="sidebar">
-      <!-- Year toggle -->
-      <div class="panel" style="padding:16px">
-        <div class="filter-label">Season</div>
-        <div class="year-toggle" id="year-toggle">
-          <button data-year="2026" class="active">2026</button>
-          <button data-year="2025">2025</button>
-          <button data-year="2024">2024</button>
-        </div>
-      </div>
-
-      <!-- Top 3 -->
-      <div class="panel" id="top3-panel">
-        <div style="padding:12px 14px 0; font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim)">Top 3</div>
-        <div id="top3-list"></div>
-      </div>
-
-      <!-- ELO trend chart -->
-      <div class="panel" style="padding:16px">
-        <div class="filter-label">ELO Trend — Top 10 Teams (2026)</div>
-        <div class="chart-container">
-          <canvas id="elo-chart"></canvas>
-        </div>
-      </div>
-    </div>
+    <!-- Main content -->
+    <div id="main-content"></div>
   </div>
 </div>
 
 <script>
-const REGION_COLORS = {
-  Korea: '#ff6b6b', NA: '#4da6ff', EMEA: '#b07dfb',
-  Japan: '#ff9f43', Pacific: '#26de81', China: '#fd9644', Unknown: '#999',
-};
-
+const PALETTE = ['#f5a524','#4da6ff','#3ddc84','#b07dfb','#ff6b6b','#ff9f43','#26de81','#fd9644','#a29bfe','#55efc4','#fab1a0','#6c5ce7','#00cec9','#e17055','#74b9ff'];
 const MEDALS = ['🥇','🥈','🥉'];
+
+const STAGE_GROUPS = {
+  '2026': [
+    { label: 'Stage 1',         events: ['owcs_2026_na_s1','owcs_2026_emea_s1','owcs_2026_asia_s1_korea','owcs_2026_asia_s1_japan','owcs_2026_asia_s1_pacific','owcs_2026_china_s1'] },
+    { label: 'S1 Playoffs',     events: ['owcs_2026_na_s1_playoffs','owcs_2026_emea_s1_playoffs','owcs_2026_asia_s1_korea_playoffs','owcs_2026_asia_s1_japan_playoffs','owcs_2026_asia_s1_pacific_playoffs','owcs_2026_china_s1_playoffs'] },
+    { label: 'Champions Clash', events: ['owcs_2026_asia_s1_main'] },
+  ],
+};
 
 let allData = {};
 let historyData = {};
-let currentYear = '2026';
+let currentMode = 'rankings';
+let currentYear = 'overall';
 let currentRegion = 'All';
 let sortCol = 'rank';
 let sortDir = 1;
 let searchQ = '';
 let chart = null;
+let topN = 10;
 
 async function loadData() {
   const [rankRes, histRes] = await Promise.all([
@@ -132,185 +163,303 @@ async function loadData() {
   ]);
   allData = await rankRes.json();
   historyData = await histRes.json();
+  render();
+}
 
-  buildRegionTabs();
+function render() {
   renderStatCards();
-  renderTop3();
-  renderTable();
-  renderChart();
+  if (currentMode === 'rankings') renderRankings();
+  else renderTrend();
 }
 
-function getRows() {
-  let rows = (allData[currentYear] || []).slice();
-  if (currentRegion !== 'All') rows = rows.filter(r => r.region === currentRegion);
-  if (searchQ) rows = rows.filter(r => r.team.toLowerCase().includes(searchQ));
-  rows.sort((a, b) => {
-    let va = a[sortCol], vb = b[sortCol];
-    if (typeof va === 'string') return sortDir * va.localeCompare(vb);
-    return sortDir * (va - vb);
-  });
-  return rows;
-}
-
-function buildRegionTabs() {
-  const regions = ['All', ...new Set(Object.values(allData).flat().map(r => r.region).filter(Boolean))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : a.localeCompare(b));
-  const container = document.getElementById('region-tabs');
-  container.innerHTML = regions.map(r =>
-    `<button class="tab-btn ${r === currentRegion ? 'active' : ''}" data-region="${r}">${r}</button>`
-  ).join('');
-  container.addEventListener('click', e => {
-    const btn = e.target.closest('.tab-btn');
-    if (!btn) return;
-    currentRegion = btn.dataset.region;
-    container.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
-    renderTable();
-    renderStatCards();
-    renderTop3();
-  });
-}
-
+/* ── STAT CARDS ── */
 function renderStatCards() {
-  const rows = allData[currentYear] || [];
+  const rows = getBaseRows();
   const filtered = currentRegion === 'All' ? rows : rows.filter(r => r.region === currentRegion);
-  if (!filtered.length) return;
+  if (!filtered.length) { document.getElementById('stat-cards').innerHTML = ''; return; }
   const elos = filtered.map(r => r.elo);
-  const avg = (elos.reduce((a,b) => a+b, 0) / elos.length).toFixed(1);
-  const top = filtered[0];
-  const winpcts = filtered.map(r => r.win_pct);
-  const avgWin = (winpcts.reduce((a,b) => a+b, 0) / winpcts.length).toFixed(1);
-
+  const avg = (elos.reduce((a,b) => a+b,0) / elos.length).toFixed(1);
+  const top = filtered.sort((a,b) => b.elo-a.elo)[0];
+  const avgWin = (filtered.map(r=>r.win_pct).reduce((a,b)=>a+b,0) / filtered.length).toFixed(1);
+  const yearLabel = currentYear === 'overall' ? 'All-Time' : 'Season ' + currentYear;
   document.getElementById('stat-cards').innerHTML = `
     <div class="stat-card"><div class="label">Teams</div><div class="value">${filtered.length}</div><div class="sub">${currentRegion === 'All' ? 'Global' : currentRegion}</div></div>
     <div class="stat-card"><div class="label">Top ELO</div><div class="value">${top.elo}</div><div class="sub">${top.team}</div></div>
-    <div class="stat-card"><div class="label">Avg ELO</div><div class="value">${avg}</div><div class="sub">Season ${currentYear}</div></div>
+    <div class="stat-card"><div class="label">Avg ELO</div><div class="value">${avg}</div><div class="sub">${yearLabel}</div></div>
     <div class="stat-card"><div class="label">Avg Win%</div><div class="value">${avgWin}%</div><div class="sub">Filtered</div></div>
   `;
 }
 
-function renderTop3() {
-  const rows = getRows().slice(0, 3);
-  document.getElementById('top3-list').innerHTML = rows.map((r, i) => `
-    <div class="top3-card">
-      <div class="top3-medal">${MEDALS[i] || (i+1)}</div>
-      <div class="top3-info">
-        <div class="team">${r.team}</div>
-        <div class="details"><span class="region-badge region-${r.region.replace(/\s+/g,'')}">${r.region}</span> · ${r.win_pct}% win</div>
-      </div>
-      <div class="top3-elo">${r.elo}</div>
-    </div>
-  `).join('');
+function getBaseRows() {
+  if (currentYear === 'overall') {
+    const teamBest = {};
+    for (const [year, rows] of Object.entries(allData)) {
+      for (const r of rows) {
+        if (!teamBest[r.team] || r.elo > teamBest[r.team].elo) {
+          teamBest[r.team] = { ...r, best_year: year };
+        }
+      }
+    }
+    return Object.values(teamBest).sort((a,b) => b.elo-a.elo).map((r,i) => ({ ...r, rank: i+1 }));
+  }
+  return (allData[currentYear] || []).slice();
 }
 
-function renderTable() {
-  const rows = getRows();
-  const tbody = document.getElementById('elo-tbody');
-  tbody.innerHTML = rows.map((r, idx) => {
-    const isTop3 = idx < 3 && currentRegion === 'All' && !searchQ;
-    return `<tr>
-      <td class="rank-num ${isTop3 ? 'top3' : ''}">${r.rank}</td>
-      <td style="font-weight:500">${r.team}</td>
-      <td><span class="region-badge region-${(r.region||'').replace(/\s+/g,'')}">${r.region}</span></td>
-      <td class="elo-num">${r.elo}</td>
-      <td>${r.maps_won}W / ${r.maps_lost}L${r.maps_drawn ? ' / '+r.maps_drawn+'D' : ''}</td>
-      <td>
-        <div class="winpct-bar">
-          <span>${r.win_pct}%</span>
-          <div class="bar"><div class="fill" style="width:${Math.min(r.win_pct,100)}%"></div></div>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
+function getFilteredRows() {
+  let rows = getBaseRows();
+  if (currentRegion !== 'All') rows = rows.filter(r => r.region === currentRegion);
+  if (searchQ) rows = rows.filter(r => r.team.toLowerCase().includes(searchQ));
+  rows.sort((a,b) => {
+    const numCols = ['rank','elo','maps_played','win_pct'];
+    if (numCols.includes(sortCol)) return sortDir * (a[sortCol] - b[sortCol]);
+    return sortDir * String(a[sortCol]).localeCompare(String(b[sortCol]));
+  });
+  return rows;
+}
 
-  // Sort indicators
-  document.querySelectorAll('#elo-table th').forEach(th => {
-    th.classList.remove('sort-asc','sort-desc');
-    if (th.dataset.col === sortCol) th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+/* ── RANKINGS VIEW ── */
+function renderRankings() {
+  const rows = getFilteredRows();
+  const regions = ['All', ...new Set(getBaseRows().map(r => r.region).filter(Boolean))].sort((a,b) => a==='All'?-1:b==='All'?1:a.localeCompare(b));
+
+  const isOverall = currentYear === 'overall';
+  const top3 = getFilteredRows().slice(0, 3);
+
+  document.getElementById('main-content').innerHTML = `
+    ${currentYear !== 'overall' ? `
+    <div class="top3-grid">
+      ${top3.map((r,i) => `
+        <div class="top3-card" onclick="goToTeam('${r.team.replace(/'/g,"\\'")}')">
+          <div class="medal">${MEDALS[i]}</div>
+          <div class="team-name">${r.team}</div>
+          <div class="team-elo">${r.elo}</div>
+          <div class="team-detail"><span class="region-badge region-${(r.region||'').replace(/\s+/g,'')}">${r.region}</span> · ${r.win_pct}% win</div>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <div class="flex align-center gap-12" style="margin-bottom:12px;flex-wrap:wrap;">
+      <div class="tabs" id="region-tabs">
+        ${regions.map(r => `<button class="tab-btn ${r===currentRegion?'active':''}" data-region="${r}">${r}</button>`).join('')}
+      </div>
+      <input id="search-input" placeholder="팀 검색..." style="max-width:200px" value="${searchQ}">
+    </div>
+
+    <div class="panel table-wrap">
+      <table id="elo-table">
+        <thead>
+          <tr>
+            <th data-col="rank">#</th>
+            <th data-col="team">Team</th>
+            <th data-col="region">Region</th>
+            <th data-col="elo">${isOverall ? 'Peak ELO' : 'ELO'}</th>
+            <th data-col="${isOverall ? 'best_year' : 'maps_played'}">${isOverall ? 'Seasons' : 'Maps'}</th>
+            <th data-col="win_pct">Win%</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r, idx) => {
+            const top3cls = idx < 3 && currentRegion === 'All' && !searchQ ? 'top3' : '';
+            if (isOverall) {
+              const years = Object.entries(allData).filter(([,yr]) => yr.some(x=>x.team===r.team)).map(([y])=>y);
+              return `<tr class="elo-row" onclick="goToTeam('${r.team.replace(/'/g,"\\'")}')">
+                <td class="rank-num ${top3cls}">${r.rank}</td>
+                <td style="font-weight:500">${r.team}</td>
+                <td><span class="region-badge region-${(r.region||'').replace(/\s+/g,'')}">${r.region}</span></td>
+                <td class="elo-num">${r.elo}</td>
+                <td>${years.map(y=>`<span class="year-badge">${y}</span>`).join('')}</td>
+                <td><div class="winpct-bar"><span>${r.win_pct}%</span><div class="bar"><div class="fill" style="width:${Math.min(r.win_pct,100)}%"></div></div></div></td>
+              </tr>`;
+            }
+            return `<tr class="elo-row" onclick="goToTeam('${r.team.replace(/'/g,"\\'")}')">
+              <td class="rank-num ${top3cls}">${r.rank}</td>
+              <td style="font-weight:500">${r.team}</td>
+              <td><span class="region-badge region-${(r.region||'').replace(/\s+/g,'')}">${r.region}</span></td>
+              <td class="elo-num">${r.elo}</td>
+              <td>${r.maps_won}W / ${r.maps_lost}L</td>
+              <td><div class="winpct-bar"><span>${r.win_pct}%</span><div class="bar"><div class="fill" style="width:${Math.min(r.win_pct,100)}%"></div></div></div></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  // sort
+  document.getElementById('elo-table').addEventListener('click', e => {
+    const th = e.target.closest('th');
+    if (!th || !th.dataset.col) return;
+    if (sortCol === th.dataset.col) sortDir *= -1;
+    else { sortCol = th.dataset.col; sortDir = 1; }
+    renderRankings();
+  });
+  // region
+  document.getElementById('region-tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    currentRegion = btn.dataset.region;
+    renderStatCards(); renderRankings();
+  });
+  // search
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQ = e.target.value.toLowerCase().trim();
+    renderRankings(); renderStatCards();
+  });
+}
+
+/* ── TREND VIEW ── */
+function renderTrend() {
+  const allRows = getBaseRows();
+  const regions = ['All', ...new Set(allRows.map(r=>r.region).filter(Boolean))].sort((a,b)=>a==='All'?-1:b==='All'?1:a.localeCompare(b));
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="panel" style="padding:20px;">
+      <div class="trend-controls">
+        <div>
+          <div class="filter-label">Region</div>
+          <div class="tabs" id="trend-region-tabs">
+            ${regions.map(r=>`<button class="tab-btn ${r===currentRegion?'active':''}" data-region="${r}">${r}</button>`).join('')}
+          </div>
+        </div>
+        <div style="margin-left:auto;">
+          <div class="filter-label">Teams Shown</div>
+          <select class="top-n-select" id="top-n-select">
+            <option value="5" ${topN===5?'selected':''}>Top 5</option>
+            <option value="10" ${topN===10?'selected':''}>Top 10</option>
+            <option value="15" ${topN===15?'selected':''}>Top 15</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-label" id="trend-label"></div>
+      <div class="chart-container-lg"><canvas id="elo-chart"></canvas></div>
+    </div>
+  `;
+
+  renderChart();
+
+  document.getElementById('trend-region-tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    currentRegion = btn.dataset.region;
+    renderStatCards(); renderChart();
+    document.querySelectorAll('#trend-region-tabs .tab-btn').forEach(b => b.classList.toggle('active', b===btn));
+  });
+  document.getElementById('top-n-select').addEventListener('change', e => {
+    topN = parseInt(e.target.value);
+    renderChart();
   });
 }
 
 function renderChart() {
-  const ctx = document.getElementById('elo-chart').getContext('2d');
+  const ctx = document.getElementById('elo-chart');
+  if (!ctx) return;
   if (chart) chart.destroy();
 
-  // Top 10 teams from 2026
-  const top10 = (allData['2026'] || []).slice(0, 10).map(r => r.team);
-  const palette = ['#f5a524','#4da6ff','#3ddc84','#b07dfb','#ff6b6b','#ff9f43','#26de81','#fd9644','#a29bfe','#55efc4'];
+  let baseRows = getBaseRows();
+  if (currentRegion !== 'All') baseRows = baseRows.filter(r => r.region === currentRegion);
 
-  const datasets = top10.map((team, i) => {
-    const series = (historyData[team] || []);
-    return {
-      label: team,
-      data: series.map(p => ({ x: p.order, y: p.elo })),
-      borderColor: palette[i % palette.length],
-      backgroundColor: 'transparent',
-      borderWidth: 1.5,
-      pointRadius: 0,
-      tension: 0.3,
-    };
-  });
+  if (currentYear === 'overall') {
+    renderOverallChart(ctx, baseRows);
+  } else {
+    renderYearChart(ctx, currentYear, baseRows);
+  }
+}
 
-  chart = new Chart(ctx, {
+function renderOverallChart(ctx, baseRows) {
+  document.getElementById('trend-label').textContent = 'ELO Rating — Season Progression (Multi-Year Teams, event-end values)';
+  const years = ['2024','2025','2026'];
+
+  // Teams that appear in 2+ years from filtered set
+  const multiTeams = baseRows
+    .filter(r => {
+      const cnt = years.filter(y => (allData[y]||[]).some(x=>x.team===r.team)).length;
+      return cnt >= 2;
+    })
+    .sort((a,b) => b.elo - a.elo)
+    .slice(0, topN)
+    .map(r => r.team);
+
+  const datasets = multiTeams.map((team, i) => ({
+    label: team,
+    data: years.map(y => { const row = (allData[y]||[]).find(r=>r.team===team); return row ? row.elo : null; }),
+    borderColor: PALETTE[i % PALETTE.length],
+    backgroundColor: PALETTE[i % PALETTE.length] + '33',
+    borderWidth: 2, pointRadius: 5, pointHoverRadius: 7, tension: 0.3, spanGaps: true,
+  }));
+
+  chart = new Chart(ctx.getContext('2d'), {
     type: 'line',
-    data: { datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom',
-          labels: { color: '#7a9bb5', font: { size: 10 }, boxWidth: 12, padding: 8 }
-        },
-        tooltip: {
-          mode: 'index', intersect: false,
-          callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}` }
-        }
-      },
-      scales: {
-        x: {
-          type: 'linear',
-          title: { display: false },
-          ticks: { color: '#7a9bb5', font: { size: 10 } },
-          grid: { color: '#1a3a5c' }
-        },
-        y: {
-          ticks: { color: '#7a9bb5', font: { size: 10 } },
-          grid: { color: '#1a3a5c' }
-        }
-      }
-    }
+    data: { labels: years, datasets },
+    options: chartOptions('index'),
   });
 }
 
-// Sort on header click
-document.getElementById('elo-table').addEventListener('click', e => {
-  const th = e.target.closest('th');
-  if (!th || !th.dataset.col) return;
-  if (sortCol === th.dataset.col) sortDir *= -1;
-  else { sortCol = th.dataset.col; sortDir = 1; }
-  renderTable();
-});
+function renderYearChart(ctx, year, baseRows) {
+  const stages = STAGE_GROUPS[year];
+  if (!stages) {
+    document.getElementById('trend-label').textContent = `${year} — ELO history data not available`;
+    chart = new Chart(ctx.getContext('2d'), { type: 'line', data: { labels: [], datasets: [] }, options: { responsive: true, maintainAspectRatio: false } });
+    return;
+  }
+  document.getElementById('trend-label').textContent = `ELO Rating Trend — ${year} (by stage, Start=1400)`;
 
-// Year toggle
-document.getElementById('year-toggle').addEventListener('click', e => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  currentYear = btn.dataset.year;
-  document.querySelectorAll('#year-toggle button').forEach(b => b.classList.toggle('active', b === btn));
+  const top = baseRows.slice(0, topN).map(r => r.team);
+  const stageLabels = ['Start', ...stages.map(s => s.label)];
+
+  const datasets = top.map((team, i) => {
+    const history = historyData[team] || [];
+    const eventElo = {};
+    for (const pt of history) eventElo[pt.event] = pt.elo;
+    const stageElos = stages.map(stage => {
+      let elo = null;
+      for (const ev of stage.events) if (eventElo[ev] !== undefined) elo = eventElo[ev];
+      return elo;
+    });
+    return {
+      label: team,
+      data: [1400, ...stageElos],
+      borderColor: PALETTE[i % PALETTE.length],
+      backgroundColor: 'transparent',
+      borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true,
+    };
+  });
+
+  chart = new Chart(ctx.getContext('2d'), {
+    type: 'line',
+    data: { labels: stageLabels, datasets },
+    options: chartOptions('index'),
+  });
+}
+
+function chartOptions(tooltipMode) {
+  return {
+    responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { color: '#7a9bb5', font: { size: 10 }, boxWidth: 12, padding: 8 } },
+      tooltip: { mode: tooltipMode, intersect: false, callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y ?? 'N/A'}` } }
+    },
+    scales: {
+      x: { ticks: { color: '#7a9bb5', font: { size: 11 } }, grid: { color: '#1a3a5c' } },
+      y: { ticks: { color: '#7a9bb5', font: { size: 10 } }, grid: { color: '#1a3a5c' } }
+    }
+  };
+}
+
+function goToTeam(teamName) {
+  window.location.href = `teams.html?team=${encodeURIComponent(teamName)}`;
+}
+
+// Nav clicks
+document.getElementById('season-nav').addEventListener('click', e => {
+  const item = e.target.closest('.season-nav-item');
+  if (!item) return;
+  currentMode = item.dataset.mode;
+  currentYear = item.dataset.year;
   currentRegion = 'All';
-  document.querySelectorAll('#region-tabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.region === 'All'));
-  sortCol = 'rank'; sortDir = 1;
-  renderStatCards();
-  renderTop3();
-  renderTable();
-});
-
-// Search
-document.getElementById('search-input').addEventListener('input', e => {
-  searchQ = e.target.value.toLowerCase().trim();
-  renderTable();
-  renderTop3();
+  sortCol = 'rank'; sortDir = 1; searchQ = '';
+  document.querySelectorAll('.season-nav-item').forEach(el => el.classList.toggle('active', el === item));
+  render();
 });
 
 loadData();

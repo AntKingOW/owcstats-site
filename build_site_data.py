@@ -47,47 +47,71 @@ def build_elo_rankings():
     out.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
     print(f"  -> {out.name}")
 
-# ── ELO history (top N teams, 2026) ──────────────────────────────────────────
+# ── ELO history (all teams, 2024+2025+2026 combined) ─────────────────────────
 
 def build_elo_history():
-    path = ELO_DIR / "OWCS_2026_GLOBAL_ELO_HISTORY.csv"
-    if not path.exists():
-        print("  [skip] ELO history not found")
-        return
+    """
+    Combined ELO history across all three seasons.
+    Per team: one entry per event they played in, with their end-of-event ELO.
+    Events are sorted by first global occurrence (chronological order).
+    """
+    # team -> event_id -> { max_order, elo, year, result }
+    team_events = defaultdict(dict)
+    # event_id -> (year, min_global_order) — used to sort events chronologically
+    event_first = {}
 
-    # Load 2026 final to get top 15 teams
-    final_path = ELO_DIR / "OWCS_2026_GLOBAL_ELO_FINAL.csv"
-    top_teams = set()
-    if final_path.exists():
-        with open(final_path, encoding="utf-8") as f:
-            for i, r in enumerate(csv.DictReader(f)):
-                if i < 15:
-                    top_teams.add(r["team"])
+    for year in [2024, 2025, 2026]:
+        path = ELO_DIR / f"OWCS_{year}_GLOBAL_ELO_HISTORY.csv"
+        if not path.exists():
+            print(f"  [skip] OWCS_{year}_GLOBAL_ELO_HISTORY.csv")
+            continue
+        with open(path, encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                team  = r.get("team", "")
+                event = r.get("event_id", "")
+                if not team or not event:
+                    continue
+                try:
+                    order = int(r["global_map_order"])
+                    elo   = round(float(r["elo_after"]), 1)
+                except Exception:
+                    continue
+                result = r.get("result", "")
 
-    # Build time-series per team
-    team_series = defaultdict(list)
-    with open(path, encoding="utf-8") as f:
-        for r in csv.DictReader(f):
-            team = r.get("team", "")
-            if team not in top_teams:
-                continue
-            try:
-                team_series[team].append({
-                    "order": int(r.get("global_map_order", 0)),
-                    "event": r.get("event_id", ""),
-                    "elo": round(float(r["elo_after"]), 1),
-                    "result": r.get("result", ""),
-                })
-            except:
-                pass
+                # Track earliest occurrence of this event (for global sort)
+                if event not in event_first:
+                    event_first[event] = (year, order)
+                else:
+                    py, po = event_first[event]
+                    if year < py or (year == py and order < po):
+                        event_first[event] = (year, order)
 
-    # Sort each series by order
-    for team in team_series:
-        team_series[team].sort(key=lambda x: x["order"])
+                # Per team: keep the LAST (highest-order) entry per event
+                cur = team_events[team].get(event)
+                if cur is None or order > cur["max_order"]:
+                    team_events[team][event] = {
+                        "max_order": order,
+                        "elo": elo,
+                        "year": str(year),
+                        "result": result,
+                    }
+
+    # Sort all events chronologically
+    event_order = {e: i for i, e in enumerate(
+        sorted(event_first, key=lambda e: event_first[e])
+    )}
+
+    result = {}
+    for team, ev_dict in team_events.items():
+        sorted_evs = sorted(ev_dict.items(), key=lambda x: event_order.get(x[0], 9999))
+        result[team] = [
+            {"event": ev, "elo": d["elo"], "year": d["year"], "result": d["result"]}
+            for ev, d in sorted_evs
+        ]
 
     out = DATA_OUT / "elo_history.json"
-    out.write_text(json.dumps(dict(team_series), ensure_ascii=False), encoding="utf-8")
-    print(f"  -> {out.name} ({len(team_series)} teams)")
+    out.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
+    print(f"  -> {out.name} ({len(result)} teams across 2024–2026)")
 
 # ── Korea player stats from CSV ───────────────────────────────────────────────
 

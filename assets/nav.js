@@ -3,7 +3,8 @@
   const pages = [
     { href: 'index.html', label: 'Home' },
     { href: 'clash.html', label: '🌏 Champion Clash', special: true },
-    { href: 'elo.html',   label: 'ELO Rankings' },
+    { href: 'elo.html',   label: 'ELO Rating' },
+    { href: 'teams.html', label: 'Teams' },
     { href: 'players.html', label: 'Player Stats' },
     { href: 'ban-calculator.html', label: 'Ban Calculator' },
   ];
