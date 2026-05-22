@@ -43,7 +43,9 @@
   display: flex; align-items: center; gap: 8px;
   padding: 6px 8px; border-radius: 6px; font-size: 11px;
   border: 1px solid var(--border); background: var(--panel);
+  cursor: pointer; transition: border-color 0.1s;
 }
+.sidebar-team:hover { border-color: var(--accent2); }
 .sidebar-team img { width: 20px; height: 20px; border-radius: 50%; object-fit: contain; background: #122033; }
 .sidebar-team .name { font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sidebar-team .elo { font-size: 10px; font-weight: 700; color: var(--accent); }
@@ -69,6 +71,7 @@
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   transition: border-color 0.15s, transform 0.1s;
 }
+.team-card { cursor: pointer; }
 .team-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
 .team-logo-lg { width: 52px; height: 52px; object-fit: contain; border-radius: 50%; background: #122033; }
 .team-name { font-size: 12px; font-weight: 700; text-align: center; line-height: 1.3; }
@@ -381,6 +384,7 @@ const MAP_MODES = ["All","Control","Escort","Hybrid","Flashpoint","Push"];
 const LOGO_BASE = "ban-calc/assets/teams/";
 const HERO_BASE = "ban-calc/assets/heroes/";
 function logoUrl(t) { return `${LOGO_BASE}${t.slug}.${t.ext}`; }
+function goToTeam(name) { window.location.href = `teams.html?team=${encodeURIComponent(name)}`; }
 function heroSlug(h){ return h.toLowerCase().replace(/['.]/g,'-').replace(/[^a-z0-9-]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
 
 // ── State ──────────────────────────────────────────────────────────────────
@@ -420,7 +424,7 @@ function buildSidebarTeams() {
   document.getElementById('sidebar-teams').innerHTML = CLASH_TEAMS.map(t=>{
     const e=eloMap[t.name]||{};
     const rc=REGION_COLORS[t.region]||'#aaa';
-    return `<div class="sidebar-team">
+    return `<div class="sidebar-team" onclick="goToTeam('${t.name.replace(/'/g,"\\'")}')">
       <img src="${logoUrl(t)}" alt="" onerror="this.style.opacity=0.3">
       <span class="name">${t.name}</span>
       <span class="elo" style="color:${rc}">${e.elo||'—'}</span>
@@ -434,7 +438,7 @@ function buildTeamGrid() {
   document.getElementById('team-grid').innerHTML = CLASH_TEAMS.map(t=>{
     const e=eloMap[t.name]||{};
     const rc=REGION_COLORS[t.region]||'#aaa';
-    return `<div class="team-card">
+    return `<div class="team-card" onclick="goToTeam('${t.name.replace(/'/g,"\\'")}')">
       <img class="team-logo-lg" src="${logoUrl(t)}" alt="${t.name}" onerror="this.style.opacity=0.3">
       <div class="team-name">${t.name}</div>
       <div class="region-badge" style="border-color:${rc};color:${rc}">${t.region}</div>
@@ -452,7 +456,7 @@ function buildEloOverview() {
       const info=CLASH_TEAMS.find(x=>x.name===t.team)||{slug:'',ext:'png'};
       const rc=REGION_COLORS[t.region]||'#aaa';
       const barW=Math.round(t.elo/maxElo*100);
-      return `<tr>
+      return `<tr style="cursor:pointer" onclick="goToTeam('${t.team.replace(/'/g,"\\'")}')">
         <td class="elo-rank">#${t.rank}</td>
         <td><img class="elo-logo" src="${logoUrl(info)}" alt="" onerror="this.style.opacity=0"></td>
         <td class="elo-name">${t.team}</td>
@@ -471,7 +475,7 @@ function buildEloDetail() {
     const info=CLASH_TEAMS.find(x=>x.name===t.team)||{slug:'',ext:'png'};
     const rc=REGION_COLORS[t.region]||'#aaa';
     const barW=Math.round(t.elo/maxElo*100);
-    return `<tr>
+    return `<tr style="cursor:pointer" onclick="goToTeam('${t.team.replace(/'/g,"\\'")}')">
       <td class="elo-rank">#${t.rank}</td>
       <td><img class="elo-logo" src="${logoUrl(info)}" alt="" onerror="this.style.opacity=0"></td>
       <td class="elo-name">${t.team}</td>
