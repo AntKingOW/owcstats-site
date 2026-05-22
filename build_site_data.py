@@ -19,10 +19,11 @@ STATS_DIR = BASE / "OWCStats" / "OWCStats"
 # Teams with no proper regional affiliation (international/misc) — exclude entirely
 INTL_TEAMS = {"LGD.OA", "Sign Esports", "ZoKorp Esports"}
 
-# Teams whose home_region in the CSV is wrong — override with the correct region
-REGION_OVERRIDES = {
-    "Spacestation Gaming": "NA",   # always NA; 2024 CSV had them as EMEA by mistake
-    "VEC": "Japan",                # always Japan; 2024 CSV had them as Korea by mistake
+# Canonical team names: CSV files use inconsistent capitalisation across seasons.
+# Map every variant → single canonical name so ELO history stays continuous.
+TEAM_NAME_ALIASES = {
+    "ONSIDE GAMING": "Onside Gaming",   # 2025 CSV spelling
+    "ONSIDE Gaming": "Onside Gaming",   # 2026 CSV spelling
 }
 
 # ── ELO rankings (2024/2025/2026) ────────────────────────────────────────────
@@ -38,10 +39,10 @@ def build_elo_rankings():
         with open(path, encoding="utf-8") as f:
             for r in csv.DictReader(f):
                 try:
-                    team = r["team"]
+                    team = TEAM_NAME_ALIASES.get(r["team"], r["team"])
                     if team in INTL_TEAMS:
                         continue  # skip unaffiliated teams
-                    region = REGION_OVERRIDES.get(team, r.get("home_region", ""))
+                    region = r.get("home_region", "")
                     rows.append({
                         "rank": int(r.get("rank", 0)),
                         "team": team,
@@ -82,7 +83,7 @@ def build_elo_history():
             continue
         with open(path, encoding="utf-8") as f:
             for r in csv.DictReader(f):
-                team  = r.get("team", "")
+                team  = TEAM_NAME_ALIASES.get(r.get("team", ""), r.get("team", ""))
                 event = r.get("event_id", "")
                 if not team or not event:
                     continue
