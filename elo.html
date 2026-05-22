@@ -425,7 +425,7 @@ function renderYearChart(ctx, year, baseRows) {
     chart = new Chart(ctx.getContext('2d'), { type: 'line', data: { labels: [], datasets: [] }, options: { responsive: true, maintainAspectRatio: false } });
     return;
   }
-  document.getElementById('trend-label').textContent = `ELO Rating Trend — ${year} (by stage, Start=1400)`;
+  document.getElementById('trend-label').textContent = `ELO Rating Trend — ${year} (by stage, carries over from previous seasons)`;
 
   const top = baseRows.slice(0, topN).map(r => r.team);
   const stageLabels = ['Start', ...stages.map(s => s.label)];
@@ -434,6 +434,11 @@ function renderYearChart(ctx, year, baseRows) {
     const history = historyData[team] || [];
     const eventElo = {};
     for (const pt of history) eventElo[pt.event] = pt.elo;
+
+    // Use actual carry-over ELO from end of previous year (not hardcoded 1400)
+    const prevEvents = history.filter(pt => parseInt(pt.year) < parseInt(year));
+    const startElo = prevEvents.length > 0 ? prevEvents[prevEvents.length - 1].elo : 1400;
+
     const stageElos = stages.map(stage => {
       let elo = null;
       for (const ev of stage.events) if (eventElo[ev] !== undefined) elo = eventElo[ev];
@@ -441,7 +446,7 @@ function renderYearChart(ctx, year, baseRows) {
     });
     return {
       label: team,
-      data: [1400, ...stageElos],
+      data: [startElo, ...stageElos],
       borderColor: PALETTE[i % PALETTE.length],
       backgroundColor: 'transparent',
       borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true,
