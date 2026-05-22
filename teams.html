@@ -619,8 +619,9 @@ function renderTrendChart(history, teamName) {
   if (!ctx) return;
   if (trendChart) trendChart.destroy();
 
-  // Group individual events into STAGE_GROUPS — only include stages the team played in.
-  // Within each stage, use the last (highest-order) event ELO.
+  // Show ALL stages on x-axis. Stages the team participated in get a dot;
+  // stages they skipped get a forward-filled flat line with NO dot —
+  // making it visually obvious which tournaments they didn't attend.
   const allStages = [
     ...STAGE_GROUPS['2024'],
     ...STAGE_GROUPS['2025'],
@@ -629,21 +630,40 @@ function renderTrendChart(history, teamName) {
   const eventElo  = {}, eventYear = {};
   for (const pt of history) { eventElo[pt.event] = pt.elo; eventYear[pt.event] = pt.year; }
 
-  const stageData = [];
-  for (const stage of allStages) {
+  // Build raw stage values (null = not participated)
+  const raw = allStages.map(stage => {
     let elo = null, year = null;
     for (const ev of stage.events) {
       if (eventElo[ev] !== undefined) { elo = eventElo[ev]; year = eventYear[ev]; }
     }
-    if (elo !== null) stageData.push({ label: stage.label, elo, year });
+    return { label: stage.label, elo, year };
+  });
+
+  if (raw.every(d => d.elo === null)) return;
+
+  // Forward-fill nulls: flat horizontal line for skipped stages, no dot
+  const yearColors  = { '2024': '#4da6ff', '2025': '#3ddc84', '2026': '#f5a524' };
+  const labels      = raw.map(d => d.label);
+  const filledData  = [], isReal = [], pointColors = [];
+  let lastElo = null, lastYear = null;
+
+  for (const d of raw) {
+    if (d.elo !== null) {
+      filledData.push(d.elo);  isReal.push(true);
+      pointColors.push(yearColors[d.year] || '#f5a524');
+      lastElo = d.elo;  lastYear = d.year;
+    } else if (lastElo !== null) {
+      filledData.push(lastElo); isReal.push(false);
+      pointColors.push(yearColors[lastYear] || '#7a9bb5');
+    } else {
+      filledData.push(null);    isReal.push(false);
+      pointColors.push('#7a9bb5');
+    }
   }
 
-  if (stageData.length === 0) return;
-
-  const yearColors = { '2024': '#4da6ff', '2025': '#3ddc84', '2026': '#f5a524' };
-  const labels      = stageData.map(d => d.label);
-  const data        = stageData.map(d => d.elo);
-  const pointColors = stageData.map(d => yearColors[d.year] || '#f5a524');
+  // Tooltip: only show meaningful info for real participation stages
+  const realStageMap = {};
+  for (const d of raw) if (d.elo !== null) realStageMap[d.label] = d;
 
   trendChart = new Chart(ctx.getContext('2d'), {
     type: 'line',
@@ -651,16 +671,17 @@ function renderTrendChart(history, teamName) {
       labels,
       datasets: [{
         label: teamName,
-        data,
+        data: filledData,
         borderColor: '#f5a524',
-        backgroundColor: 'rgba(245,165,36,0.08)',
+        backgroundColor: 'rgba(245,165,36,0.06)',
         fill: true,
         borderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 7,
+        pointRadius: isReal.map(r => r ? 5 : 0),
+        pointHoverRadius: isReal.map(r => r ? 7 : 3),
         pointBackgroundColor: pointColors,
         pointBorderColor: pointColors,
         tension: 0,
+        spanGaps: true,
       }]
     },
     options: {
@@ -669,10 +690,12 @@ function renderTrendChart(history, teamName) {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            title: items => eventLabel(history[items[0].dataIndex].event),
+            title: items => labels[items[0].dataIndex],
             label: item => {
-              const pt = history[item.dataIndex];
-              return [`ELO: ${pt.elo}`, `Year: ${pt.year}`, `Result: ${pt.result}`];
+              const idx = item.dataIndex;
+              if (!isReal[idx]) return '미출전 (ELO 유지)';
+              const d = raw[idx];
+              return [`ELO: ${d.elo}`, `Year: ${d.year}`];
             }
           }
         }
