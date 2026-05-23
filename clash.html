@@ -715,8 +715,11 @@ function renderScatter() {
   if(!players.length){svg.innerHTML='';return;}
 
   const xs=players.map(p=>p[xKey]), ys=players.map(p=>p[yKey]);
-  const xMin=Math.min(...xs)*0.9, xMax=Math.max(...xs)*1.05;
-  const yMin=Math.min(...ys)*0.9, yMax=Math.max(...ys)*1.05;
+  const xSpan=Math.max(Math.max(...xs)-Math.min(...xs),0.001);
+  const ySpan=Math.max(Math.max(...ys)-Math.min(...ys),0.001);
+  const M=0.14;
+  const xMin=Math.min(...xs)-xSpan*M, xMax=Math.max(...xs)+xSpan*M;
+  const yMin=Math.min(...ys)-ySpan*M, yMax=Math.max(...ys)+ySpan*M;
   const scX=v=>PAD.left+(v-xMin)/(xMax-xMin)*(W-PAD.left-PAD.right);
   const scY=v=>H-PAD.bottom-(v-yMin)/(yMax-yMin)*(H-PAD.top-PAD.bottom);
   const R=LOGO_SIZE/2;
@@ -747,10 +750,16 @@ function renderScatter() {
     out+=`<image href="${logoUrl(ti)}" x="${-R}" y="${-R}" width="${LOGO_SIZE}" height="${LOGO_SIZE}"
       transform="translate(${cx},${cy})" clip-path="url(#lc${i})"
       class="dot" data-i="${i}" preserveAspectRatio="xMidYMid meet"/>`;
-    const label=p.player.length>12?p.player.slice(0,11)+'…':p.player;
-    out+=`<text x="${cx}" y="${cy+R+11}" text-anchor="middle" fill="${color}" font-size="8.5" pointer-events="none" style="text-shadow:0 0 4px #08141f,0 0 4px #08141f">${label}</text>`;
   });
   out+='</g>';
+  players.forEach((p,i)=>{
+    const cx=scX(p[xKey]), cy=scY(p[yKey]);
+    const color=ROLE_COLORS[p.role]||'#aaa';
+    const label=p.player.length>12?p.player.slice(0,11)+'…':p.player;
+    const lx=Math.max(PAD.left+18,Math.min(W-PAD.right-18,cx));
+    const ly=cy+R+11>H-PAD.bottom+2?cy-R-4:cy+R+11;
+    out+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${color}" font-size="8.5" pointer-events="none" style="text-shadow:0 0 4px #08141f,0 0 4px #08141f">${label}</text>`;
+  });
 
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
   svg.innerHTML=out;
