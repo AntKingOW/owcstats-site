@@ -269,6 +269,15 @@ svg#clash-scatter { width: 100%; height: 100%; display: block; }
           </table>
         </div>
         <div style="margin-top:20px">
+          <div class="sec-header">ELO Trend · Tournament Progression</div>
+          <div id="elo-trend-wrap" class="panel" style="padding:16px;position:relative">
+            <svg id="elo-trend-svg" style="width:100%;height:340px;display:block;overflow:visible"></svg>
+            <div id="trend-tooltip" style="position:absolute;pointer-events:none;display:none;
+              background:rgba(8,20,31,0.96);border:1px solid var(--border);border-radius:8px;
+              padding:8px 12px;font-size:12px;white-space:nowrap;z-index:50;backdrop-filter:blur(4px)"></div>
+          </div>
+        </div>
+        <div style="margin-top:20px">
           <div class="sec-header">ELO Bar Chart</div>
           <div id="elo-chart-wrap" class="panel" style="padding:16px"></div>
         </div>
@@ -388,8 +397,20 @@ function logoUrl(t) { return `${LOGO_BASE}${t.slug}.${t.ext}`; }
 function goToTeam(name) { window.location.href = `teams.html?team=${encodeURIComponent(name)}`; }
 function heroSlug(h){ return h.toLowerCase().replace(/['.]/g,'-').replace(/[^a-z0-9-]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
 
+// ── Team colors for trend chart ────────────────────────────────────────────
+const TEAM_COLORS = {
+  'Crazy Raccoon':       '#f5a524',
+  'ZETA DIVISION':       '#4da6ff',
+  'Twisted Minds':       '#ff6b6b',
+  'Virtus.pro':          '#a78bfa',
+  'Dallas Fuel':         '#3ddc84',
+  'Weibo Gaming':        '#fb923c',
+  'Spacestation Gaming': '#94a3b8',
+  'All Gamers':          '#64748b',
+};
+
 // ── State ──────────────────────────────────────────────────────────────────
-let eloData=[], playerData=[], banData=[];
+let eloData=[], playerData=[], banData=[], historyData={};
 let currentSection='overview';
 let currentRole='All', currentMetric='dmg_per10';
 let currentPlayerView='scatter';
@@ -400,14 +421,16 @@ const CLASH_NAMES = new Set(CLASH_TEAMS.map(t=>t.name));
 
 // ── Init ───────────────────────────────────────────────────────────────────
 async function init() {
-  const [eloRes, playerRes, banRes] = await Promise.all([
+  const [eloRes, playerRes, banRes, histRes] = await Promise.all([
     fetch('assets/data/elo_rankings.json'),
     fetch('assets/data/clash_player_stats.json'),
     fetch('assets/data/ban_summary.json'),
+    fetch('assets/data/elo_history.json'),
   ]);
-  eloData    = ((await eloRes.json())['2026'] || []).filter(t=>CLASH_NAMES.has(t.team)).sort((a,b)=>b.elo-a.elo);
-  playerData = await playerRes.json();
-  banData    = (await banRes.json()).filter(b=>CLASH_NAMES.has(b.team));
+  eloData     = ((await eloRes.json())['2026'] || []).filter(t=>CLASH_NAMES.has(t.team)).sort((a,b)=>b.elo-a.elo);
+  playerData  = await playerRes.json();
+  banData     = (await banRes.json()).filter(b=>CLASH_NAMES.has(b.team));
+  historyData = await histRes.json();
 
   buildSidebarTeams();
   buildTeamGrid();
@@ -505,6 +528,107 @@ function buildEloDetail() {
       <span style="width:50px;text-align:right;font-weight:700;color:var(--accent);font-size:13px">${t.elo}</span>
     </div>`;
   }).join('');
+}
+
+// ── ELO Trend Line Chart ───────────────────────────────────────────────────
+function buildEloTrendChart() {
+  const svg  = document.getElementById('elo-trend-svg');
+  const wrap = document.getElementById('elo-trend-wrap');
+  if (!svg || !wrap) return;
+  const W = wrap.clientWidth - 32 || 720;
+  const H = 340;
+  const PAD = { top:28, right:148, bottom:44, left:60 };
+  const iW  = W - PAD.left - PAD.right;
+  const iH  = H - PAD.top  - PAD.bottom;
+
+  // Build per-team point series from historyData
+  const CLASH_EVENT = 'owcs_2026_champions_clash';
+  const series = [];
+  for (const team of CLASH_TEAMS) {
+    const entries = historyData[team.name] || [];
+    const preList  = entries.filter(e => e.event !== CLASH_EVENT);
+    const clashList= entries.filter(e => e.event === CLASH_EVENT);
+    const preElo   = preList.length ? preList[preList.length - 1].elo : null;
+    if (!preElo && !clashList.length) continue;
+
+    const pts = [];
+    if (preElo !== null) pts.push({ label: 'S1',    elo: preElo, xi: 0 });
+    clashList.forEach((e, i) => pts.push({ label: `Day ${i+1}`, elo: e.elo, xi: i+1 }));
+    series.push({ name: team.name, color: TEAM_COLORS[team.name] || '#aaa', pts });
+  }
+
+  const maxXi = Math.max(...series.map(s => s.pts[s.pts.length - 1]?.xi ?? 0));
+  const xLabels = ['S1','Day 1','Day 2','Day 3','Day 4'].slice(0, maxXi + 1);
+  const allElos = series.flatMap(s => s.pts.map(p => p.elo));
+  const rawMin  = Math.min(...allElos), rawMax = Math.max(...allElos);
+  const yMin    = Math.floor((rawMin - 30) / 50) * 50;
+  const yMax    = Math.ceil( (rawMax + 30) / 50) * 50;
+
+  const scX = xi  => PAD.left + (maxXi > 0 ? xi / maxXi : 0) * iW;
+  const scY = elo => PAD.top  + (1 - (elo - yMin) / (yMax - yMin)) * iH;
+
+  let out = '';
+
+  // Grid
+  const ySteps = Math.round((yMax - yMin) / 50);
+  for (let i = 0; i <= ySteps; i++) {
+    const elo = yMin + i * 50, y = scY(elo);
+    out += `<line x1="${PAD.left}" y1="${y}" x2="${W - PAD.right}" y2="${y}" stroke="#1a3a5c" stroke-width="1"/>`;
+    out += `<text x="${PAD.left - 7}" y="${y + 4}" text-anchor="end" fill="#7a9bb5" font-size="10">${elo}</text>`;
+  }
+  for (let i = 0; i <= maxXi; i++) {
+    const x = scX(i);
+    out += `<line x1="${x}" y1="${PAD.top}" x2="${x}" y2="${H - PAD.bottom}" stroke="#1a3a5c" stroke-width="1" stroke-dasharray="4,3"/>`;
+    out += `<text x="${x}" y="${H - PAD.bottom + 16}" text-anchor="middle" fill="#7a9bb5" font-size="11" font-weight="600">${xLabels[i] || ''}</text>`;
+  }
+
+  // Sort so eliminated (short) lines draw first (below active teams)
+  const sorted = [...series].sort((a,b) => a.pts.length - b.pts.length);
+
+  for (const s of sorted) {
+    const active  = s.pts[s.pts.length-1]?.xi === maxXi;
+    const opacity = active ? 1 : 0.55;
+    const sw      = active ? 2.5 : 1.5;
+    const dash    = active ? '' : 'stroke-dasharray="6,4"';
+
+    // Line
+    const poly = s.pts.map(p => `${scX(p.xi).toFixed(1)},${scY(p.elo).toFixed(1)}`).join(' ');
+    out += `<polyline points="${poly}" fill="none" stroke="${s.color}" stroke-width="${sw}" stroke-opacity="${opacity}" stroke-linejoin="round" ${dash}/>`;
+
+    // Dots
+    s.pts.forEach(p => {
+      out += `<circle cx="${scX(p.xi).toFixed(1)}" cy="${scY(p.elo).toFixed(1)}" r="${active?5:4}"
+        fill="${s.color}" fill-opacity="${opacity}" stroke="#08141f" stroke-width="1.5"
+        class="trend-dot" data-team="${s.name}" data-elo="${p.elo}" data-label="${p.label}" style="cursor:default"/>`;
+    });
+
+    // Label at last point
+    const last = s.pts[s.pts.length - 1];
+    const lx   = scX(last.xi) + 9, ly = scY(last.elo) + 4;
+    const short= s.name.length > 16 ? s.name.slice(0, 15) + '…' : s.name;
+    out += `<text x="${lx}" y="${ly}" fill="${s.color}" font-size="${active?10.5:9.5}" font-weight="700" fill-opacity="${opacity}">${short}</text>`;
+  }
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = out;
+
+  // Tooltip
+  const tip = document.getElementById('trend-tooltip');
+  svg.querySelectorAll('.trend-dot').forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const color = TEAM_COLORS[dot.dataset.team] || '#aaa';
+      tip.innerHTML = `<div style="font-weight:700;color:${color};margin-bottom:2px">${dot.dataset.team}</div>
+        <div style="color:var(--text-dim);font-size:11px">${dot.dataset.label}</div>
+        <div style="font-size:18px;font-weight:800;color:var(--accent)">${dot.dataset.elo}</div>`;
+      tip.style.display = 'block';
+      const wr = wrap.getBoundingClientRect(), er = dot.getBoundingClientRect();
+      let left = er.left - wr.left + 14, top = er.top - wr.top - 60;
+      if (left + 140 > wrap.clientWidth - 16) left = er.left - wr.left - 145;
+      tip.style.left = Math.max(4, left) + 'px';
+      tip.style.top  = Math.max(4, top)  + 'px';
+    });
+    dot.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  });
 }
 
 // ── Ban grid ───────────────────────────────────────────────────────────────
@@ -701,6 +825,7 @@ function showSection(name) {
     b.classList.toggle('active',b.dataset.section===name);
   });
   if(name==='players'){renderScatter();renderLegend();}
+  if(name==='elo'){buildEloTrendChart();}
 }
 
 // ── Events ─────────────────────────────────────────────────────────────────
@@ -744,6 +869,7 @@ function bindEvents() {
     });
   });
   new ResizeObserver(()=>{ if(currentSection==='players') renderScatter(); }).observe(document.getElementById('scatter-wrap'));
+  new ResizeObserver(()=>{ if(currentSection==='elo') buildEloTrendChart(); }).observe(document.getElementById('elo-trend-wrap'));
 }
 
 init();
