@@ -553,7 +553,7 @@ function buildEloTrendChart() {
 
     const pts = [];
     if (preElo !== null) pts.push({ label: 'S1',    elo: preElo, xi: 0 });
-    clashList.forEach((e, i) => pts.push({ label: `Day ${i+1}`, elo: e.elo, xi: i+1 }));
+    clashList.forEach((e, i) => pts.push({ label: `Day ${i+1}`, elo: e.elo, xi: i+1, eliminated: !!e.eliminated }));
     series.push({ name: team.name, color: TEAM_COLORS[team.name] || '#aaa', pts });
   }
 
@@ -586,7 +586,7 @@ function buildEloTrendChart() {
   const sorted = [...series].sort((a,b) => a.pts.length - b.pts.length);
 
   for (const s of sorted) {
-    const active  = s.pts[s.pts.length-1]?.xi === maxXi;
+    const active  = !s.pts[s.pts.length-1]?.eliminated;
     const opacity = active ? 1 : 0.55;
     const sw      = active ? 2.5 : 1.5;
     const dash    = active ? '' : 'stroke-dasharray="6,4"';
