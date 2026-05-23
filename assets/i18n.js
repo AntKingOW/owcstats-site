@@ -1,9 +1,19 @@
 /**
  * OWCStats i18n — EN (default) / KO toggle
- * Usage:  t('key')            → translated string
- *         t('key',{x:'val'}) → with {x} placeholder substitution
- *         applyI18n()         → update all data-i18n / data-i18n-ph elements
- *         toggleLang()        → flip EN↔KO, persist to localStorage, dispatch 'langchange'
+ *
+ * Language priority (highest → lowest):
+ *   1. User's manual toggle  → localStorage 'owcstats-lang-manual' flag set
+ *   2. IP geo-detect result  → cached 24 h in localStorage
+ *   3. 'en' fallback
+ *
+ * API: ipapi.co/country_code/ — free, 1000 req/day, returns "KR" plain text.
+ *      Result cached 24 h so only ONE call per browser per day at most.
+ *
+ * Usage:
+ *   t('key')            → translated string
+ *   t('key',{x:'val'}) → with {x} placeholder substitution
+ *   applyI18n()         → update all [data-i18n] / [data-i18n-ph] / [data-i18n-btn] elements
+ *   toggleLang()        → flip EN↔KO, mark as manual, dispatch 'langchange'
  */
 (function () {
   const S = {
@@ -113,8 +123,47 @@
     },
   };
 
-  window.SITE_LANG = localStorage.getItem('owcstats-lang') || 'en';
+  // ── Language resolution ──────────────────────────────────────────────────
+  const GEO_TTL   = 24 * 60 * 60 * 1000;   // 24 h cache
+  const KEY_LANG   = 'owcstats-lang';
+  const KEY_MANUAL = 'owcstats-lang-manual'; // set when user explicitly toggles
+  const KEY_GEO    = 'owcstats-lang-geo';    // cached geo result ('en'/'ko')
+  const KEY_GEO_TS = 'owcstats-lang-geo-ts'; // timestamp of geo cache
 
+  const isManual  = !!localStorage.getItem(KEY_MANUAL);
+  const geoCache  = localStorage.getItem(KEY_GEO);
+  const geoCacheTs = parseInt(localStorage.getItem(KEY_GEO_TS) || '0');
+  const geoValid  = geoCache && (Date.now() - geoCacheTs < GEO_TTL);
+
+  if (isManual) {
+    // User explicitly chose a language — always honour it
+    window.SITE_LANG = localStorage.getItem(KEY_LANG) || 'en';
+  } else if (geoValid) {
+    // Cached geo result still fresh — apply synchronously (no flash)
+    window.SITE_LANG = geoCache;
+    localStorage.setItem(KEY_LANG, geoCache);
+  } else {
+    // No valid cache yet — start with English, then async-detect
+    window.SITE_LANG = 'en';
+    fetch('https://ipapi.co/country_code/')
+      .then(r => r.text())
+      .then(cc => {
+        const lang = cc.trim().toUpperCase() === 'KR' ? 'ko' : 'en';
+        // Cache result for 24 h
+        localStorage.setItem(KEY_GEO,    lang);
+        localStorage.setItem(KEY_GEO_TS, Date.now().toString());
+        if (lang !== window.SITE_LANG) {
+          window.SITE_LANG = lang;
+          localStorage.setItem(KEY_LANG, lang);
+          // Trigger UI update on the current page
+          applyI18n();
+          document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+        }
+      })
+      .catch(() => { /* silently keep English on network error */ });
+  }
+
+  // ── Core functions ───────────────────────────────────────────────────────
   window.t = function (key, vars) {
     const dict = S[SITE_LANG] || S.en;
     let str = dict[key] !== undefined ? dict[key] : (S.en[key] !== undefined ? S.en[key] : key);
@@ -135,14 +184,14 @@
       el.textContent = t(el.getAttribute('data-i18n-btn'));
     });
     document.documentElement.lang = SITE_LANG === 'ko' ? 'ko' : 'en';
-    // Update toggle button label if present
     const btn = document.getElementById('lang-toggle');
     if (btn) btn.textContent = SITE_LANG === 'ko' ? 'EN' : '한';
   };
 
   window.toggleLang = function () {
     window.SITE_LANG = SITE_LANG === 'en' ? 'ko' : 'en';
-    localStorage.setItem('owcstats-lang', SITE_LANG);
+    localStorage.setItem(KEY_LANG,   SITE_LANG);
+    localStorage.setItem(KEY_MANUAL, '1');  // mark as explicit user choice
     applyI18n();
     document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: SITE_LANG } }));
   };
