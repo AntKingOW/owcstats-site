@@ -1,0 +1,270 @@
+{
+  "event": "owcs_2026_champions_clash",
+  "name": "2026 OWCS Champions Clash",
+  "date_start": "2026-05-22",
+  "date_end": "2026-05-24",
+  "location": "Tokyo, Japan",
+  "format": "Double Elimination",
+  "status": "in_progress",
+  "matches": [
+    {
+      "match_id": "cc_ubq1",
+      "round": "UB Quarterfinal",
+      "date": "2026-05-22",
+      "team1": "Twisted Minds",
+      "team2": "All Gamers",
+      "series": "2-0",
+      "maps": [
+        {
+          "map": "Oasis",
+          "mode": "Control",
+          "winner": "Twisted Minds",
+          "score": "2-1",
+          "bans": [
+            {
+              "team": "Twisted Minds",
+              "hero": "Symmetra"
+            },
+            {
+              "team": "All Gamers",
+              "hero": "Lucio"
+            }
+          ]
+        },
+        {
+          "map": "New Junk City",
+          "mode": "Flashpoint",
+          "winner": "Twisted Minds",
+          "score": "3-0",
+          "bans": [
+            {
+              "team": "Twisted Minds",
+              "hero": "Lucio"
+            },
+            {
+              "team": "All Gamers",
+              "hero": "Sojourn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_id": "cc_ubq2",
+      "round": "UB Quarterfinal",
+      "date": "2026-05-22",
+      "team1": "Crazy Raccoon",
+      "team2": "Dallas Fuel",
+      "series": "2-0",
+      "maps": [
+        {
+          "map": "Oasis",
+          "mode": "Control",
+          "winner": "Crazy Raccoon",
+          "score": "2-0",
+          "bans": [
+            {
+              "team": "Dallas Fuel",
+              "hero": "Bastion"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Ana"
+            }
+          ]
+        },
+        {
+          "map": "Circuit Royal",
+          "mode": "Escort",
+          "winner": "Crazy Raccoon",
+          "score": "3-1",
+          "bans": [
+            {
+              "team": "Dallas Fuel",
+              "hero": "Jetpack Cat"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Widowmaker"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_id": "cc_ubq3",
+      "round": "UB Quarterfinal",
+      "date": "2026-05-22",
+      "team1": "Virtus.pro",
+      "team2": "Weibo Gaming",
+      "series": "2-1",
+      "maps": [
+        {
+          "map": "Oasis",
+          "mode": "Control",
+          "winner": "Weibo Gaming",
+          "score": "2-3",
+          "bans": [
+            {
+              "team": "Weibo Gaming",
+              "hero": "Symmetra"
+            },
+            {
+              "team": "Virtus.pro",
+              "hero": "Zarya"
+            }
+          ]
+        },
+        {
+          "map": "Numbani",
+          "mode": "Hybrid",
+          "winner": "Virtus.pro",
+          "score": "3-2",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Jetpack Cat"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Cassidy"
+            }
+          ]
+        },
+        {
+          "map": "New Junk City",
+          "mode": "Flashpoint",
+          "winner": "Virtus.pro",
+          "score": "3-1",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Wuyang"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Ramattra"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_id": "cc_ubq4",
+      "round": "UB Quarterfinal",
+      "date": "2026-05-22",
+      "team1": "ZETA DIVISION",
+      "team2": "Spacestation Gaming",
+      "series": "2-0",
+      "maps": [
+        {
+          "map": "Ilios",
+          "mode": "Control",
+          "winner": "ZETA DIVISION",
+          "score": "2-0",
+          "bans": [
+            {
+              "team": "ZETA DIVISION",
+              "hero": "D.Va"
+            },
+            {
+              "team": "Spacestation Gaming",
+              "hero": "Ana"
+            }
+          ]
+        },
+        {
+          "map": "New Junk City",
+          "mode": "Flashpoint",
+          "winner": "ZETA DIVISION",
+          "score": "3-1",
+          "bans": [
+            {
+              "team": "Spacestation Gaming",
+              "hero": "Illari"
+            },
+            {
+              "team": "ZETA DIVISION",
+              "hero": "Sojourn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_id": "cc_lb1a",
+      "round": "LB Round 1",
+      "date": "2026-05-22",
+      "team1": "Dallas Fuel",
+      "team2": "All Gamers",
+      "series": "2-0",
+      "maps": [
+        {
+          "map": "Antarctic Peninsula",
+          "mode": "Control",
+          "winner": "Dallas Fuel",
+          "score": "2-0",
+          "bans": [
+            {
+              "team": "Dallas Fuel",
+              "hero": "D.Va"
+            },
+            {
+              "team": "All Gamers",
+              "hero": "Cassidy"
+            }
+          ]
+        },
+        {
+          "map": "Runasapi",
+          "mode": "Push",
+          "winner": "Dallas Fuel",
+          "score": "1-0",
+          "bans": [
+            {
+              "team": "All Gamers",
+              "hero": "Ana"
+            },
+            {
+              "team": "Dallas Fuel",
+              "hero": "Symmetra"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_id": "cc_lb1b",
+      "round": "LB Round 1",
+      "date": "2026-05-22",
+      "team1": "Weibo Gaming",
+      "team2": "Spacestation Gaming",
+      "series": "2-0",
+      "maps": [
+        {
+          "map": "Oasis",
+          "mode": "Control",
+          "winner": "Weibo Gaming",
+          "score": "2-0",
+          "bans": [
+            {
+              "team": "Spacestation Gaming",
+              "hero": "Zarya"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Lifeweaver"
+            }
+          ]
+        },
+        {
+          "map": "King's Row",
+          "mode": "Hybrid",
+          "winner": "Weibo Gaming",
+          "score": "1-0",
+          "bans": []
+        }
+      ]
+    }
+  ]
+}
