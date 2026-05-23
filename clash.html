@@ -341,7 +341,7 @@ svg#clash-scatter { width: 100%; height: 100%; display: block; }
           </div>
         </div>
         <div style="font-size:11px;color:var(--text-dim)">
-          ⚠️ China teams (Weibo Gaming, All Gamers) player stats not yet available.
+          📊 Champions Clash 2026 Day 2 stats (May 23) · <strong style="color:var(--text)">6 teams · 32 players</strong> · Based on map-by-map scoreboard data
         </div>
       </div>
 
@@ -402,11 +402,11 @@ const CLASH_NAMES = new Set(CLASH_TEAMS.map(t=>t.name));
 async function init() {
   const [eloRes, playerRes, banRes] = await Promise.all([
     fetch('assets/data/elo_rankings.json'),
-    fetch('assets/data/player_stats.json'),
+    fetch('assets/data/clash_player_stats.json'),
     fetch('assets/data/ban_summary.json'),
   ]);
   eloData    = ((await eloRes.json())['2026'] || []).filter(t=>CLASH_NAMES.has(t.team)).sort((a,b)=>b.elo-a.elo);
-  playerData = (await playerRes.json()).filter(p=>CLASH_NAMES.has(p.team));
+  playerData = await playerRes.json();
   banData    = (await banRes.json()).filter(b=>CLASH_NAMES.has(b.team));
 
   buildSidebarTeams();
@@ -583,7 +583,7 @@ function getTeamInfo(name){ return CLASH_TEAMS.find(t=>t.name===name)||{slug:nam
 function renderScatter() {
   const xKey=document.getElementById('x-axis').value;
   const yKey=document.getElementById('y-axis').value;
-  const players=playerData.filter(p=>(currentRole==='All'||p.role===currentRole)&&p.minutes>=20);
+  const players=playerData.filter(p=>(currentRole==='All'||p.role===currentRole)&&p.minutes>=5);
   const svg=document.getElementById('clash-scatter');
   const wrap=document.getElementById('scatter-wrap');
   const W=wrap.clientWidth||800, H=wrap.clientHeight||450;
@@ -670,7 +670,7 @@ function renderRankings() {
   const roles=currentRole==='All'?['Tank','DPS','Support']:[currentRole];
   const metric=currentMetric, desc=metric!=='death_per10';
   document.getElementById('rankings-wrap').innerHTML=roles.map(role=>{
-    const filtered=playerData.filter(p=>p.role===role&&p.minutes>=20);
+    const filtered=playerData.filter(p=>p.role===role&&p.minutes>=5);
     const sorted=[...filtered].sort((a,b)=>desc?b[metric]-a[metric]:a[metric]-b[metric]).slice(0,10);
     if(!sorted.length)return'';
     return `<div class="top5-role">
