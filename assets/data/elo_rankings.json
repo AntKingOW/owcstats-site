@@ -2119,13 +2119,13 @@
     {
       "rank": 1,
       "team": "Twisted Minds",
-      "elo": 1876.5,
+      "elo": 1878.2,
       "region": "EMEA",
-      "maps_played": 34,
-      "maps_won": 28,
-      "maps_lost": 5,
+      "maps_played": 38,
+      "maps_won": 31,
+      "maps_lost": 6,
       "maps_drawn": 0,
-      "win_pct": 84.8
+      "win_pct": 83.8
     },
     {
       "rank": 2,
@@ -2174,13 +2174,13 @@
     {
       "rank": 6,
       "team": "Virtus.pro",
-      "elo": 1708.5,
+      "elo": 1706.8,
       "region": "EMEA",
-      "maps_played": 42,
-      "maps_won": 25,
-      "maps_lost": 17,
+      "maps_played": 46,
+      "maps_won": 26,
+      "maps_lost": 20,
       "maps_drawn": 0,
-      "win_pct": 59.5
+      "win_pct": 56.5
     },
     {
       "rank": 7,

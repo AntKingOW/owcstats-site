@@ -3497,7 +3497,7 @@
     "bans_made": 1,
     "bans_received": 1,
     "initial_bans_made": 0,
-    "follow_up_bans_made": 0
+    "follow_up_bans_made": 1
   },
   {
     "region": "Korea",
@@ -3527,7 +3527,7 @@
     "bans_made": 1,
     "bans_received": 1,
     "initial_bans_made": 0,
-    "follow_up_bans_made": 0
+    "follow_up_bans_made": 1
   },
   {
     "region": "Korea",
@@ -3717,7 +3717,7 @@
     "bans_made": 1,
     "bans_received": 1,
     "initial_bans_made": 0,
-    "follow_up_bans_made": 0
+    "follow_up_bans_made": 1
   },
   {
     "region": "Korea",
@@ -12317,7 +12317,7 @@
     "bans_made": 1,
     "bans_received": 1,
     "initial_bans_made": 0,
-    "follow_up_bans_made": 0
+    "follow_up_bans_made": 1
   },
   {
     "region": "China",
@@ -14067,7 +14067,7 @@
     "bans_made": 3,
     "bans_received": 3,
     "initial_bans_made": 0,
-    "follow_up_bans_made": 0
+    "follow_up_bans_made": 3
   },
   {
     "region": "Asia",
@@ -15954,9 +15954,9 @@
     "team": "Twisted Minds",
     "map_mode": "Control",
     "hero": "Winston",
-    "bans_made": 1,
+    "bans_made": 2,
     "bans_received": 0,
-    "initial_bans_made": 1,
+    "initial_bans_made": 2,
     "follow_up_bans_made": 0
   },
   {
@@ -15985,7 +15985,7 @@
     "map_mode": "Control",
     "hero": "Cassidy",
     "bans_made": 1,
-    "bans_received": 1,
+    "bans_received": 2,
     "initial_bans_made": 1,
     "follow_up_bans_made": 0
   },
@@ -16035,7 +16035,7 @@
     "map_mode": "Hybrid",
     "hero": "Juno",
     "bans_made": 1,
-    "bans_received": 0,
+    "bans_received": 1,
     "initial_bans_made": 1,
     "follow_up_bans_made": 0
   },
@@ -16154,9 +16154,9 @@
     "team": "Virtus.pro",
     "map_mode": "Escort",
     "hero": "Tracer",
-    "bans_made": 1,
+    "bans_made": 2,
     "bans_received": 0,
-    "initial_bans_made": 1,
+    "initial_bans_made": 2,
     "follow_up_bans_made": 0
   },
   {
@@ -16463,6 +16463,126 @@
     "region": "Intl",
     "team": "Twisted Minds",
     "map_mode": "Flashpoint",
+    "hero": "D.Va",
+    "bans_made": 0,
+    "bans_received": 1,
+    "initial_bans_made": 0,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Control",
+    "hero": "Cassidy",
+    "bans_made": 1,
+    "bans_received": 0,
+    "initial_bans_made": 1,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Control",
+    "hero": "Winston",
+    "bans_made": 0,
+    "bans_received": 1,
+    "initial_bans_made": 0,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Flashpoint",
+    "hero": "Illari",
+    "bans_made": 1,
+    "bans_received": 0,
+    "initial_bans_made": 1,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Twisted Minds",
+    "map_mode": "Flashpoint",
+    "hero": "Illari",
+    "bans_made": 0,
+    "bans_received": 1,
+    "initial_bans_made": 0,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Twisted Minds",
+    "map_mode": "Flashpoint",
+    "hero": "Bastion",
+    "bans_made": 1,
+    "bans_received": 0,
+    "initial_bans_made": 1,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Flashpoint",
+    "hero": "Bastion",
+    "bans_made": 0,
+    "bans_received": 1,
+    "initial_bans_made": 0,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Twisted Minds",
+    "map_mode": "Escort",
+    "hero": "Tracer",
+    "bans_made": 0,
+    "bans_received": 1,
+    "initial_bans_made": 0,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Twisted Minds",
+    "map_mode": "Escort",
+    "hero": "Symmetra",
+    "bans_made": 1,
+    "bans_received": 0,
+    "initial_bans_made": 1,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Escort",
+    "hero": "Symmetra",
+    "bans_made": 0,
+    "bans_received": 1,
+    "initial_bans_made": 0,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Hybrid",
+    "hero": "Juno",
+    "bans_made": 1,
+    "bans_received": 0,
+    "initial_bans_made": 1,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Twisted Minds",
+    "map_mode": "Hybrid",
+    "hero": "D.Va",
+    "bans_made": 1,
+    "bans_received": 0,
+    "initial_bans_made": 1,
+    "follow_up_bans_made": 0
+  },
+  {
+    "region": "Intl",
+    "team": "Virtus.pro",
+    "map_mode": "Hybrid",
     "hero": "D.Va",
     "bans_made": 0,
     "bans_received": 1,

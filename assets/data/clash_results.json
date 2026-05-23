@@ -562,6 +562,81 @@
           ]
         }
       ]
+    },
+    {
+      "match_id": "cc_lbsf1",
+      "round": "LB Semifinal",
+      "date": "2026-05-23",
+      "team1": "Twisted Minds",
+      "team2": "Virtus.pro",
+      "series": "3-1",
+      "maps": [
+        {
+          "map": "Ilios",
+          "mode": "Control",
+          "duration_min": 9.05,
+          "winner": "Twisted Minds",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Cassidy"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "Winston"
+            }
+          ]
+        },
+        {
+          "map": "New Junk City",
+          "mode": "Flashpoint",
+          "duration_min": 12.62,
+          "winner": "Twisted Minds",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Illari"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "Bastion"
+            }
+          ]
+        },
+        {
+          "map": "Rialto",
+          "mode": "Escort",
+          "duration_min": 11.27,
+          "winner": "Virtus.pro",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Tracer"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "Symmetra"
+            }
+          ]
+        },
+        {
+          "map": "King's Row",
+          "mode": "Hybrid",
+          "duration_min": null,
+          "winner": "Twisted Minds",
+          "note": "No player stats available",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Juno"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "D.Va"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

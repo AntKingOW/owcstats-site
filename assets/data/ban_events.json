@@ -13222,5 +13222,101 @@
     "ban_team": "Weibo Gaming",
     "banned_hero": "D.Va",
     "received_team": "Twisted Minds"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "1",
+    "map": "Ilios",
+    "map_mode": "Control",
+    "ban_stage": "initial",
+    "ban_team": "Virtus.pro",
+    "banned_hero": "Cassidy",
+    "received_team": "Twisted Minds"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "1",
+    "map": "Ilios",
+    "map_mode": "Control",
+    "ban_stage": "initial",
+    "ban_team": "Twisted Minds",
+    "banned_hero": "Winston",
+    "received_team": "Virtus.pro"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "2",
+    "map": "New Junk City",
+    "map_mode": "Flashpoint",
+    "ban_stage": "initial",
+    "ban_team": "Virtus.pro",
+    "banned_hero": "Illari",
+    "received_team": "Twisted Minds"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "2",
+    "map": "New Junk City",
+    "map_mode": "Flashpoint",
+    "ban_stage": "initial",
+    "ban_team": "Twisted Minds",
+    "banned_hero": "Bastion",
+    "received_team": "Virtus.pro"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "3",
+    "map": "Rialto",
+    "map_mode": "Escort",
+    "ban_stage": "initial",
+    "ban_team": "Virtus.pro",
+    "banned_hero": "Tracer",
+    "received_team": "Twisted Minds"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "3",
+    "map": "Rialto",
+    "map_mode": "Escort",
+    "ban_stage": "initial",
+    "ban_team": "Twisted Minds",
+    "banned_hero": "Symmetra",
+    "received_team": "Virtus.pro"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "4",
+    "map": "King's Row",
+    "map_mode": "Hybrid",
+    "ban_stage": "initial",
+    "ban_team": "Virtus.pro",
+    "banned_hero": "Juno",
+    "received_team": "Twisted Minds"
+  },
+  {
+    "region": "Intl",
+    "phase": "Champions Clash",
+    "match_label": "TM vs VP - LB SF",
+    "game": "4",
+    "map": "King's Row",
+    "map_mode": "Hybrid",
+    "ban_stage": "initial",
+    "ban_team": "Twisted Minds",
+    "banned_hero": "D.Va",
+    "received_team": "Virtus.pro"
   }
 ]

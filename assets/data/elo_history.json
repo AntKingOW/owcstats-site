@@ -665,6 +665,12 @@
       "elo": 1876.5,
       "year": "2026",
       "result": "loss"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1878.2,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "A-Square Tengu": [
@@ -2103,6 +2109,13 @@
       "elo": 1708.5,
       "year": "2026",
       "result": "draw"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1706.8,
+      "year": "2026",
+      "result": "loss",
+      "eliminated": true
     }
   ],
   "Metaboiz": [
