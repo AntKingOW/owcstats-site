@@ -557,7 +557,8 @@ function buildEloTrendChart() {
     series.push({ name: team.name, color: TEAM_COLORS[team.name] || '#aaa', pts });
   }
 
-  const maxXi = Math.max(...series.map(s => s.pts[s.pts.length - 1]?.xi ?? 0));
+  const dataMaxXi = Math.max(...series.map(s => s.pts[s.pts.length - 1]?.xi ?? 0));
+  const maxXi = Math.max(dataMaxXi, 3);
   const xLabels = ['S1','Day 1','Day 2','Day 3','Day 4'].slice(0, maxXi + 1);
   const allElos = series.flatMap(s => s.pts.map(p => p.elo));
   const rawMin  = Math.min(...allElos), rawMax = Math.max(...allElos);
