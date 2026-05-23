@@ -662,7 +662,7 @@
     },
     {
       "event": "owcs_2026_champions_clash",
-      "elo": 1878.5,
+      "elo": 1876.5,
       "year": "2026",
       "result": "loss"
     }
@@ -2100,7 +2100,7 @@
     },
     {
       "event": "owcs_2026_champions_clash",
-      "elo": 1709.9,
+      "elo": 1708.5,
       "year": "2026",
       "result": "draw"
     }
@@ -3612,7 +3612,7 @@
     },
     {
       "event": "owcs_2026_champions_clash",
-      "elo": 1720.0,
+      "elo": 1722.0,
       "year": "2026",
       "result": "loss",
       "eliminated": true
@@ -3899,7 +3899,7 @@
     },
     {
       "event": "owcs_2026_champions_clash",
-      "elo": 1610.3,
+      "elo": 1611.7,
       "year": "2026",
       "result": "loss",
       "eliminated": true

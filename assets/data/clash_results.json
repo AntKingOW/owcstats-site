@@ -21,8 +21,14 @@
           "winner": "Twisted Minds",
           "score": "2-1",
           "bans": [
-            { "team": "Twisted Minds", "hero": "Symmetra" },
-            { "team": "All Gamers", "hero": "Lucio" }
+            {
+              "team": "Twisted Minds",
+              "hero": "Symmetra"
+            },
+            {
+              "team": "All Gamers",
+              "hero": "Lucio"
+            }
           ]
         },
         {
@@ -31,8 +37,14 @@
           "winner": "Twisted Minds",
           "score": "3-0",
           "bans": [
-            { "team": "Twisted Minds", "hero": "Lucio" },
-            { "team": "All Gamers", "hero": "Sojourn" }
+            {
+              "team": "Twisted Minds",
+              "hero": "Lucio"
+            },
+            {
+              "team": "All Gamers",
+              "hero": "Sojourn"
+            }
           ]
         }
       ]
@@ -51,8 +63,14 @@
           "winner": "Crazy Raccoon",
           "score": "2-0",
           "bans": [
-            { "team": "Dallas Fuel", "hero": "Bastion" },
-            { "team": "Crazy Raccoon", "hero": "Ana" }
+            {
+              "team": "Dallas Fuel",
+              "hero": "Bastion"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Ana"
+            }
           ]
         },
         {
@@ -61,8 +79,14 @@
           "winner": "Crazy Raccoon",
           "score": "3-1",
           "bans": [
-            { "team": "Dallas Fuel", "hero": "Jetpack Cat" },
-            { "team": "Crazy Raccoon", "hero": "Widowmaker" }
+            {
+              "team": "Dallas Fuel",
+              "hero": "Jetpack Cat"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Widowmaker"
+            }
           ]
         }
       ]
@@ -81,8 +105,14 @@
           "winner": "Weibo Gaming",
           "score": "2-3",
           "bans": [
-            { "team": "Weibo Gaming", "hero": "Symmetra" },
-            { "team": "Virtus.pro", "hero": "Zarya" }
+            {
+              "team": "Weibo Gaming",
+              "hero": "Symmetra"
+            },
+            {
+              "team": "Virtus.pro",
+              "hero": "Zarya"
+            }
           ]
         },
         {
@@ -91,8 +121,14 @@
           "winner": "Virtus.pro",
           "score": "3-2",
           "bans": [
-            { "team": "Virtus.pro", "hero": "Jetpack Cat" },
-            { "team": "Weibo Gaming", "hero": "Cassidy" }
+            {
+              "team": "Virtus.pro",
+              "hero": "Jetpack Cat"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Cassidy"
+            }
           ]
         },
         {
@@ -101,8 +137,14 @@
           "winner": "Virtus.pro",
           "score": "3-1",
           "bans": [
-            { "team": "Virtus.pro", "hero": "Wuyang" },
-            { "team": "Weibo Gaming", "hero": "Ramattra" }
+            {
+              "team": "Virtus.pro",
+              "hero": "Wuyang"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Ramattra"
+            }
           ]
         }
       ]
@@ -121,8 +163,14 @@
           "winner": "ZETA DIVISION",
           "score": "2-0",
           "bans": [
-            { "team": "ZETA DIVISION", "hero": "D.Va" },
-            { "team": "Spacestation Gaming", "hero": "Ana" }
+            {
+              "team": "ZETA DIVISION",
+              "hero": "D.Va"
+            },
+            {
+              "team": "Spacestation Gaming",
+              "hero": "Ana"
+            }
           ]
         },
         {
@@ -131,8 +179,14 @@
           "winner": "ZETA DIVISION",
           "score": "3-1",
           "bans": [
-            { "team": "Spacestation Gaming", "hero": "Illari" },
-            { "team": "ZETA DIVISION", "hero": "Sojourn" }
+            {
+              "team": "Spacestation Gaming",
+              "hero": "Illari"
+            },
+            {
+              "team": "ZETA DIVISION",
+              "hero": "Sojourn"
+            }
           ]
         }
       ]
@@ -151,8 +205,14 @@
           "winner": "Dallas Fuel",
           "score": "2-0",
           "bans": [
-            { "team": "Dallas Fuel", "hero": "D.Va" },
-            { "team": "All Gamers", "hero": "Cassidy" }
+            {
+              "team": "Dallas Fuel",
+              "hero": "D.Va"
+            },
+            {
+              "team": "All Gamers",
+              "hero": "Cassidy"
+            }
           ]
         },
         {
@@ -161,8 +221,14 @@
           "winner": "Dallas Fuel",
           "score": "1-0",
           "bans": [
-            { "team": "All Gamers", "hero": "Ana" },
-            { "team": "Dallas Fuel", "hero": "Symmetra" }
+            {
+              "team": "All Gamers",
+              "hero": "Ana"
+            },
+            {
+              "team": "Dallas Fuel",
+              "hero": "Symmetra"
+            }
           ]
         }
       ]
@@ -181,8 +247,14 @@
           "winner": "Weibo Gaming",
           "score": "2-0",
           "bans": [
-            { "team": "Spacestation Gaming", "hero": "Zarya" },
-            { "team": "Weibo Gaming", "hero": "Lifeweaver" }
+            {
+              "team": "Spacestation Gaming",
+              "hero": "Zarya"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Lifeweaver"
+            }
           ]
         },
         {
@@ -207,21 +279,49 @@
           "mode": "Control",
           "duration_min": 14.4,
           "winner": "Crazy Raccoon",
-          "bans": []
+          "bans": [
+            {
+              "team": "Twisted Minds",
+              "hero": "Winston"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Cassidy"
+            }
+          ]
         },
         {
           "map": "Rialto",
           "mode": "Escort",
           "duration_min": 6.0,
           "winner": "Crazy Raccoon",
-          "bans": []
+          "score": "1-1",
+          "bans": [
+            {
+              "team": "Twisted Minds",
+              "hero": "Illari"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Bastion"
+            }
+          ]
         },
         {
           "map": "King's Row",
           "mode": "Hybrid",
           "duration_min": 9.9,
           "winner": "Crazy Raccoon",
-          "bans": []
+          "bans": [
+            {
+              "team": "Twisted Minds",
+              "hero": "Juno"
+            },
+            {
+              "team": "Crazy Raccoon",
+              "hero": "Symmetra"
+            }
+          ]
         }
       ]
     },
@@ -238,28 +338,64 @@
           "mode": "Control",
           "duration_min": 8.1,
           "winner": "ZETA DIVISION",
-          "bans": []
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "D.Va"
+            },
+            {
+              "team": "ZETA DIVISION",
+              "hero": "Ana"
+            }
+          ]
         },
         {
           "map": "New Junk City",
           "mode": "Flashpoint",
           "duration_min": 8.7,
           "winner": "Virtus.pro",
-          "bans": []
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Mizuki"
+            },
+            {
+              "team": "ZETA DIVISION",
+              "hero": "Zarya"
+            }
+          ]
         },
         {
-          "map": "Map 3",
-          "mode": null,
+          "map": "Rialto",
+          "mode": "Escort",
           "duration_min": 17.2,
           "winner": "ZETA DIVISION",
-          "bans": []
+          "bans": [
+            {
+              "team": "ZETA DIVISION",
+              "hero": "Kiriko"
+            },
+            {
+              "team": "Virtus.pro",
+              "hero": "Tracer"
+            }
+          ]
         },
         {
-          "map": "Map 4",
-          "mode": null,
+          "map": "King's Row",
+          "mode": "Hybrid",
           "duration_min": 14.3,
           "winner": "ZETA DIVISION",
-          "bans": []
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Illari"
+            },
+            {
+              "team": "ZETA DIVISION",
+              "hero": "Symmetra"
+            }
+          ]
         }
       ]
     },
@@ -272,32 +408,68 @@
       "series": "3-1",
       "maps": [
         {
-          "map": "Ilios",
+          "map": "Oasis",
           "mode": "Control",
           "duration_min": 13.3,
-          "winner": null,
-          "bans": []
+          "winner": "Virtus.pro",
+          "bans": [
+            {
+              "team": "Dallas Fuel",
+              "hero": "Ana"
+            },
+            {
+              "team": "Virtus.pro",
+              "hero": "D.Va"
+            }
+          ]
+        },
+        {
+          "map": "Dorado",
+          "mode": "Escort",
+          "duration_min": 17.2,
+          "winner": "Virtus.pro",
+          "bans": [
+            {
+              "team": "Virtus.pro",
+              "hero": "Pharah"
+            },
+            {
+              "team": "Dallas Fuel",
+              "hero": "Kiriko"
+            }
+          ]
         },
         {
           "map": "New Junk City",
           "mode": "Flashpoint",
-          "duration_min": 17.2,
-          "winner": null,
-          "bans": []
-        },
-        {
-          "map": "Map 3",
-          "mode": null,
           "duration_min": 8.6,
-          "winner": "Virtus.pro",
-          "bans": []
+          "winner": "Dallas Fuel",
+          "bans": [
+            {
+              "team": "Dallas Fuel",
+              "hero": "Wuyang"
+            },
+            {
+              "team": "Virtus.pro",
+              "hero": "Symmetra"
+            }
+          ]
         },
         {
-          "map": "Map 4",
-          "mode": null,
+          "map": "Numbani",
+          "mode": "Hybrid",
           "duration_min": 15.5,
           "winner": "Virtus.pro",
-          "bans": []
+          "bans": [
+            {
+              "team": "Dallas Fuel",
+              "hero": "Mauga"
+            },
+            {
+              "team": "Virtus.pro",
+              "hero": "Lucio"
+            }
+          ]
         }
       ]
     },
@@ -308,34 +480,86 @@
       "team1": "Twisted Minds",
       "team2": "Weibo Gaming",
       "series": "3-1",
+      "note": "Map 4 (Circuit Royal) ended in a draw 3-3. Map 5 played as decider.",
       "maps": [
         {
           "map": "Oasis",
           "mode": "Control",
           "duration_min": 8.9,
-          "winner": null,
-          "bans": []
+          "winner": "Twisted Minds",
+          "bans": [
+            {
+              "team": "Weibo Gaming",
+              "hero": "Jetpack Cat"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "Cassidy"
+            }
+          ]
         },
         {
           "map": "King's Row",
           "mode": "Hybrid",
           "duration_min": 19.9,
-          "winner": null,
-          "bans": []
+          "winner": "Weibo Gaming",
+          "bans": [
+            {
+              "team": "Weibo Gaming",
+              "hero": "Genji"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "Mizuki"
+            }
+          ]
         },
         {
           "map": "Runasapi",
           "mode": "Push",
           "duration_min": 6.1,
-          "winner": null,
-          "bans": []
+          "winner": "Twisted Minds",
+          "bans": [
+            {
+              "team": "Twisted Minds",
+              "hero": "Pharah"
+            },
+            {
+              "team": "Weibo Gaming",
+              "hero": "Mauga"
+            }
+          ]
         },
         {
           "map": "Circuit Royal",
           "mode": "Escort",
           "duration_min": 10.8,
           "winner": null,
-          "bans": []
+          "draw": true,
+          "score": "3-3",
+          "bans": [
+            {
+              "team": "Weibo Gaming",
+              "hero": "Widowmaker"
+            },
+            {
+              "team": "Twisted Minds",
+              "hero": "Bastion"
+            }
+          ]
+        },
+        {
+          "map": "New Junk City",
+          "mode": "Flashpoint",
+          "duration_min": null,
+          "winner": "Twisted Minds",
+          "note": "No player stats available",
+          "bans": [
+            {
+              "team": "Weibo Gaming",
+              "hero": "D.Va"
+            }
+          ]
         }
       ]
     }
