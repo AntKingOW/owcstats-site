@@ -2119,35 +2119,35 @@
     {
       "rank": 1,
       "team": "Twisted Minds",
-      "elo": 1922.7,
+      "elo": 1878.5,
       "region": "EMEA",
-      "maps_played": 26,
-      "maps_won": 25,
-      "maps_lost": 1,
+      "maps_played": 33,
+      "maps_won": 28,
+      "maps_lost": 5,
       "maps_drawn": 0,
-      "win_pct": 96.2
+      "win_pct": 84.8
     },
     {
       "rank": 2,
       "team": "ZETA DIVISION",
-      "elo": 1852.0,
+      "elo": 1856.7,
       "region": "Korea",
-      "maps_played": 75,
-      "maps_won": 57,
-      "maps_lost": 18,
+      "maps_played": 79,
+      "maps_won": 60,
+      "maps_lost": 19,
       "maps_drawn": 0,
-      "win_pct": 76.0
+      "win_pct": 75.9
     },
     {
       "rank": 3,
       "team": "Crazy Raccoon",
-      "elo": 1792.2,
+      "elo": 1838.1,
       "region": "Korea",
-      "maps_played": 75,
-      "maps_won": 47,
+      "maps_played": 78,
+      "maps_won": 50,
       "maps_lost": 28,
       "maps_drawn": 0,
-      "win_pct": 62.7
+      "win_pct": 64.1
     },
     {
       "rank": 4,
@@ -2163,16 +2163,27 @@
     {
       "rank": 5,
       "team": "Weibo Gaming",
-      "elo": 1721.7,
+      "elo": 1720.0,
       "region": "China",
-      "maps_played": 30,
-      "maps_won": 25,
-      "maps_lost": 5,
+      "maps_played": 34,
+      "maps_won": 26,
+      "maps_lost": 8,
       "maps_drawn": 0,
-      "win_pct": 83.3
+      "win_pct": 76.5
     },
     {
       "rank": 6,
+      "team": "Virtus.pro",
+      "elo": 1709.9,
+      "region": "EMEA",
+      "maps_played": 42,
+      "maps_won": 25,
+      "maps_lost": 17,
+      "maps_drawn": 0,
+      "win_pct": 59.5
+    },
+    {
+      "rank": 7,
       "team": "T1",
       "elo": 1702.0,
       "region": "Korea",
@@ -2183,7 +2194,7 @@
       "win_pct": 57.8
     },
     {
-      "rank": 7,
+      "rank": 8,
       "team": "VARREL",
       "elo": 1701.3,
       "region": "Japan",
@@ -2194,29 +2205,7 @@
       "win_pct": 72.0
     },
     {
-      "rank": 8,
-      "team": "Virtus.pro",
-      "elo": 1701.1,
-      "region": "EMEA",
-      "maps_played": 34,
-      "maps_won": 21,
-      "maps_lost": 13,
-      "maps_drawn": 0,
-      "win_pct": 61.8
-    },
-    {
       "rank": 9,
-      "team": "Dallas Fuel",
-      "elo": 1623.8,
-      "region": "NA",
-      "maps_played": 32,
-      "maps_won": 25,
-      "maps_lost": 7,
-      "maps_drawn": 0,
-      "win_pct": 78.1
-    },
-    {
-      "rank": 10,
       "team": "Al Qadsiah",
       "elo": 1621.0,
       "region": "EMEA",
@@ -2225,6 +2214,17 @@
       "maps_lost": 17,
       "maps_drawn": 0,
       "win_pct": 34.6
+    },
+    {
+      "rank": 10,
+      "team": "Dallas Fuel",
+      "elo": 1610.3,
+      "region": "NA",
+      "maps_played": 36,
+      "maps_won": 26,
+      "maps_lost": 10,
+      "maps_drawn": 0,
+      "win_pct": 72.2
     },
     {
       "rank": 11,

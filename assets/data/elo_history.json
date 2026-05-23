@@ -659,6 +659,12 @@
       "elo": 1922.7,
       "year": "2026",
       "result": "win"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1878.5,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "A-Square Tengu": [
@@ -1637,6 +1643,12 @@
       "elo": 1852.0,
       "year": "2026",
       "result": "win"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1856.7,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "VEC": [
@@ -1795,6 +1807,12 @@
     {
       "event": "owcs_2026_champions_clash",
       "elo": 1792.2,
+      "year": "2026",
+      "result": "win"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1838.1,
       "year": "2026",
       "result": "win"
     }
@@ -2079,6 +2097,12 @@
       "elo": 1701.1,
       "year": "2026",
       "result": "win"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1709.9,
+      "year": "2026",
+      "result": "draw"
     }
   ],
   "Metaboiz": [
@@ -3585,6 +3609,13 @@
       "elo": 1721.7,
       "year": "2026",
       "result": "win"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1720.0,
+      "year": "2026",
+      "result": "loss",
+      "eliminated": true
     }
   ],
   "Milk Tea": [
@@ -3865,6 +3896,13 @@
       "elo": 1623.8,
       "year": "2026",
       "result": "draw"
+    },
+    {
+      "event": "owcs_2026_champions_clash",
+      "elo": 1610.3,
+      "year": "2026",
+      "result": "loss",
+      "eliminated": true
     }
   ],
   "Disguised": [
