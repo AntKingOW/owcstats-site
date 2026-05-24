@@ -149,10 +149,7 @@
 .roster-table th { font-size: 10px; text-transform: uppercase; color: var(--text-dim); padding: 6px 12px; text-align: left; border-bottom: 1px solid var(--border); }
 .roster-table td { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid var(--border); }
 .roster-table tr:last-child td { border-bottom: none; }
-.role-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; }
-.role-Tank    { background: rgba(77,166,255,0.15); color: #4da6ff; }
-.role-Support { background: rgba(61,220,132,0.15); color: #3ddc84; }
-.role-Damage  { background: rgba(255,92,92,0.15);  color: #ff5c5c; }
+/* role-pill defined in style.css */
 
 /* Ban bars */
 .ban-row { display: flex; align-items: center; gap: 10px; padding: 7px 16px; border-bottom: 1px solid var(--border); }
@@ -558,7 +555,7 @@ function renderDetail(teamName) {
             ${roster.map(p=>`
               <tr>
                 <td style="font-weight:600">${p.player}</td>
-                <td><span class="role-badge role-${p.role}">${p.role}</span></td>
+                <td><span class="role-pill role-${p.role}">${p.role}</span></td>
                 <td>${p.games}</td>
                 <td>${p.ed_ratio}</td>
               </tr>

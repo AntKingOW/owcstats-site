@@ -424,3 +424,13 @@ tr:last-child td { border-bottom: none; }
   .section-title { font-size: 13px; }
   .hero h1 { font-size: 20px; }
 }
+
+
+/* ── Role pills (shared across all pages) ─────────────────────────────────── */
+.role-pill {
+  display: inline-block; padding: 2px 7px; border-radius: 10px;
+  font-size: 10px; font-weight: 600; border: 1px solid currentColor;
+}
+.role-Tank    { color: #4da6ff; }
+.role-DPS     { color: #ff6b6b; }
+.role-Support { color: #3ddc84; }
