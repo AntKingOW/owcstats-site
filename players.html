@@ -193,7 +193,7 @@ select:focus { border-color: var(--accent2); }
           <button class="metric-btn" data-metric="ed_ratio">E/D</button>
           <button class="metric-btn" data-metric="death_per10">Deaths/10</button>
         </div>
-        <div class="rankings-grid" id="rankings-wrap"></div>
+        <div id="rankings-wrap"></div>
       </div>
     </div>
   </div>
@@ -404,7 +404,9 @@ function renderRankings(players) {
   const descending = metric !== 'death_per10';
 
   const gridClass = roles.length === 1 ? 'rankings-grid single-role' : 'rankings-grid';
-  let html = `<div class="${gridClass}">`;
+  const wrap = document.getElementById('rankings-wrap');
+  wrap.className = gridClass;
+  let html = '';
   for (const role of roles) {
     const rp = players.filter(p => p.role === role);
     if (!rp.length) continue;
@@ -423,8 +425,7 @@ function renderRankings(players) {
         </div>`).join('')}
     </div>`;
   }
-  html += '</div>';
-  document.getElementById('rankings-wrap').innerHTML = html || '<p style="color:var(--text-dim)">No data.</p>';
+  wrap.innerHTML = html || '<p style="color:var(--text-dim)">No data.</p>';
 }
 
 // ── View switching ────────────────────────────────────────────────────────────
