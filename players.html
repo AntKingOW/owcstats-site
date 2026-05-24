@@ -59,22 +59,22 @@ select {
 select:focus { border-color: var(--accent2); }
 
 /* Rankings table */
-.rankings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.rankings-grid.single-role { grid-template-columns: 1fr; max-width: 420px; }
+.rankings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.rankings-grid.single-role { grid-template-columns: 1fr; max-width: 340px; }
 @media (max-width: 900px) { .rankings-grid { grid-template-columns: 1fr; } }
 .top5-role { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-.top5-role h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 10px; }
+.top5-role h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
 .top5-row {
   display: flex; align-items: center; gap: 10px;
-  padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px;
 }
 .top5-row:last-child { border-bottom: none; }
-.top5-rank { width: 18px; text-align: center; font-weight: 700; color: var(--text-dim); font-size: 11px; flex-shrink: 0; }
+.top5-rank { width: 20px; text-align: center; font-weight: 700; color: var(--text-dim); font-size: 11px; flex-shrink: 0; }
 .top5-rank.gold { color: var(--accent); }
-.top5-logo { width: 20px; height: 20px; border-radius: 50%; object-fit: contain; flex-shrink: 0; background: #122033; }
-.top5-player { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.top5-team { color: var(--text-dim); font-size: 10px; }
-.top5-val { font-weight: 700; color: var(--accent); margin-left: auto; white-space: nowrap; }
+.top5-logo { width: 26px; height: 26px; border-radius: 50%; object-fit: contain; flex-shrink: 0; background: #122033; }
+.top5-player { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top5-team { color: var(--text-dim); font-size: 10px; margin-top: 1px; }
+.top5-val { font-weight: 700; color: var(--accent); font-size: 13px; margin-left: auto; white-space: nowrap; flex-shrink: 0; }
 
 /* role-pill defined in style.css */
 
@@ -410,14 +410,14 @@ function renderRankings(players) {
     if (!rp.length) continue;
     const sorted = [...rp].sort((a, b) => descending ? b[metric] - a[metric] : a[metric] - b[metric]).slice(0, 10);
     html += `<div class="top5-role">
-      <h3><span class="role-pill role-${role}">${role}</span> — ${METRIC_LABELS[metric]}</h3>
+      <h3><span class="role-pill role-${role}">${role}</span></h3>
       ${sorted.map((p, i) => `
         <div class="top5-row">
           <div class="top5-rank ${i===0?'gold':''}">${i+1}</div>
-          <img class="top5-logo" src="${logoUrl(p.team)}" alt="${p.team}" onerror="this.style.display='none'">
-          <div style="min-width:0">
+          <img class="top5-logo" src="${logoUrl(p.team)}" alt="${p.team}" onerror="this.style.opacity=0">
+          <div style="flex:1;min-width:0">
             <div class="top5-player">${p.player}</div>
-            <div class="top5-team">${p.team} · ${p.minutes}m</div>
+            <div class="top5-team">${p.team}</div>
           </div>
           <div class="top5-val">${p[metric]}</div>
         </div>`).join('')}
