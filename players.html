@@ -59,7 +59,9 @@ select {
 select:focus { border-color: var(--accent2); }
 
 /* Rankings table */
-.rankings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.rankings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.rankings-grid.single-role { grid-template-columns: 1fr; max-width: 420px; }
+@media (max-width: 900px) { .rankings-grid { grid-template-columns: 1fr; } }
 .top5-role { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
 .top5-role h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 10px; }
 .top5-row {
@@ -407,7 +409,8 @@ function renderRankings(players) {
   const metric = currentMetric;
   const descending = metric !== 'death_per10';
 
-  let html = '<div class="rankings-grid">';
+  const gridClass = roles.length === 1 ? 'rankings-grid single-role' : 'rankings-grid';
+  let html = `<div class="${gridClass}">`;
   for (const role of roles) {
     const rp = players.filter(p => p.role === role);
     if (!rp.length) continue;
