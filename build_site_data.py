@@ -305,10 +305,9 @@ def build_player_stats():
         skipped = 0
         with open(path, encoding="utf-8-sig") as f:
             for r in csv.DictReader(f):
-                # Skip rows with unreliable OCR data
-                if r.get("NeedsReOCR", "").strip().lower() == "yes":
+                needs_reocr = r.get("NeedsReOCR", "").strip().lower() == "yes"
+                if needs_reocr:
                     skipped += 1
-                    continue
                 # Column names differ between files: normalize to lowercase
                 region = r.get("Region", r.get("region", ""))
                 team   = r.get("Team",   r.get("team",   ""))
@@ -333,14 +332,16 @@ def build_player_stats():
                         p["minutes"] += mins
                 except:
                     pass
-                for col in ["E","A","D","DMG","H","MIT"]:
-                    try:
-                        p[col] += int(r.get(col, 0) or 0)
-                    except:
-                        pass
+                # NeedsReOCR rows: count game/minutes but skip unreliable stat values
+                if not needs_reocr:
+                    for col in ["E","A","D","DMG","H","MIT"]:
+                        try:
+                            p[col] += int(r.get(col, 0) or 0)
+                        except:
+                            pass
 
         if skipped:
-            print(f"  [info] skipped {skipped} NeedsReOCR=yes rows")
+            print(f"  [info] {skipped} NeedsReOCR=yes rows counted for G/minutes, stats excluded")
         for p in players.values():
             m = p["minutes"]
             if m < 5:
