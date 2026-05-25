@@ -59,7 +59,7 @@ owcstats-site/
 - 좌측 사이드바(220px) + 우측 콘텐츠 구조
 - 섹션: Overview / ELO Rankings / Player Stats / Ban Analysis
 - Ban Analysis: bans_made(🔴 내가 밴한 영웅) / bans_received(🛡️ 상대가 나한테 쓴 밴) 토글
-- 중국 팀(Weibo Gaming, All Gamers)은 선수 데이터 없음 → 안내 메시지 표시
+- 중국 팀(Weibo Gaming, All Gamers) 선수 데이터 포함 (owtv.gg 스크랩, 48맵 전체)
 
 ### players.html — 선수 Scatter
 - 좌측 사이드바(240px): 뷰 탭(Scatter/Rankings) + 필터
@@ -99,3 +99,5 @@ git push origin main
 - [x] Phase 5: 밴 계산기 + 인라인 예측 (ban-calculator.html)
 - [x] Phase 6: GitHub Pages 배포 완료
 - [x] Champion Clash 2026 전용 페이지 (clash.html)
+- [x] Champions Clash 2026 owtv.gg 전체 스크랩 (48맵, 8팀, 45선수, 96 ban events)
+- [x] clash_player_stats.json 전면 재빌드 (중국팀 포함)
