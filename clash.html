@@ -538,12 +538,13 @@ function buildEloTrendChart() {
   const iH  = H - PAD.top  - PAD.bottom;
 
   // Build per-team point series from historyData
-  const CLASH_EVENT = 'owcs_2026_champions_clash';
+  const CLASH_PREFIX = 'owcs_2026_champions_clash';
   const series = [];
   for (const team of CLASH_TEAMS) {
     const entries = historyData[team.name] || [];
-    const preList  = entries.filter(e => e.event !== CLASH_EVENT);
-    const clashList= entries.filter(e => e.event === CLASH_EVENT);
+    const preList  = entries.filter(e => !e.event.startsWith(CLASH_PREFIX));
+    const clashList= entries.filter(e => e.event.startsWith(CLASH_PREFIX))
+                            .sort((a,b) => a.event.localeCompare(b.event));
     const preElo   = preList.length ? preList[preList.length - 1].elo : null;
     if (!preElo && !clashList.length) continue;
 
