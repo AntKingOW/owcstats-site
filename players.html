@@ -108,6 +108,15 @@ select:focus { border-color: var(--accent2); }
         </div>
       </div>
 
+      <div class="panel" style="padding:10px 12px">
+        <div class="filter-label">Data Source</div>
+        <div class="tabs" id="source-tabs">
+          <button class="tab-btn active" data-source="S1">S1</button>
+          <button class="tab-btn" data-source="CC">CC</button>
+          <button class="tab-btn" data-source="All">전체</button>
+        </div>
+      </div>
+
       <div class="panel">
         <div class="filter-label">Region</div>
         <div class="tabs" id="region-tabs">
@@ -213,7 +222,14 @@ const ROLE_DEFAULTS = {
   All:     { x: 'dmg_per10', y: 'heal_per10' },
 };
 
-// Team logo extension map (slug → ext)
+// CC 팀 → 리전 매핑
+const CC_TEAM_REGION = {
+  'Twisted Minds': 'EMEA', 'Virtus.pro': 'EMEA',
+  'Dallas Fuel': 'NA', 'Spacestation Gaming': 'NA',
+  'Crazy Raccoon': 'Korea', 'ZETA DIVISION': 'Korea',
+  'Weibo Gaming': 'China', 'All Gamers': 'China',
+};
+
 const LOGO_BASE = 'ban-calc/assets/teams/';
 const LOGO_EXT = {
   'cheeseburger': 'webp', 'crazy-raccoon': 'png', 'new-era': 'webp',
@@ -223,6 +239,7 @@ const LOGO_EXT = {
   'team-peps': 'png', 'twisted-minds': 'png', 'virtus-pro': 'png',
   'dallas-fuel': 'png', 'disguised': 'png', 'extinction': 'png',
   'lunex-gaming': 'png', 'spacestation-gaming': 'png', 'team-liquid': 'png',
+  'weibo-gaming': 'png', 'all-gamers': 'png',
 };
 
 function slugify(name) {
@@ -235,19 +252,30 @@ function logoUrl(team) {
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
-let allPlayers = [];
+let s1Players = [];
+let ccPlayers = [];
 let selectedRegions = new Set(['Korea', 'NA', 'EMEA']);
 let currentRole = 'All';
 let minMinutes = 20;
-let currentView = 'scatter';   // 'scatter' | 'rankings'
+let currentView = 'scatter';
 let currentMetric = 'dmg_per10';
+let currentSource = 'S1';   // 'S1' | 'CC' | 'All'
 
 const PAD = { top: 32, right: 36, bottom: 56, left: 56 };
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 async function loadData() {
-  const res = await fetch('assets/data/player_stats.json');
-  allPlayers = await res.json();
+  const [s1Res, ccRes] = await Promise.all([
+    fetch('assets/data/player_stats.json'),
+    fetch('assets/data/clash_player_stats.json'),
+  ]);
+  s1Players = (await s1Res.json()).map(p => ({ ...p, source: 'S1' }));
+  const ccRaw = await ccRes.json();
+  ccPlayers = ccRaw.map(p => ({
+    ...p,
+    region: CC_TEAM_REGION[p.team] || 'Intl',
+    source: 'CC',
+  }));
   updateDefaults();
   render();
 }
@@ -258,13 +286,30 @@ function updateDefaults() {
   document.getElementById('y-axis').value = def.y;
 }
 
+function getSourcePool() {
+  if (currentSource === 'S1')  return s1Players;
+  if (currentSource === 'CC')  return ccPlayers;
+  return [...s1Players, ...ccPlayers];
+}
+
 function getFiltered() {
-  return allPlayers.filter(p => {
+  return getSourcePool().filter(p => {
     if (selectedRegions.size > 0 && !selectedRegions.has(p.region)) return false;
     if (currentRole !== 'All' && p.role !== currentRole) return false;
     if (p.minutes < minMinutes) return false;
     return true;
   });
+}
+
+// 소스 변경 시 리전 탭 재구성 (innerHTML만 갱신, 이벤트는 아래서 위임)
+function rebuildRegionTabs() {
+  const pool = getSourcePool();
+  const regions = [...new Set(pool.map(p => p.region))].sort();
+  const LABEL = { Korea:'KR', NA:'NA', EMEA:'EMEA', China:'CN', Intl:'Intl' };
+  document.getElementById('region-tabs').innerHTML = regions.map(r =>
+    `<button class="tab-btn region-btn active" data-region="${r}">${LABEL[r]||r}</button>`
+  ).join('');
+  selectedRegions = new Set(regions);
 }
 
 // ── Render dispatcher ─────────────────────────────────────────────────────────
@@ -284,11 +329,11 @@ function render() {
 }
 
 // ── Scatter ───────────────────────────────────────────────────────────────────
-const LOGO_SIZE = 22; // px diameter
+const LOGO_SIZE = 22;
 
 function renderScatter(players, xKey, yKey) {
-  const svg   = document.getElementById('scatter');
-  const wrap  = document.getElementById('scatter-canvas-wrap');
+  const svg  = document.getElementById('scatter');
+  const wrap = document.getElementById('scatter-canvas-wrap');
   const W = wrap.clientWidth  || 700;
   const H = wrap.clientHeight || 525;
 
@@ -296,66 +341,69 @@ function renderScatter(players, xKey, yKey) {
 
   const xs = players.map(p => p[xKey]);
   const ys = players.map(p => p[yKey]);
-  const xMin = Math.min(...xs) * 0.9,  xMax = Math.max(...xs) * 1.05;
-  const yMin = Math.min(...ys) * 0.9,  yMax = Math.max(...ys) * 1.05;
 
-  const scaleX = v => PAD.left + (v - xMin) / (xMax - xMin) * (W - PAD.left - PAD.right);
-  const scaleY = v => H - PAD.bottom - (v - yMin) / (yMax - yMin) * (H - PAD.top - PAD.bottom);
+  // span-based margin: 14% of data range on each side
+  // (값이 0에 가까워도 마진이 보장됨)
+  const M = 0.14;
+  const xSpan = Math.max(Math.max(...xs) - Math.min(...xs), 0.001);
+  const ySpan = Math.max(Math.max(...ys) - Math.min(...ys), 0.001);
+  const xMin = Math.min(...xs) - xSpan * M,  xMax = Math.max(...xs) + xSpan * M;
+  const yMin = Math.min(...ys) - ySpan * M,  yMax = Math.max(...ys) + ySpan * M;
 
-  const R = LOGO_SIZE / 2;  // radius
+  const iW = W - PAD.left - PAD.right;
+  const iH = H - PAD.top  - PAD.bottom;
+  const scaleX = v => PAD.left   + (v - xMin) / (xMax - xMin) * iW;
+  const scaleY = v => H - PAD.bottom - (v - yMin) / (yMax - yMin) * iH;
+  const R = LOGO_SIZE / 2;
 
-  // Build defs: one clipPath per point
-  let defs = `<defs><clipPath id="plot-clip"><rect x="${PAD.left}" y="${PAD.top}" width="${W-PAD.left-PAD.right}" height="${H-PAD.top-PAD.bottom}"/></clipPath>`;
-  players.forEach((_, i) => {
-    defs += `<clipPath id="lc${i}"><circle r="${R}" cx="0" cy="0"/></clipPath>`;
-  });
+  // defs: plot-clip + per-logo clipPaths
+  let defs = `<defs><clipPath id="plot-clip"><rect x="${PAD.left}" y="${PAD.top}" width="${iW}" height="${iH}"/></clipPath>`;
+  players.forEach((_, i) => { defs += `<clipPath id="lc${i}"><circle r="${R}" cx="0" cy="0"/></clipPath>`; });
   defs += `</defs>`;
 
-  let svgContent = defs;
+  let out = defs;
 
-  // Grid lines & axis labels
-  const xTicks = 5, yTicks = 5;
-  for (let i = 0; i <= xTicks; i++) {
-    const v = xMin + (xMax - xMin) * i / xTicks;
-    const x = scaleX(v);
-    svgContent += `<line x1="${x}" y1="${PAD.top}" x2="${x}" y2="${H-PAD.bottom}" stroke="#1a3a5c" stroke-width="1"/>`;
-    svgContent += `<text x="${x}" y="${H-PAD.bottom+14}" text-anchor="middle" fill="#7a9bb5" font-size="10">${v.toFixed(1)}</text>`;
+  // Grid lines & axis tick labels
+  for (let i = 0; i <= 5; i++) {
+    const xv = xMin + (xMax - xMin) * i / 5, xp = scaleX(xv);
+    out += `<line x1="${xp}" y1="${PAD.top}" x2="${xp}" y2="${H-PAD.bottom}" stroke="#1a3a5c" stroke-width="1"/>`;
+    out += `<text x="${xp}" y="${H-PAD.bottom+14}" text-anchor="middle" fill="#7a9bb5" font-size="10">${xv.toFixed(1)}</text>`;
+    const yv = yMin + (yMax - yMin) * i / 5, yp = scaleY(yv);
+    out += `<line x1="${PAD.left}" y1="${yp}" x2="${W-PAD.right}" y2="${yp}" stroke="#1a3a5c" stroke-width="1"/>`;
+    out += `<text x="${PAD.left-6}" y="${yp+4}" text-anchor="end" fill="#7a9bb5" font-size="10">${yv.toFixed(1)}</text>`;
   }
-  for (let i = 0; i <= yTicks; i++) {
-    const v = yMin + (yMax - yMin) * i / yTicks;
-    const y = scaleY(v);
-    svgContent += `<line x1="${PAD.left}" y1="${y}" x2="${W-PAD.right}" y2="${y}" stroke="#1a3a5c" stroke-width="1"/>`;
-    svgContent += `<text x="${PAD.left-6}" y="${y+4}" text-anchor="end" fill="#7a9bb5" font-size="10">${v.toFixed(1)}</text>`;
-  }
-  svgContent += `<text x="${PAD.left+(W-PAD.left-PAD.right)/2}" y="${H-4}" text-anchor="middle" fill="#7a9bb5" font-size="11">${METRIC_LABELS[xKey]}</text>`;
-  svgContent += `<text x="13" y="${PAD.top+(H-PAD.top-PAD.bottom)/2}" text-anchor="middle" fill="#7a9bb5" font-size="11" transform="rotate(-90,13,${PAD.top+(H-PAD.top-PAD.bottom)/2})">${METRIC_LABELS[yKey]}</text>`;
+  out += `<text x="${PAD.left+iW/2}" y="${H-4}" text-anchor="middle" fill="#7a9bb5" font-size="11">${METRIC_LABELS[xKey]}</text>`;
+  out += `<text x="13" y="${PAD.top+iH/2}" text-anchor="middle" fill="#7a9bb5" font-size="11" transform="rotate(-90,13,${PAD.top+iH/2})">${METRIC_LABELS[yKey]}</text>`;
 
-  // Logos (clipped to plot area)
-  svgContent += `<g clip-path="url(#plot-clip)">`;
+  // 로고 도트 (plot-clip 안)
+  out += `<g clip-path="url(#plot-clip)">`;
   players.forEach((p, i) => {
-    const cx = scaleX(p[xKey]);
-    const cy = scaleY(p[yKey]);
+    const cx = scaleX(p[xKey]), cy = scaleY(p[yKey]);
     const color = ROLE_COLORS[p.role] || '#aaa';
-    const url   = logoUrl(p.team);
-
-    // Role-colored outer ring
-    svgContent += `<circle cx="${cx}" cy="${cy}" r="${R+2.5}" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="1.5"/>`;
-    // Dark background circle (for transparent logos)
-    svgContent += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#0e2135"/>`;
-    // Logo image clipped to circle — use transform so clipPath is origin-centred
-    svgContent += `<image href="${url}" x="${-R}" y="${-R}" width="${LOGO_SIZE}" height="${LOGO_SIZE}"
+    out += `<circle cx="${cx}" cy="${cy}" r="${R+2.5}" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="1.5"/>`;
+    out += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#0e2135"/>`;
+    out += `<image href="${logoUrl(p.team)}" x="${-R}" y="${-R}" width="${LOGO_SIZE}" height="${LOGO_SIZE}"
       transform="translate(${cx},${cy})" clip-path="url(#lc${i})"
       class="dot" data-i="${i}" preserveAspectRatio="xMidYMid meet"/>`;
-    // Player name label below logo
+  });
+  out += `</g>`;
+
+  // 이름 레이블 (clip 밖 — 경계에서 잘리지 않도록 위치 클램핑)
+  players.forEach((p, i) => {
+    const cx = scaleX(p[xKey]), cy = scaleY(p[yKey]);
+    const color = ROLE_COLORS[p.role] || '#aaa';
     const label = p.player.length > 12 ? p.player.slice(0, 11) + '…' : p.player;
-    svgContent += `<text x="${cx}" y="${cy + R + 11}" text-anchor="middle" fill="${color}"
-      font-size="8.5" font-family="inherit" pointer-events="none"
+    // 레이블이 플롯 영역 밖으로 나가지 않도록 x/y 클램핑
+    const lx = Math.max(PAD.left + 18, Math.min(W - PAD.right - 18, cx));
+    const labelY = cy + R + 11;
+    const ly = labelY > H - PAD.bottom - 2 ? cy - R - 4 : labelY;
+    out += `<text x="${lx}" y="${ly}" text-anchor="middle" fill="${color}"
+      font-size="8.5" pointer-events="none"
       style="text-shadow:0 0 4px #08141f,0 0 4px #08141f">${label}</text>`;
   });
-  svgContent += `</g>`;
 
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svg.innerHTML = svgContent;
+  svg.innerHTML = out;
 
   // Tooltip
   const tooltip = document.getElementById('tooltip');
@@ -448,7 +496,16 @@ document.getElementById('metric-tabs').addEventListener('click', e => {
   if (currentView === 'rankings') render();
 });
 
-// Region multi-toggle
+// Source tabs
+document.getElementById('source-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn'); if (!btn) return;
+  currentSource = btn.dataset.source;
+  document.querySelectorAll('#source-tabs .tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  rebuildRegionTabs();
+  render();
+});
+
+// Region multi-toggle (위임 방식 — innerHTML 교체 후에도 동작)
 document.getElementById('region-tabs').addEventListener('click', e => {
   const btn = e.target.closest('.region-btn'); if (!btn) return;
   const r = btn.dataset.region;
@@ -485,7 +542,7 @@ document.getElementById('min-min').addEventListener('input', e => {
 
 window.addEventListener('resize', () => { if (currentView === 'scatter') render(); });
 
-loadData();
+loadData().then(() => rebuildRegionTabs());
 document.addEventListener('langchange', () => { render(); applyI18n(); });
 </script>
 </body>
