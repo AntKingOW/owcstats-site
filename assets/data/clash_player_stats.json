@@ -44,7 +44,7 @@
   {
     "team": "All Gamers",
     "player": "LiGe",
-    "role": "DPS",
+    "role": "Tank",
     "games": 3,
     "minutes": 27.08,
     "dmg_per10": 9373.71,
@@ -268,7 +268,7 @@
   {
     "team": "Spacestation Gaming",
     "player": "Hawk",
-    "role": "DPS",
+    "role": "Tank",
     "games": 4,
     "minutes": 32.94,
     "dmg_per10": 8246.51,
@@ -576,7 +576,7 @@
   {
     "team": "ZETA DIVISION",
     "player": "Mealgaru",
-    "role": "DPS",
+    "role": "Tank",
     "games": 6,
     "minutes": 64.93,
     "dmg_per10": 8832.43,
