@@ -539,7 +539,10 @@ function renderRankings(players) {
             <div class="top5-player">${p.player}</div>
             <div class="top5-team">${p.team}</div>
           </div>
-          <div class="top5-val">${p[metric]}</div>
+          <div style="text-align:right">
+            <div class="top5-val">${p[metric]}</div>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:1px">${p.minutes}m</div>
+          </div>
         </div>`).join('')}
     </div>`;
   }
