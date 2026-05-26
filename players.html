@@ -286,10 +286,75 @@ function updateDefaults() {
   document.getElementById('y-axis').value = def.y;
 }
 
+// CC 선수명 → S1 선수명 (소문자, 표기 불일치 보정)
+const CC_TO_S1_NAME = { 'eis': 'eisgnom' };
+
+function toRaw(p) {
+  const m = p.minutes;
+  return {
+    team: p.team, player: p.player, role: p.role,
+    region: p.region || CC_TEAM_REGION[p.team] || 'Intl',
+    minutes: m, games: p.games,
+    E:   p.elim_per10   * m / 10,
+    A:   p.assist_per10 * m / 10,
+    D:   p.death_per10  * m / 10,
+    DMG: p.dmg_per10    * m / 10,
+    H:   p.heal_per10   * m / 10,
+    MIT: p.mit_per10    * m / 10,
+  };
+}
+
+function rawToPlayer(r) {
+  const m = r.minutes;
+  return {
+    team: r.team, player: r.player, role: r.role,
+    region: r.region, minutes: Math.round(m * 10) / 10, games: r.games,
+    dmg_per10:    Math.round(r.DMG / m * 10 * 100) / 100,
+    heal_per10:   Math.round(r.H   / m * 10 * 100) / 100,
+    elim_per10:   Math.round(r.E   / m * 10 * 100) / 100,
+    assist_per10: Math.round(r.A   / m * 10 * 100) / 100,
+    death_per10:  Math.round(r.D   / m * 10 * 100) / 100,
+    mit_per10:    Math.round(r.MIT / m * 10 * 100) / 100,
+    ed_ratio:     r.D > 0 ? Math.round(r.E / r.D * 100) / 100 : Math.round(r.E * 100) / 100,
+  };
+}
+
+function getMergedPlayers() {
+  const s1Map = new Map();
+  for (const p of s1Players) {
+    s1Map.set(`${p.player.toLowerCase()}|${p.team.toLowerCase()}`, toRaw(p));
+  }
+
+  const result = new Map(s1Map);
+
+  for (const p of ccPlayers) {
+    const ccName  = p.player.toLowerCase();
+    const s1Name  = CC_TO_S1_NAME[ccName] || ccName;
+    const k       = `${s1Name}|${p.team.toLowerCase()}`;
+    const ccRaw   = toRaw(p);
+
+    if (result.has(k)) {
+      const base = result.get(k);
+      const tm   = base.minutes + ccRaw.minutes;
+      result.set(k, {
+        team: base.team, player: base.player, role: base.role, region: base.region,
+        minutes: tm, games: base.games + ccRaw.games,
+        E:   base.E   + ccRaw.E,   A: base.A + ccRaw.A, D: base.D + ccRaw.D,
+        DMG: base.DMG + ccRaw.DMG, H: base.H + ccRaw.H, MIT: base.MIT + ccRaw.MIT,
+      });
+    } else {
+      // CC 전용 선수 (China 팀, Youbi 등)
+      result.set(`${ccName}|${p.team.toLowerCase()}`, { ...ccRaw, player: p.player });
+    }
+  }
+
+  return [...result.values()].map(rawToPlayer);
+}
+
 function getSourcePool() {
   if (currentSource === 'S1')  return s1Players;
   if (currentSource === 'CC')  return ccPlayers;
-  return [...s1Players, ...ccPlayers];
+  return getMergedPlayers();
 }
 
 function getFiltered() {
