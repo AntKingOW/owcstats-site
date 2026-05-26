@@ -356,10 +356,10 @@ let trendChart     = null;
 
 async function loadData() {
   const [r, ps, bs, h] = await Promise.all([
-    fetch('assets/data/elo_rankings.json').then(r=>r.json()),
-    fetch('assets/data/player_stats.json').then(r=>r.json()),
-    fetch('assets/data/ban_summary.json').then(r=>r.json()),
-    fetch('assets/data/elo_history.json').then(r=>r.json()),
+    fetch(`assets/data/elo_rankings.json?v=${window.DATA_V||'0'}`).then(r=>r.json()),
+    fetch(`assets/data/player_stats.json?v=${window.DATA_V||'0'}`).then(r=>r.json()),
+    fetch(`assets/data/ban_summary.json?v=${window.DATA_V||'0'}`).then(r=>r.json()),
+    fetch(`assets/data/elo_history.json?v=${window.DATA_V||'0'}`).then(r=>r.json()),
   ]);
   allRankings = r; playerStats = ps; banSummary = bs; eloHistory = h;
   buildTeamMeta();

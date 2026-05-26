@@ -932,8 +932,8 @@ if (window.OWCS_REFERENCE && window.OWCS_REFERENCE.heroes) {
 
 async function loadBanData() {
   const [histRes, summRes] = await Promise.all([
-    fetch('assets/data/ban_history.json'),
-    fetch('assets/data/ban_summary.json'),
+    fetch(`assets/data/ban_history.json?v=${window.DATA_V||'0'}`),
+    fetch(`assets/data/ban_summary.json?v=${window.DATA_V||'0'}`),
   ]);
   banData    = await histRes.json();
   banSummary = await summRes.json();

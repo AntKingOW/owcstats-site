@@ -173,8 +173,8 @@ let topN = 10;
 
 async function loadData() {
   const [rankRes, histRes] = await Promise.all([
-    fetch('assets/data/elo_rankings.json'),
-    fetch('assets/data/elo_history.json'),
+    fetch(`assets/data/elo_rankings.json?v=${window.DATA_V||'0'}`),
+    fetch(`assets/data/elo_history.json?v=${window.DATA_V||'0'}`),
   ]);
   allData = await rankRes.json();
   historyData = await histRes.json();

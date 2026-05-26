@@ -266,8 +266,8 @@ const PAD = { top: 32, right: 36, bottom: 56, left: 56 };
 // ── Data ──────────────────────────────────────────────────────────────────────
 async function loadData() {
   const [s1Res, ccRes] = await Promise.all([
-    fetch('assets/data/player_stats.json'),
-    fetch('assets/data/clash_player_stats.json'),
+    fetch(`assets/data/player_stats.json?v=${window.DATA_V||'0'}`),
+    fetch(`assets/data/clash_player_stats.json?v=${window.DATA_V||'0'}`),
   ]);
   s1Players = (await s1Res.json()).map(p => ({ ...p, source: 'S1' }));
   const ccRaw = await ccRes.json();

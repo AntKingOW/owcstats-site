@@ -418,10 +418,10 @@ const CLASH_NAMES = new Set(CLASH_TEAMS.map(t=>t.name));
 // ── Init ───────────────────────────────────────────────────────────────────
 async function init() {
   const [eloRes, playerRes, banRes, histRes] = await Promise.all([
-    fetch('assets/data/elo_rankings.json'),
-    fetch('assets/data/clash_player_stats.json'),
-    fetch('assets/data/ban_summary.json'),
-    fetch('assets/data/elo_history.json'),
+    fetch(`assets/data/elo_rankings.json?v=${window.DATA_V||'0'}`),
+    fetch(`assets/data/clash_player_stats.json?v=${window.DATA_V||'0'}`),
+    fetch(`assets/data/ban_summary.json?v=${window.DATA_V||'0'}`),
+    fetch(`assets/data/elo_history.json?v=${window.DATA_V||'0'}`),
   ]);
   eloData     = ((await eloRes.json())['2026'] || []).filter(t=>CLASH_NAMES.has(t.team)).sort((a,b)=>b.elo-a.elo);
   playerData  = await playerRes.json();

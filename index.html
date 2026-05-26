@@ -157,7 +157,7 @@
 <script>
 async function loadHome() {
   try {
-    const res = await fetch('assets/data/elo_rankings.json');
+    const res = await fetch(`assets/data/elo_rankings.json?v=${window.DATA_V||'0'}`);
     const data = await res.json();
     const top5 = (data['2026'] || []).slice(0, 5);
 
