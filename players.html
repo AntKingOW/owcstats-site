@@ -366,13 +366,18 @@ function getFiltered() {
   });
 }
 
-// 소스 변경 시 리전 탭 재구성 (innerHTML만 갱신, 이벤트는 아래서 위임)
+// 소스별 고정 리전 목록 (동적 추출 X — S1에 China 절대 포함 안 되도록)
+const SOURCE_REGIONS = {
+  'S1':  ['Korea', 'NA', 'EMEA'],
+  'CC':  ['Korea', 'NA', 'EMEA', 'China'],
+  'All': ['Korea', 'NA', 'EMEA', 'China'],
+};
+const REGION_LABEL = { Korea:'KR', NA:'NA', EMEA:'EMEA', China:'CN', Intl:'Intl' };
+
 function rebuildRegionTabs() {
-  const pool = getSourcePool();
-  const regions = [...new Set(pool.map(p => p.region))].sort();
-  const LABEL = { Korea:'KR', NA:'NA', EMEA:'EMEA', China:'CN', Intl:'Intl' };
+  const regions = SOURCE_REGIONS[currentSource] || ['Korea', 'NA', 'EMEA'];
   document.getElementById('region-tabs').innerHTML = regions.map(r =>
-    `<button class="tab-btn region-btn active" data-region="${r}">${LABEL[r]||r}</button>`
+    `<button class="tab-btn region-btn active" data-region="${r}">${REGION_LABEL[r]||r}</button>`
   ).join('');
   selectedRegions = new Set(regions);
 }
