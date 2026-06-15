@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tournaments — OWCStats</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* ── Top filter bar ─────────────────────────────────────────── */
+.t-filter {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
+}
+.t-filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.t-filter-row:last-child { margin-bottom: 0; }
+.t-filter-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px;
+  color: var(--text-dim); font-weight: 700; min-width: 50px;
+}
+
+/* ── Stage cards row ───────────────────────────────────────── */
+.stage-row {
+  display: flex; gap: 8px; overflow-x: auto;
+  padding: 4px 2px; margin-bottom: 20px;
+}
+.stage-card {
+  flex: 0 0 auto; min-width: 110px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px;
+  cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.stage-card:hover { border-color: var(--accent2); transform: translateY(-1px); }
+.stage-card.active { background: var(--accent); border-color: var(--accent); color: #08141f; }
+.stage-card.active .stage-meta { color: rgba(8,20,31,0.7); }
+.stage-card.empty { opacity: 0.4; cursor: not-allowed; }
+.stage-card.empty:hover { transform: none; border-color: var(--border); }
+.stage-name { font-size: 14px; font-weight: 700; }
+.stage-abbr { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.stage-card.active .stage-abbr { color: rgba(8,20,31,0.7); }
+.stage-meta { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+.stage-type-badge {
+  display: inline-block; padding: 1px 6px; border-radius: 8px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  background: var(--panel2); color: var(--text-dim); margin-top: 4px;
+}
+.stage-card.active .stage-type-badge { background: rgba(8,20,31,0.2); color: rgba(8,20,31,0.8); }
+
+/* ── Main content ───────────────────────────────────────── */
+.t-content { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .t-content { grid-template-columns: 1fr; } }
+
+.t-panel {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+}
+.t-panel h3 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px;
+  color: var(--text-dim); font-weight: 700; margin-bottom: 12px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+
+/* Stage summary card */
+.t-summary {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--panel) 0%, var(--panel2) 100%);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 22px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.t-summary-title { font-size: 22px; font-weight: 800; color: var(--text); }
+.t-summary-title span { color: var(--accent); }
+.t-summary-sub { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+.t-summary-stats { display: flex; gap: 20px; margin-left: auto; flex-wrap: wrap; }
+.t-summary-stats .item .lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+.t-summary-stats .item .val { font-size: 16px; font-weight: 700; color: var(--accent2); margin-top: 2px; }
+
+/* ── ELO mini table ──────────────────────────────────────── */
+.t-elo-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.t-elo-table td { padding: 7px 8px; border-bottom: 1px solid var(--border); }
+.t-elo-table tr:last-child td { border-bottom: none; }
+.t-elo-table tr:hover td { background: var(--panel2); }
+.t-elo-table .rank { color: var(--text-dim); font-weight: 700; width: 24px; }
+.t-elo-table .rank.gold { color: var(--accent); }
+.t-elo-table .logo-cell { width: 28px; }
+.t-elo-table .logo-cell img { width: 22px; height: 22px; border-radius: 50%; object-fit: contain; background: #122033; vertical-align: middle; }
+.t-elo-table .team-cell { font-weight: 600; }
+.t-elo-table .elo-cell { text-align: right; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* ── Player Top by role ──────────────────────────────────── */
+.role-tab-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.role-tab {
+  padding: 4px 12px; border-radius: 12px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim); cursor: pointer;
+  font-size: 11px; font-weight: 600; transition: all 0.15s;
+}
+.role-tab:hover { border-color: var(--accent2); color: var(--text); }
+.role-tab.active { background: var(--accent2); border-color: var(--accent2); color: #08141f; }
+
+.metric-tab-row { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
+.metric-tab {
+  padding: 3px 9px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim); cursor: pointer;
+  font-size: 11px; font-weight: 500;
+}
+.metric-tab.active { background: var(--accent); border-color: var(--accent); color: #08141f; }
+
+.player-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px;
+}
+.player-row:last-child { border-bottom: none; }
+.player-rank { color: var(--text-dim); font-weight: 700; width: 18px; font-size: 11px; }
+.player-rank.gold { color: var(--accent); }
+.player-row img.logo { width: 22px; height: 22px; border-radius: 50%; object-fit: contain; background: #122033; }
+.player-name { font-weight: 700; flex: 1; }
+.player-team { color: var(--text-dim); font-size: 10px; }
+.player-val { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* Empty state */
+.t-empty {
+  padding: 40px 20px; text-align: center;
+  color: var(--text-dim); font-size: 13px;
+}
+.t-empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.5; }
+
+/* Region badge */
+.region-Korea { color: #ff6b6b; }
+.region-NA { color: #4da6ff; }
+.region-EMEA { color: #b07dfb; }
+.region-Japan { color: #ff9f43; }
+.region-Pacific { color: #26de81; }
+.region-China { color: #fd9644; }
+</style>
+</head>
+<body>
+<script src="assets/nav.js"></script>
+
+<main class="page">
+  <header class="hero">
+    <h1>OWCS <span>Tournaments</span></h1>
+    <p>연도, 지역, 단계별 ELO 순위 및 선수 스탯을 확인할 수 있습니다.</p>
+  </header>
+
+  <!-- 필터 -->
+  <div class="t-filter">
+    <div class="t-filter-row">
+      <span class="t-filter-label">Year</span>
+      <div id="year-tabs" class="tabs"></div>
+    </div>
+    <div class="t-filter-row">
+      <span class="t-filter-label">Region</span>
+      <div id="region-tabs" class="tabs"></div>
+    </div>
+  </div>
+
+  <!-- 단계 카드 -->
+  <div id="stage-row" class="stage-row"></div>
+
+  <!-- 본문 -->
+  <div id="content-area"></div>
+</main>
+
+<script>
+const LOGO_BASE = 'assets/logos/';
+const LOGO_EXT = { 'cheeseburger':'jpg', 'new-era':'jpg', 'team-falcons':'webp', 't1':'svg' };
+
+function slugify(name) {
+  return name.toLowerCase()
+    .replace(/['']/g, '-')
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+function logoUrl(team) {
+  const slug = slugify(team);
+  const ext = LOGO_EXT[slug] || 'png';
+  return `${LOGO_BASE}${slug}.${ext}`;
+}
+
+// ── State ───────────────────────────────────────────────────────────────────
+let metaData = null;
+let eloHistory = {};
+let eloRankings = {};
+let s1Players = [];
+let ccPlayers = [];
+
+let currentYear = '2026';
+let currentRegion = 'Korea';
+let currentStage = null;
+let currentRole = 'All';
+let currentMetric = 'dmg_per10';
+
+const TEAM_REGION_2026_CC = {
+  'Twisted Minds':'EMEA','Virtus.pro':'EMEA',
+  'Dallas Fuel':'NA','Spacestation Gaming':'NA',
+  'Crazy Raccoon':'Korea','ZETA DIVISION':'Korea',
+  'Weibo Gaming':'China','All Gamers':'China',
+};
+
+const METRICS = [
+  { key: 'dmg_per10',    label: 'DMG/10' },
+  { key: 'elim_per10',   label: 'Elim/10' },
+  { key: 'heal_per10',   label: 'Heal/10' },
+  { key: 'assist_per10', label: 'Assist/10' },
+  { key: 'mit_per10',    label: 'MIT/10' },
+  { key: 'ed_ratio',     label: 'E/D' },
+  { key: 'death_per10',  label: 'Deaths/10' },
+];
+
+const ROLE_DEFAULT_METRIC = { Tank: 'mit_per10', DPS: 'dmg_per10', Support: 'heal_per10' };
+
+// ── Data loading ────────────────────────────────────────────────────────────
+async function loadData() {
+  const v = window.DATA_V || '0';
+  const [metaRes, histRes, rankRes, s1Res, ccRes] = await Promise.all([
+    fetch(`assets/data/tournaments_meta.json?v=${v}`),
+    fetch(`assets/data/elo_history.json?v=${v}`),
+    fetch(`assets/data/elo_rankings.json?v=${v}`),
+    fetch(`assets/data/player_stats.json?v=${v}`),
+    fetch(`assets/data/clash_player_stats.json?v=${v}`),
+  ]);
+  metaData   = await metaRes.json();
+  eloHistory = await histRes.json();
+  eloRankings = await rankRes.json();
+  s1Players  = await s1Res.json();
+  ccPlayers  = (await ccRes.json()).map(p => ({ ...p, region: TEAM_REGION_2026_CC[p.team] || 'Intl' }));
+
+  renderYearTabs();
+  renderRegionTabs();
+  renderStageRow();
+  renderContent();
+}
+
+// ── Year / Region tabs ──────────────────────────────────────────────────────
+function renderYearTabs() {
+  const years = Object.keys(metaData.years).sort().reverse();
+  const html = years.map(y => `<button class="tab-btn ${y===currentYear?'active':''}" data-year="${y}">${y}</button>`).join('');
+  document.getElementById('year-tabs').innerHTML = html;
+}
+
+function renderRegionTabs() {
+  const regions = Object.keys(metaData.years[currentYear].regions);
+  const html = regions.map(r => `<button class="tab-btn ${r===currentRegion?'active':''}" data-region="${r}">${r}</button>`).join('');
+  document.getElementById('region-tabs').innerHTML = html;
+
+  // 지금 선택된 region이 현재 연도에 없으면 첫 번째로
+  if (!regions.includes(currentRegion)) currentRegion = regions[0];
+}
+
+// ── Stage cards ─────────────────────────────────────────────────────────────
+function renderStageRow() {
+  const region = metaData.years[currentYear].regions[currentRegion];
+  if (!region) { document.getElementById('stage-row').innerHTML = ''; return; }
+  const stages = region.timeline;
+
+  // 현재 stage가 timeline에 없거나 미설정이면 첫 번째 데이터 있는 stage 또는 첫 번째
+  if (!currentStage || !stages.find(s => s.key === currentStage)) {
+    const firstWithData = stages.find(s => hasStageData(s));
+    currentStage = (firstWithData || stages[0]).key;
+  }
+
+  const html = stages.map(s => {
+    const hasData = hasStageData(s);
+    const active = s.key === currentStage;
+    return `
+      <div class="stage-card ${active?'active':''} ${!hasData?'empty':''}" data-stage="${s.key}">
+        <div class="stage-name">${s.name}</div>
+        <div class="stage-abbr">${s.abbr}</div>
+        <div class="stage-type-badge">${s.type === 'international' ? 'Intl' : 'Regional'}</div>
+        ${!hasData ? '<div class="stage-meta">데이터 없음</div>' : ''}
+      </div>`;
+  }).join('');
+  document.getElementById('stage-row').innerHTML = html;
+}
+
+function hasStageData(stage) {
+  // ELO 데이터가 stage의 어떤 이벤트에든 있으면 true
+  for (const team in eloHistory) {
+    for (const entry of eloHistory[team]) {
+      if (stage.events.includes(entry.event)) return true;
+    }
+  }
+  return false;
+}
+
+// ── Content render ──────────────────────────────────────────────────────────
+function renderContent() {
+  const region = metaData.years[currentYear].regions[currentRegion];
+  if (!region) { document.getElementById('content-area').innerHTML = '<div class="t-empty">지역 정보 없음</div>'; return; }
+  const stage = region.timeline.find(s => s.key === currentStage);
+  if (!stage) { document.getElementById('content-area').innerHTML = '<div class="t-empty">단계 정보 없음</div>'; return; }
+
+  const hasData = hasStageData(stage);
+
+  let html = renderSummary(stage, hasData);
+
+  if (!hasData) {
+    html += `<div class="t-empty">
+      <div class="t-empty-icon">📋</div>
+      <div>이 대회의 데이터가 아직 입력되지 않았습니다.</div>
+      <div style="font-size:11px;margin-top:6px">곧 업데이트 예정입니다.</div>
+    </div>`;
+  } else {
+    html += `<div class="t-content">
+      <div class="t-panel">
+        <h3>🏆 ELO 순위 (${currentRegion})</h3>
+        <div id="elo-panel">${renderEloTable(stage)}</div>
+      </div>
+      <div class="t-panel">
+        <h3>🎮 선수 스탯 순위</h3>
+        <div id="player-panel">${renderPlayerPanel(stage)}</div>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('content-area').innerHTML = html;
+}
+
+function renderSummary(stage, hasData) {
+  const teams = getTeamsForStage(stage);
+  const eventCount = stage.events.length;
+  return `
+    <div class="t-summary">
+      <div>
+        <div class="t-summary-title">${currentYear} <span>${stage.name}</span></div>
+        <div class="t-summary-sub">${currentRegion} · ${stage.type === 'international' ? '국제전' : '지역 리그'} · ${eventCount}개 이벤트</div>
+      </div>
+      <div class="t-summary-stats">
+        <div class="item"><div class="lbl">단계</div><div class="val">${stage.abbr}</div></div>
+        <div class="item"><div class="lbl">참가팀</div><div class="val">${hasData ? teams.length : '-'}</div></div>
+        <div class="item"><div class="lbl">유형</div><div class="val">${stage.type === 'international' ? 'Intl' : 'Regional'}</div></div>
+      </div>
+    </div>`;
+}
+
+// 해당 stage에서 currentRegion에 속하는 팀 + 마지막 ELO 추출
+function getTeamsForStage(stage) {
+  const result = [];
+  // currentRegion 매핑: stage가 international이면 그 지역 팀 + 그 이벤트에 참가한 모든 팀
+  const regionTeams = new Set();
+  const rankings = eloRankings[currentYear] || [];
+  for (const r of rankings) {
+    const teamRegion = r.region || '';
+    // region 매핑 (Korea/NA/EMEA/Japan/Pacific/China)
+    if (teamRegion === currentRegion ||
+        (currentRegion === 'Korea' && teamRegion === 'Asia') /* old data tolerance */) {
+      regionTeams.add(r.team);
+    }
+  }
+
+  for (const team in eloHistory) {
+    // 이 팀이 이 stage 이벤트에 참가했는지
+    const entries = eloHistory[team]
+      .filter(e => stage.events.includes(e.event))
+      .sort((a, b) => a.event.localeCompare(b.event));
+    if (entries.length === 0) continue;
+    // 지역 필터: international 이벤트면 currentRegion 팀만, regional이면 currentRegion 팀만
+    if (!regionTeams.has(team)) continue;
+    result.push({ team, elo: entries[entries.length - 1].elo });
+  }
+  result.sort((a, b) => b.elo - a.elo);
+  return result;
+}
+
+function renderEloTable(stage) {
+  const teams = getTeamsForStage(stage);
+  if (!teams.length) return '<div class="t-empty">이 지역의 ELO 데이터 없음</div>';
+  return `<table class="t-elo-table"><tbody>${teams.map((t, i) => `
+    <tr>
+      <td class="rank ${i<3?'gold':''}">${i+1}</td>
+      <td class="logo-cell"><img src="${logoUrl(t.team)}" alt="${t.team}" onerror="this.style.opacity=0"></td>
+      <td class="team-cell">${t.team}</td>
+      <td class="elo-cell">${Math.round(t.elo)}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+// ── Player rankings panel ──────────────────────────────────────────────────
+function getPlayersForStage(stage) {
+  // 매핑 로직: stage가 어떤 이벤트인지 보고, 해당 player_stats 소스 선택
+  const cc2026 = ['owcs_2026_champions_clash_day1','owcs_2026_champions_clash_day2','owcs_2026_champions_clash_day3'];
+  const isCC = stage.events.some(e => cc2026.includes(e));
+  const isS1_2026 = stage.events.some(e => e.startsWith('owcs_2026_') && !cc2026.includes(e));
+
+  let pool = [];
+  if (isCC) pool = ccPlayers;
+  else if (isS1_2026) pool = s1Players;
+  else return [];  // 다른 시즌은 아직 데이터 없음
+
+  // 지역 필터
+  return pool.filter(p => (p.region || '') === currentRegion);
+}
+
+function renderPlayerPanel(stage) {
+  const players = getPlayersForStage(stage);
+  if (!players.length) {
+    return '<div class="t-empty" style="padding:20px 0">이 단계의 선수 스탯 데이터 없음</div>';
+  }
+
+  const rolesHtml = ['All', 'Tank', 'DPS', 'Support'].map(r =>
+    `<button class="role-tab ${r===currentRole?'active':''}" data-role="${r}">${r}</button>`
+  ).join('');
+
+  const metricsHtml = METRICS.map(m =>
+    `<button class="metric-tab ${m.key===currentMetric?'active':''}" data-metric="${m.key}">${m.label}</button>`
+  ).join('');
+
+  // 필터
+  let filtered = players;
+  if (currentRole !== 'All') filtered = filtered.filter(p => p.role === currentRole);
+
+  const descending = currentMetric !== 'death_per10';
+  filtered.sort((a, b) => descending ? b[currentMetric] - a[currentMetric] : a[currentMetric] - b[currentMetric]);
+
+  const top = filtered.slice(0, 10);
+  const listHtml = top.length ? top.map((p, i) => `
+    <div class="player-row">
+      <div class="player-rank ${i===0?'gold':''}">${i+1}</div>
+      <img class="logo" src="${logoUrl(p.team)}" alt="${p.team}" onerror="this.style.opacity=0">
+      <div style="flex:1;min-width:0">
+        <div class="player-name">${p.player}</div>
+        <div class="player-team">${p.team}</div>
+      </div>
+      <div class="player-val">${p[currentMetric]}</div>
+    </div>`).join('') : '<div class="t-empty" style="padding:20px 0">해당 역할 선수 없음</div>';
+
+  return `
+    <div class="role-tab-row">${rolesHtml}</div>
+    <div class="metric-tab-row">${metricsHtml}</div>
+    ${listHtml}`;
+}
+
+// ── Event delegation ───────────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const yt = e.target.closest('#year-tabs .tab-btn');
+  if (yt) { currentYear = yt.dataset.year; currentStage = null; renderYearTabs(); renderRegionTabs(); renderStageRow(); renderContent(); return; }
+
+  const rt = e.target.closest('#region-tabs .tab-btn');
+  if (rt) { currentRegion = rt.dataset.region; currentStage = null; renderRegionTabs(); renderStageRow(); renderContent(); return; }
+
+  const sc = e.target.closest('.stage-card');
+  if (sc && !sc.classList.contains('empty')) {
+    currentStage = sc.dataset.stage;
+    renderStageRow(); renderContent();
+    return;
+  }
+
+  const role = e.target.closest('.role-tab');
+  if (role) {
+    currentRole = role.dataset.role;
+    if (currentRole !== 'All') currentMetric = ROLE_DEFAULT_METRIC[currentRole];
+    const region = metaData.years[currentYear].regions[currentRegion];
+    const stage = region.timeline.find(s => s.key === currentStage);
+    document.getElementById('player-panel').innerHTML = renderPlayerPanel(stage);
+    return;
+  }
+
+  const metric = e.target.closest('.metric-tab');
+  if (metric) {
+    currentMetric = metric.dataset.metric;
+    const region = metaData.years[currentYear].regions[currentRegion];
+    const stage = region.timeline.find(s => s.key === currentStage);
+    document.getElementById('player-panel').innerHTML = renderPlayerPanel(stage);
+    return;
+  }
+});
+
+loadData();
+</script>
+</body>
+</html>
