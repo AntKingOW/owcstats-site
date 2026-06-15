@@ -157,7 +157,7 @@
 - **HUNENG Gaming**: Remaker, D4RT (DPS) · SWOO, DuFan (Tank) · TCC, Damo (Support)
 - **Four Angry Men**: Lilko, Setsuna, A1IEN (DPS) · 800 (Tank) · Hypnos, Sa1nt (Support)
 - **Kitsune Kage**: Dosoldier, Ripples (DPS) · Ringleader, Chai (Tank) · Moon1ightT, L1tPk (Support)
-- **ReturnZ**: — (DPS) · suna, Decade (Tank) · Kouzi, Ign0re (Support) ⚠️ DPS 불명
+- **ReturnZ**: **asphy, Imdaon** (DPS) · suna, Decade (Tank) · Kouzi, Ign0re (Support)
 
 ### 주요 변동
 - **선수 영입**: Weibo Gaming ← Guxue (Tank), JD Gaming ← Roxy (Tank, 5월)
@@ -257,25 +257,38 @@
 | **The Kafe** (NA) | Extinction | 1339.3 |
 | **Kitsune Kage** (China) | Team KK (리브랜드) | — (S1 데이터 없음 → 신생 처리) |
 
-### 합병팀 — 결정 필요
+### 합병팀 — ELO 결정 (확정)
 - **ZANSIDE GAMING** (Korea) = ZAN Esports (1434.2) + Onside Gaming (1499.6)
-  - 옵션 A: 평균 → **1466.9**
-  - 옵션 B: 높은 쪽 (Onside) 승계 → **1499.6**
-  - 옵션 C: 새 ELO 부여 (신생팀 처리, 1300~1400)
-  - → **사용자 결정 요청** ⚠️
+  - → **Onside Gaming의 ELO 그대로 승계: 1499.6** ✅
+  - ZAN Esports는 별도 팀으로 더 이상 참가 안 함
 
-### 신생팀 — 초기 ELO 결정 필요
-| 지역 | 신생팀 | 초기 ELO (제안) |
+### 신생팀 초기 ELO — **1400 일괄 적용** ✅
+
+| 지역 | 신생팀 | Stage 2 시작 ELO |
 |---|---|---|
-| Korea | Cheeseburger, O2 Blast, Poker Face, SuperBad ※ | Cheeseburger/Poker Face는 S1 ELO 그대로(1283, 1336), O2 Blast/SuperBad는 신생 (1300대?) |
-| Japan | REVATI, Uwinks, MURASH GAMING | 1300대 신생 ELO |
-| Pacific | MENG GONG 3, ELMT | 1300대 신생 ELO |
-| China | HUNENG, Four Angry Men, ReturnZ | 1300대 신생 ELO |
-| EMEA | Telacy | 1300대 신생 ELO |
+| Korea | O2 Blast, SuperBad | 1400 |
+| Korea | Cheeseburger, Poker Face | S1 ELO 유지 (Cheeseburger 1282.6 / Poker Face 1335.7) |
+| Japan | REVATI, Uwinks, MURASH GAMING | 1400 |
+| Japan | Please Not Hero Ban, Lazuli | S1 ELO 유지 |
+| Pacific | MENG GONG 3, ELMT | 1400 |
+| China | HUNENG, Four Angry Men, ReturnZ | 1400 |
+| China | Kitsune Kage (Team KK 리브랜드) | 1400 (Team KK S1 데이터 없음) |
+| EMEA | Telacy | 1400 |
 
-※ Cheeseburger, Poker Face는 Stage 1 참가팀이라 ELO 있음. New Era는 S1 참가했지만 S2 미참가.
+※ New Era(Korea), ZAN Esports(Korea), Naive Piggy/Milk Tea(China), MMY/FURY(Pacific), Telomere/Nyam Gaming/Tokyo Ta1yo's(Japan) 등은 Stage 2 미참가 → 데이터에서 비활성 처리.
 
-→ **신생팀 기본 ELO를 얼마로 할지 결정 필요** ⚠️ (예: 1350 등 일괄 값)
+---
+
+## 🎯 China Stage 진행 방식 (확정)
+
+S1 데이터 확인 결과:
+- China S1 CSV의 source URL이 `China/Stage_1/Regular_Season` 만 사용
+- source_note: `group_stage_scrape`
+- 총 15시리즈 (Round Robin 1라운드만)
+- **Swiss Stage는 ELO 반영에서 제외됨** ✓
+
+→ Stage 2도 동일 원칙: **Round Robin + Playoffs만 반영, Swiss Stage(4라운드)는 제외**.
+  Stage 2의 owcs_2026_china_s2 CSV에는 Round Robin과 플옵 매치만 수집.
 
 ---
 
