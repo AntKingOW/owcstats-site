@@ -141,20 +141,24 @@
     <p>연도, 지역, 단계별 ELO 순위 및 선수 스탯을 확인할 수 있습니다.</p>
   </header>
 
-  <!-- 필터 -->
+  <!-- 연도 필터 -->
   <div class="t-filter">
     <div class="t-filter-row">
       <span class="t-filter-label">Year</span>
       <div id="year-tabs" class="tabs"></div>
     </div>
+  </div>
+
+  <!-- 단계 카드 -->
+  <div id="stage-row" class="stage-row"></div>
+
+  <!-- 지역 필터 (regional 대회에서만 표시) -->
+  <div class="t-filter" id="region-filter-wrap" style="display:none">
     <div class="t-filter-row">
       <span class="t-filter-label">Region</span>
       <div id="region-tabs" class="tabs"></div>
     </div>
   </div>
-
-  <!-- 단계 카드 -->
-  <div id="stage-row" class="stage-row"></div>
 
   <!-- 본문 -->
   <div id="content-area"></div>
@@ -225,9 +229,16 @@ async function loadData() {
   ccPlayers  = (await ccRes.json()).map(p => ({ ...p, region: TEAM_REGION_2026_CC[p.team] || 'Intl' }));
 
   renderYearTabs();
-  renderRegionTabs();
   renderStageRow();
+  renderRegionTabs();
   renderContent();
+}
+
+// 현재 선택된 stage 객체를 반환 (currentRegion timeline에서 찾음)
+function getCurrentStage() {
+  const region = metaData.years[currentYear].regions[currentRegion];
+  if (!region) return null;
+  return region.timeline.find(s => s.key === currentStage) || null;
 }
 
 // ── Year / Region tabs ──────────────────────────────────────────────────────
@@ -239,11 +250,15 @@ function renderYearTabs() {
 
 function renderRegionTabs() {
   const regions = Object.keys(metaData.years[currentYear].regions);
+  if (!regions.includes(currentRegion)) currentRegion = regions[0];
+
   const html = regions.map(r => `<button class="tab-btn ${r===currentRegion?'active':''}" data-region="${r}">${r}</button>`).join('');
   document.getElementById('region-tabs').innerHTML = html;
 
-  // 지금 선택된 region이 현재 연도에 없으면 첫 번째로
-  if (!regions.includes(currentRegion)) currentRegion = regions[0];
+  // 현재 stage가 international이면 지역 필터 숨김
+  const stage = getCurrentStage();
+  const isIntl = stage && stage.type === 'international';
+  document.getElementById('region-filter-wrap').style.display = isIntl ? 'none' : 'block';
 }
 
 // ── Stage cards ─────────────────────────────────────────────────────────────
@@ -300,9 +315,11 @@ function renderContent() {
       <div style="font-size:11px;margin-top:6px">곧 업데이트 예정입니다.</div>
     </div>`;
   } else {
+    const isIntl = stage.type === 'international';
+    const scope = isIntl ? '전체 참가팀' : currentRegion;
     html += `<div class="t-content">
       <div class="t-panel">
-        <h3>🏆 ELO 순위 (${currentRegion})</h3>
+        <h3>🏆 ELO 순위 (${scope})</h3>
         <div id="elo-panel">${renderEloTable(stage)}</div>
       </div>
       <div class="t-panel">
@@ -318,43 +335,43 @@ function renderContent() {
 function renderSummary(stage, hasData) {
   const teams = getTeamsForStage(stage);
   const eventCount = stage.events.length;
+  const isIntl = stage.type === 'international';
+  const scopeLabel = isIntl ? '국제전 (전체 참가팀)' : `지역 리그 · ${currentRegion}`;
   return `
     <div class="t-summary">
       <div>
         <div class="t-summary-title">${currentYear} <span>${stage.name}</span></div>
-        <div class="t-summary-sub">${currentRegion} · ${stage.type === 'international' ? '국제전' : '지역 리그'} · ${eventCount}개 이벤트</div>
+        <div class="t-summary-sub">${scopeLabel} · ${eventCount}개 이벤트</div>
       </div>
       <div class="t-summary-stats">
         <div class="item"><div class="lbl">단계</div><div class="val">${stage.abbr}</div></div>
         <div class="item"><div class="lbl">참가팀</div><div class="val">${hasData ? teams.length : '-'}</div></div>
-        <div class="item"><div class="lbl">유형</div><div class="val">${stage.type === 'international' ? 'Intl' : 'Regional'}</div></div>
+        <div class="item"><div class="lbl">유형</div><div class="val">${isIntl ? 'Intl' : 'Regional'}</div></div>
       </div>
     </div>`;
 }
 
-// 해당 stage에서 currentRegion에 속하는 팀 + 마지막 ELO 추출
+// stage 참가팀 + 마지막 ELO 추출.
+// regional이면 currentRegion 팀만, international이면 참가한 모든 팀.
 function getTeamsForStage(stage) {
-  const result = [];
-  // currentRegion 매핑: stage가 international이면 그 지역 팀 + 그 이벤트에 참가한 모든 팀
+  const isIntl = stage.type === 'international';
+
+  // 지역별 팀 매핑 (regional 필터링 용)
   const regionTeams = new Set();
-  const rankings = eloRankings[currentYear] || [];
-  for (const r of rankings) {
-    const teamRegion = r.region || '';
-    // region 매핑 (Korea/NA/EMEA/Japan/Pacific/China)
-    if (teamRegion === currentRegion ||
-        (currentRegion === 'Korea' && teamRegion === 'Asia') /* old data tolerance */) {
-      regionTeams.add(r.team);
+  if (!isIntl) {
+    const rankings = eloRankings[currentYear] || [];
+    for (const r of rankings) {
+      if ((r.region || '') === currentRegion) regionTeams.add(r.team);
     }
   }
 
+  const result = [];
   for (const team in eloHistory) {
-    // 이 팀이 이 stage 이벤트에 참가했는지
     const entries = eloHistory[team]
       .filter(e => stage.events.includes(e.event))
       .sort((a, b) => a.event.localeCompare(b.event));
     if (entries.length === 0) continue;
-    // 지역 필터: international 이벤트면 currentRegion 팀만, regional이면 currentRegion 팀만
-    if (!regionTeams.has(team)) continue;
+    if (!isIntl && !regionTeams.has(team)) continue;
     result.push({ team, elo: entries[entries.length - 1].elo });
   }
   result.sort((a, b) => b.elo - a.elo);
@@ -375,7 +392,6 @@ function renderEloTable(stage) {
 
 // ── Player rankings panel ──────────────────────────────────────────────────
 function getPlayersForStage(stage) {
-  // 매핑 로직: stage가 어떤 이벤트인지 보고, 해당 player_stats 소스 선택
   const cc2026 = ['owcs_2026_champions_clash_day1','owcs_2026_champions_clash_day2','owcs_2026_champions_clash_day3'];
   const isCC = stage.events.some(e => cc2026.includes(e));
   const isS1_2026 = stage.events.some(e => e.startsWith('owcs_2026_') && !cc2026.includes(e));
@@ -383,9 +399,10 @@ function getPlayersForStage(stage) {
   let pool = [];
   if (isCC) pool = ccPlayers;
   else if (isS1_2026) pool = s1Players;
-  else return [];  // 다른 시즌은 아직 데이터 없음
+  else return [];
 
-  // 지역 필터
+  // International이면 전체 풀, regional이면 지역 필터
+  if (stage.type === 'international') return pool;
   return pool.filter(p => (p.region || '') === currentRegion);
 }
 
@@ -431,15 +448,23 @@ function renderPlayerPanel(stage) {
 // ── Event delegation ───────────────────────────────────────────────────────
 document.addEventListener('click', e => {
   const yt = e.target.closest('#year-tabs .tab-btn');
-  if (yt) { currentYear = yt.dataset.year; currentStage = null; renderYearTabs(); renderRegionTabs(); renderStageRow(); renderContent(); return; }
+  if (yt) {
+    currentYear = yt.dataset.year; currentStage = null;
+    renderYearTabs(); renderStageRow(); renderRegionTabs(); renderContent();
+    return;
+  }
 
   const rt = e.target.closest('#region-tabs .tab-btn');
-  if (rt) { currentRegion = rt.dataset.region; currentStage = null; renderRegionTabs(); renderStageRow(); renderContent(); return; }
+  if (rt) {
+    currentRegion = rt.dataset.region;
+    renderStageRow(); renderRegionTabs(); renderContent();
+    return;
+  }
 
   const sc = e.target.closest('.stage-card');
   if (sc && !sc.classList.contains('empty')) {
     currentStage = sc.dataset.stage;
-    renderStageRow(); renderContent();
+    renderStageRow(); renderRegionTabs(); renderContent();
     return;
   }
 
