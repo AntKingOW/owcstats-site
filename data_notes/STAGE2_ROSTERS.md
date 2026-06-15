@@ -233,13 +233,49 @@
 
 ---
 
-## ⚠️ 확인 필요한 사항 (사용자 검토 요청)
+## ✅ 사용자 확인 결과 (2026-06-15)
 
-1. **Korea ZANSIDE GAMING**의 정체 — ZAN Esports + ONSIDE GAMING 합병인지? Liquipedia 페이지엔 명확히 안 나옴.
-2. **EMEA 1234의 WMaimone** — S1에서 Anyone's Legend(중국)였는데, EMEA 1234로 이적? 또는 동명이인?
-3. **EMEA Telacy 로스터** 일부 — S1에서 어디 소속이었는지 추가 확인 필요 (모두 신인일 수도).
-4. **China ReturnZ의 DPS 정보 누락** — Liquipedia 페이지에서 DPS 로스터가 빠져있음.
-5. **Japan MURASH GAMING** — Tokyo Ta1yo's 로스터 인수했다고 하는데, 실제 로스터가 S1의 Tokyo Ta1yo's와 얼마나 겹치는지 추가 확인.
+| # | 항목 | 결정 |
+|---|---|---|
+| 1 | **Korea ZANSIDE GAMING** | ZAN Esports + ONSIDE GAMING **합병팀 확정** |
+| 2 | **EMEA 1234** | Anyone's Legend의 **팀 승계** → ELO 승계, S1 표기 "Anyone's Legend (현재 1234)" |
+| 3 | **EMEA Telacy** | **신생팀**으로 취급 |
+| 4 | **China ReturnZ DPS** | Liquipedia에서 정보 누락 — 매치 진행되면 owtv.gg에서 자동 추출 예정 |
+| 5 | **Japan MURASH GAMING** | **신생팀**으로 취급 (Tokyo Ta1yo's 인수 흔적 무시) |
+
+---
+
+## 🔄 Stage 2 시작 ELO 결정 (사이트 반영 시)
+
+### 팀 승계 — ELO 그대로 이어받음
+| Stage 2 팀 | 승계 출처 | S1 종료 ELO |
+|---|---|---|
+| **1234** (EMEA) | Anyone's Legend (S1 China) | **1407.4** |
+| **SHENGSHI Esports** (Pacific) | The Gatos Guapos | 1527.5 |
+| **Najdorf Esports** (Pacific) | Rankers | 1440.5 |
+| **Trap12** (Pacific) | Quasar Esports | 1377.0 |
+| **The Kafe** (NA) | Extinction | 1339.3 |
+| **Kitsune Kage** (China) | Team KK (리브랜드) | — (S1 데이터 없음 → 신생 처리) |
+
+### 합병팀 — 결정 필요
+- **ZANSIDE GAMING** (Korea) = ZAN Esports (1434.2) + Onside Gaming (1499.6)
+  - 옵션 A: 평균 → **1466.9**
+  - 옵션 B: 높은 쪽 (Onside) 승계 → **1499.6**
+  - 옵션 C: 새 ELO 부여 (신생팀 처리, 1300~1400)
+  - → **사용자 결정 요청** ⚠️
+
+### 신생팀 — 초기 ELO 결정 필요
+| 지역 | 신생팀 | 초기 ELO (제안) |
+|---|---|---|
+| Korea | Cheeseburger, O2 Blast, Poker Face, SuperBad ※ | Cheeseburger/Poker Face는 S1 ELO 그대로(1283, 1336), O2 Blast/SuperBad는 신생 (1300대?) |
+| Japan | REVATI, Uwinks, MURASH GAMING | 1300대 신생 ELO |
+| Pacific | MENG GONG 3, ELMT | 1300대 신생 ELO |
+| China | HUNENG, Four Angry Men, ReturnZ | 1300대 신생 ELO |
+| EMEA | Telacy | 1300대 신생 ELO |
+
+※ Cheeseburger, Poker Face는 Stage 1 참가팀이라 ELO 있음. New Era는 S1 참가했지만 S2 미참가.
+
+→ **신생팀 기본 ELO를 얼마로 할지 결정 필요** ⚠️ (예: 1350 등 일괄 값)
 
 ---
 
