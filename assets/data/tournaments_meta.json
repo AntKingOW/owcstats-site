@@ -136,43 +136,67 @@
         "NA": {
           "name": "North America",
           "timeline": [
-            { "key": "s1", "name": "Stage 1",         "abbr": "S1", "type": "regional",      "events": ["owcs_2026_na_s1","owcs_2026_na_s1_playoffs"] },
-            { "key": "cc", "name": "Champions Clash", "abbr": "CC", "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] }
+            { "key": "s1",  "name": "Stage 1",         "abbr": "S1",  "type": "regional",      "events": ["owcs_2026_na_s1","owcs_2026_na_s1_playoffs"] },
+            { "key": "cc",  "name": "Champions Clash", "abbr": "CC",  "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] },
+            { "key": "s2",  "name": "Stage 2",         "abbr": "S2",  "type": "regional",      "events": ["owcs_2026_na_s2","owcs_2026_na_s2_playoffs"] },
+            { "key": "mid", "name": "Midseason",       "abbr": "Mid", "type": "international", "events": ["owcs_2026_midseason"] },
+            { "key": "s3",  "name": "Stage 3",         "abbr": "S3",  "type": "regional",      "events": ["owcs_2026_na_s3","owcs_2026_na_s3_playoffs"] },
+            { "key": "wf",  "name": "World Finals",    "abbr": "WF",  "type": "international", "events": ["owcs_2026_world_finals"] }
           ]
         },
         "EMEA": {
           "name": "EMEA",
           "timeline": [
-            { "key": "s1", "name": "Stage 1",         "abbr": "S1", "type": "regional",      "events": ["owcs_2026_emea_s1","owcs_2026_emea_s1_playoffs"] },
-            { "key": "cc", "name": "Champions Clash", "abbr": "CC", "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] }
+            { "key": "s1",  "name": "Stage 1",         "abbr": "S1",  "type": "regional",      "events": ["owcs_2026_emea_s1","owcs_2026_emea_s1_playoffs"] },
+            { "key": "cc",  "name": "Champions Clash", "abbr": "CC",  "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] },
+            { "key": "s2",  "name": "Stage 2",         "abbr": "S2",  "type": "regional",      "events": ["owcs_2026_emea_s2","owcs_2026_emea_s2_playoffs"] },
+            { "key": "mid", "name": "Midseason",       "abbr": "Mid", "type": "international", "events": ["owcs_2026_midseason"] },
+            { "key": "s3",  "name": "Stage 3",         "abbr": "S3",  "type": "regional",      "events": ["owcs_2026_emea_s3","owcs_2026_emea_s3_playoffs"] },
+            { "key": "wf",  "name": "World Finals",    "abbr": "WF",  "type": "international", "events": ["owcs_2026_world_finals"] }
           ]
         },
         "Korea": {
           "name": "Korea",
           "timeline": [
-            { "key": "s1", "name": "Stage 1",         "abbr": "S1", "type": "regional",      "events": ["owcs_2026_asia_s1_korea","owcs_2026_asia_s1_korea_playoffs","owcs_2026_asia_s1_main"] },
-            { "key": "cc", "name": "Champions Clash", "abbr": "CC", "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] }
+            { "key": "s1",  "name": "Stage 1",         "abbr": "S1",  "type": "regional",      "events": ["owcs_2026_asia_s1_korea","owcs_2026_asia_s1_korea_playoffs","owcs_2026_asia_s1_main"] },
+            { "key": "cc",  "name": "Champions Clash", "abbr": "CC",  "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] },
+            { "key": "s2",  "name": "Stage 2",         "abbr": "S2",  "type": "regional",      "events": ["owcs_2026_asia_s2_korea","owcs_2026_asia_s2_korea_playoffs","owcs_2026_asia_s2_main"] },
+            { "key": "mid", "name": "Midseason",       "abbr": "Mid", "type": "international", "events": ["owcs_2026_midseason"] },
+            { "key": "s3",  "name": "Stage 3",         "abbr": "S3",  "type": "regional",      "events": ["owcs_2026_asia_s3_korea","owcs_2026_korea_road_to_wf"] },
+            { "key": "wf",  "name": "World Finals",    "abbr": "WF",  "type": "international", "events": ["owcs_2026_world_finals"] }
           ]
         },
         "Japan": {
           "name": "Japan",
           "timeline": [
-            { "key": "s1", "name": "Stage 1",         "abbr": "S1", "type": "regional",      "events": ["owcs_2026_asia_s1_japan","owcs_2026_asia_s1_japan_playoffs","owcs_2026_asia_s1_main"] },
-            { "key": "cc", "name": "Champions Clash", "abbr": "CC", "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] }
+            { "key": "s1",  "name": "Stage 1",         "abbr": "S1",  "type": "regional",      "events": ["owcs_2026_asia_s1_japan","owcs_2026_asia_s1_japan_playoffs","owcs_2026_asia_s1_main"] },
+            { "key": "cc",  "name": "Champions Clash", "abbr": "CC",  "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] },
+            { "key": "s2",  "name": "Stage 2",         "abbr": "S2",  "type": "regional",      "events": ["owcs_2026_asia_s2_japan","owcs_2026_asia_s2_japan_playoffs","owcs_2026_asia_s2_main"] },
+            { "key": "mid", "name": "Midseason",       "abbr": "Mid", "type": "international", "events": ["owcs_2026_midseason"] },
+            { "key": "s3",  "name": "Stage 3",         "abbr": "S3",  "type": "regional",      "events": ["owcs_2026_asia_s3_japan"] },
+            { "key": "wf",  "name": "World Finals",    "abbr": "WF",  "type": "international", "events": ["owcs_2026_world_finals"] }
           ]
         },
         "Pacific": {
           "name": "Pacific",
           "timeline": [
-            { "key": "s1", "name": "Stage 1",         "abbr": "S1", "type": "regional",      "events": ["owcs_2026_asia_s1_pacific","owcs_2026_asia_s1_pacific_playoffs","owcs_2026_asia_s1_main"] },
-            { "key": "cc", "name": "Champions Clash", "abbr": "CC", "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] }
+            { "key": "s1",  "name": "Stage 1",         "abbr": "S1",  "type": "regional",      "events": ["owcs_2026_asia_s1_pacific","owcs_2026_asia_s1_pacific_playoffs","owcs_2026_asia_s1_main"] },
+            { "key": "cc",  "name": "Champions Clash", "abbr": "CC",  "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] },
+            { "key": "s2",  "name": "Stage 2",         "abbr": "S2",  "type": "regional",      "events": ["owcs_2026_asia_s2_pacific","owcs_2026_asia_s2_pacific_playoffs","owcs_2026_asia_s2_main"] },
+            { "key": "mid", "name": "Midseason",       "abbr": "Mid", "type": "international", "events": ["owcs_2026_midseason"] },
+            { "key": "s3",  "name": "Stage 3",         "abbr": "S3",  "type": "regional",      "events": ["owcs_2026_asia_s3_pacific"] },
+            { "key": "wf",  "name": "World Finals",    "abbr": "WF",  "type": "international", "events": ["owcs_2026_world_finals"] }
           ]
         },
         "China": {
           "name": "China",
           "timeline": [
-            { "key": "s1", "name": "Stage 1",         "abbr": "S1", "type": "regional",      "events": ["owcs_2026_china_s1","owcs_2026_china_s1_playoffs"] },
-            { "key": "cc", "name": "Champions Clash", "abbr": "CC", "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] }
+            { "key": "s1",  "name": "Stage 1",         "abbr": "S1",  "type": "regional",      "events": ["owcs_2026_china_s1","owcs_2026_china_s1_playoffs"] },
+            { "key": "cc",  "name": "Champions Clash", "abbr": "CC",  "type": "international", "events": ["owcs_2026_champions_clash_day1","owcs_2026_champions_clash_day2","owcs_2026_champions_clash_day3"] },
+            { "key": "s2",  "name": "Stage 2",         "abbr": "S2",  "type": "regional",      "events": ["owcs_2026_china_s2","owcs_2026_china_s2_playoffs"] },
+            { "key": "mid", "name": "Midseason",       "abbr": "Mid", "type": "international", "events": ["owcs_2026_midseason"] },
+            { "key": "s3",  "name": "Stage 3",         "abbr": "S3",  "type": "regional",      "events": ["owcs_2026_china_s3","owcs_2026_china_s3_playoffs"] },
+            { "key": "wf",  "name": "World Finals",    "abbr": "WF",  "type": "international", "events": ["owcs_2026_world_finals"] }
           ]
         }
       }
