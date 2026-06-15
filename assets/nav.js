@@ -6,7 +6,7 @@ window.DATA_V = '20260526';
 (function() {
   const pages = [
     { href: 'index.html', label: 'Home' },
-    { href: 'tournaments.html', label: '🏆 Tournaments', special: true },
+    { href: 'tournaments.html', label: 'Tournaments' },
     { href: 'elo.html',   label: 'ELO Rating' },
     { href: 'teams.html', label: 'Teams' },
     { href: 'players.html', label: 'Player Stats' },
