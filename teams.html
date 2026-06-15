@@ -259,7 +259,7 @@ function teamLogoImg(teamName, size) {
   size = size || 52;
   const slug = LOGO_SLUG_OVERRIDES[teamName] || slugify(teamName);
   const ext = LOGO_EXT_MAP[slug] || 'png';
-  const src = 'ban-calc/assets/teams/' + slug + '.' + ext;
+  const src = 'assets/logos/' + slug + '.' + ext;
   const initials = teamName.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
   const hue = [...teamName].reduce((h, c) => (h * 31 + c.charCodeAt(0)) & 0xffff, 0) % 360;
   const fb = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '"><circle cx="' + (size/2) + '" cy="' + (size/2) + '" r="' + (size/2) + '" fill="hsl(' + hue + ',55%,35%)"/><text x="50%" y="50%" dy=".35em" text-anchor="middle" font-size="' + Math.round(size*0.36) + '" font-weight="700" fill="white" font-family="sans-serif">' + initials + '</text></svg>');
