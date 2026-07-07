@@ -22,8 +22,8 @@ series_format, source_url, source_note`
 | `OWCStats/OWCStats/CLASH_MATCH_REVIEW_CSV/clash_2026_per_map.csv` | Champions Clash 전체 | EMEA_NA와 동일 구조. **MatchId·Source가 이미 owtv 슬러그/URL** (예: `clash_2026_tm_vs_ag`, `https://owtv.gg/matches/champions-clash-owcs-2026-playoffs-tm-vs-ag`) — S2 owtv 수집과 자연스럽게 이어지는 선례 |
 | Japan / Pacific / China | ❌ 선수 스탯 CSV 없음 (`OWCStats/OWCStats/Match Results/`에 스크린샷 원본만 일부) | 스탯 없이 결과·밴만 제공, 추후 보강 |
 
-### 밴 데이터 — ✅ (KR/NA/EMEA/Asia)
-`owcstats-site/assets/data/ban_events.json` — **1,110 이벤트**, 스키마:
+### 밴 데이터 — ✅ (KR/NA/EMEA/Asia + Champions Clash)
+① `owcstats-site/assets/data/ban_events.json` — **1,110 이벤트** (S1 지역 리그), 스키마:
 ```json
 {"region":"Korea","phase":"Week 1","match_label":"2026-03-20 Match 1","game":"1",
  "map":"Busan","map_mode":"Control","ban_stage":"initial","ban_team":"Poker Face",
@@ -31,6 +31,20 @@ series_format, source_url, source_note`
 ```
 - `ban_stage`: `initial`(선밴) / `followup`(후밴). `match_label` = `날짜 + Match n` → 스파인과 조인 가능.
 - ⚠️ `banned_hero`에 OCR 오류 의심값 존재 (예: "Emre"는 히어로명 아님) — 변환 시 히어로 사전으로 검증, 미매칭은 보고서에 수집해 사용자 확인.
+
+② `owcstats-site/assets/data/clash_2026_ban_events.json` — **96 이벤트** (Champions Clash), 스키마:
+```json
+{"region":"international","phase":"UB QF","match_label":"Twisted Minds vs All Gamers",
+ "game":1,"map":"Oasis","map_mode":"Control","ban_stage":"ban_1","ban_team":"Twisted Minds",
+ "banned_hero":"Symmetra","received_team":"All Gamers",
+ "match_date":"2026-05-22","series_format":"bo3","match_order":18}
+```
+- ①보다 조인 키가 풍부: `match_date` + `match_order`가 스파인 키와 **직접 일치** — 우선 조인.
+- ⚠️ `ban_stage` 표기가 ①과 다름 (`ban_1`/`ban_2` vs `initial`/`followup`) — adapter_bans에서
+  `ban_1→initial, ban_2→followup`으로 정규화해 단일 스키마로 통일할 것.
+- 참고: `clash_results.json`(경기 결과)·`clash_player_stats.json`(집계 스탯)도 assets/data에 있으나,
+  matches 빌드는 원본인 MAP_RESULTS CSV + `CLASH_MATCH_REVIEW_CSV/clash_2026_per_map.csv`를 소스로 쓰고
+  이 파생 JSON들은 검증 대조용으로만 사용한다.
 
 ## 2. 변환 설계
 
@@ -44,7 +58,9 @@ match_id = f"{event_id}__{match_date}_{match_order:02d}"   예: owcs_2026_korea_
 ### 2b. 빌더 구조 — `owcstats-site/build_matches.py` (신규)
 ```
 1. adapter_spine()      : MAP_RESULTS CSV → 매치·세트 뼈대 (전 지역·전 스테이지)
-2. adapter_bans()       : ban_events.json → (region, match_label 날짜, game) 키로 세트에 밴 부착
+2. adapter_bans()       : ban_events.json + clash_2026_ban_events.json → 세트에 밴 부착
+                          (Clash는 match_date+match_order로 직접 조인, S1은 region+match_label 날짜+game.
+                           ban_stage 표기 정규화: ban_1/ban_2 → initial/followup)
 3. adapter_stats_kr()   : Korea+Asia CSV  → forward-fill 후 (팀쌍, Phase/Game) 키로 부착
 4. adapter_stats_emea_na(): all_games_long.csv → MatchId 파싱 + (팀쌍, Game) 키로 부착
 5. adapter_stats_clash(): clash_2026_per_map.csv → 동일
@@ -86,6 +102,7 @@ match_id = f"{event_id}__{match_date}_{match_order:02d}"   예: owcs_2026_korea_
 - [ ] 스파인 매치 수 = MAP_RESULTS의 (event_id,date,match_order) 유니크 수와 일치
 - [ ] Korea 54 매치 전부 스탯 부착 (미부착 0)
 - [ ] 세트 스코어 합 = 맵 행 수 (draw 포함 규칙 확인)
-- [ ] ban_events 1,110건 중 부착 실패 목록 → 사용자 보고
+- [ ] ban_events 1,110건 + clash ban 96건 중 부착 실패 목록 → 사용자 보고
+- [ ] Clash 표본 대조: TM vs AG (UB QF, 2026-05-22) Game 1 Oasis — TM 밴 Symmetra, Quartz E15/D4/DMG11283, 11.02분
 - [ ] 표본 대조: EMEA Playoff Grand Final Game 1 = Lijiang Tower, VP eisgnom E13/A5/D6/DMG10462, 10.35분
 - [ ] player_stats.json 기존 집계와 새 구조 합계 일치 (E/A/D/DMG/H/MIT 총합 교차 검증)
