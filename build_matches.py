@@ -62,6 +62,9 @@ def build_spine():
     path = ELO_DIR / "OWCS_2026_GLOBAL_MAP_RESULTS.csv"
     with open(path, encoding="utf-8") as f:
         for r in csv.DictReader(f):
+            # owtv에서 append된 S2 행은 adapter_owtv가 원본(밴·스탯 포함)으로 처리 — 스파인 중복 방지
+            if r.get("source_note") == "owtv_scrape":
+                continue
             key = (r["event_id"], r["match_date"], int(r["match_order"]))
             mid = f"{r['event_id']}__{r['match_date']}_{int(r['match_order']):02d}"
             m = matches.get(mid)

@@ -119,6 +119,12 @@
       "elo": 1396.1,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1323.6,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Teenage Rising": [
@@ -683,6 +689,12 @@
       "elo": 1874.4,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1706.7,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "A-Square Tengu": [
@@ -1031,6 +1043,12 @@
       "elo": 1553.1,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_na_s2",
+      "elo": 1623.7,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Celtas": [
@@ -1173,6 +1191,12 @@
       "elo": 1400,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1214.1,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Nyam Gaming": [
@@ -1343,6 +1367,12 @@
       "elo": 1701.3,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1778.0,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Namekuji Brothers": [
@@ -1533,6 +1563,12 @@
       "elo": 1725.8,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1695.3,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "RunAway": [
@@ -1597,6 +1633,12 @@
       "elo": 1335.7,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1260.3,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Sin Prisa Gaming": [
@@ -1709,6 +1751,12 @@
       "elo": 1814.7,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1783.8,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "VEC": [
@@ -1887,6 +1935,12 @@
       "elo": 1871.7,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1900.0,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Genesis": [
@@ -2187,6 +2241,12 @@
       "elo": 1706.4,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1766.0,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Metaboiz": [
@@ -2583,6 +2643,12 @@
       "elo": 1621.0,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1587.2,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "A One Man Army": [
@@ -2709,6 +2775,12 @@
       "elo": 1320.1,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1351.7,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Telomere": [
@@ -2915,6 +2987,12 @@
       "elo": 1420.2,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1415.6,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "LostNever Gaming": [
@@ -3131,6 +3209,12 @@
       "elo": 1702.0,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1810.4,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Onside Gaming": [
@@ -3219,6 +3303,12 @@
       "elo": 1521.9,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_na_s2",
+      "elo": 1527.3,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Avidity": [
@@ -3505,6 +3595,12 @@
       "elo": 1587.2,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1675.0,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Supernova (American team)": [
@@ -3741,6 +3837,12 @@
       "elo": 1737.2,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1764.5,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Milk Tea": [
@@ -3811,6 +3913,12 @@
       "elo": 1282.6,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1341.5,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Mir Gaming": [
@@ -3877,6 +3985,12 @@
       "elo": 1599.3,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1585.1,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Tokyo Ta1yo's": [
@@ -3919,6 +4033,12 @@
       "elo": 1542.5,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1552.4,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Rankers": [
@@ -3989,6 +4109,12 @@
       "elo": 1493.3,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1516.3,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "JD Gaming": [
@@ -4009,6 +4135,12 @@
       "elo": 1469.2,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1576.3,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Solus Victorem": [
@@ -4029,6 +4161,12 @@
       "elo": 1333.1,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1347.8,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Anyone's Legend": [
@@ -4069,6 +4207,12 @@
       "elo": 1609.1,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_na_s2",
+      "elo": 1633.6,
+      "year": "2026",
+      "result": "win"
     }
   ],
   "Disguised": [
@@ -4083,6 +4227,12 @@
       "elo": 1390.5,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_na_s2",
+      "elo": 1320.2,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "LuneX Gaming": [
@@ -4103,38 +4253,12 @@
       "elo": 1385.3,
       "year": "2026",
       "result": "start"
-    }
-  ],
-  "ZANSIDE GAMING": [
+    },
     {
-      "event": "owcs_2026_asia_s2_korea",
-      "elo": 1499.6,
+      "event": "owcs_2026_na_s2",
+      "elo": 1379.9,
       "year": "2026",
-      "result": "start"
-    }
-  ],
-  "O2 Blast": [
-    {
-      "event": "owcs_2026_asia_s2_korea",
-      "elo": 1400,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "SuperBad": [
-    {
-      "event": "owcs_2026_asia_s2_korea",
-      "elo": 1400,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "Uwinks": [
-    {
-      "event": "owcs_2026_asia_s2_japan",
-      "elo": 1400,
-      "year": "2026",
-      "result": "start"
+      "result": "loss"
     }
   ],
   "MURASH GAMING": [
@@ -4143,6 +4267,26 @@
       "elo": 1400,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1501.4,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "Uwinks": [
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1400,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_japan",
+      "elo": 1397.2,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "SHENGSHI Esports": [
@@ -4151,30 +4295,12 @@
       "elo": 1527.5,
       "year": "2026",
       "result": "start"
-    }
-  ],
-  "Najdorf Esports": [
+    },
     {
       "event": "owcs_2026_asia_s2_pacific",
-      "elo": 1440.5,
+      "elo": 1614.3,
       "year": "2026",
-      "result": "start"
-    }
-  ],
-  "Trap12": [
-    {
-      "event": "owcs_2026_asia_s2_pacific",
-      "elo": 1377.0,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "MENG GONG 3": [
-    {
-      "event": "owcs_2026_asia_s2_pacific",
-      "elo": 1400,
-      "year": "2026",
-      "result": "start"
+      "result": "win"
     }
   ],
   "ELMT": [
@@ -4183,6 +4309,138 @@
       "elo": 1400,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1364.9,
+      "year": "2026",
+      "result": "win"
+    }
+  ],
+  "Trap12": [
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1377.0,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1385.2,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "MENG GONG 3": [
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1400,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1289.8,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "Najdorf Esports": [
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1440.5,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_pacific",
+      "elo": 1480.8,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "O2 Blast": [
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1400,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1438.5,
+      "year": "2026",
+      "result": "win"
+    }
+  ],
+  "ZANSIDE GAMING": [
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1499.6,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1515.7,
+      "year": "2026",
+      "result": "win"
+    }
+  ],
+  "SuperBad": [
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1400,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_asia_s2_korea",
+      "elo": 1286.7,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "The Kafe": [
+    {
+      "event": "owcs_2026_na_s2",
+      "elo": 1339.3,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_na_s2",
+      "elo": 1314.5,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "1234": [
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1407.4,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1483.7,
+      "year": "2026",
+      "result": "win"
+    }
+  ],
+  "Telacy": [
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1400,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_emea_s2",
+      "elo": 1377.8,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "HUNENG Gaming": [
@@ -4191,9 +4449,29 @@
       "elo": 1400,
       "year": "2026",
       "result": "start"
+    },
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1327.6,
+      "year": "2026",
+      "result": "loss"
     }
   ],
   "Four Angry Men": [
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1400,
+      "year": "2026",
+      "result": "start"
+    },
+    {
+      "event": "owcs_2026_china_s2",
+      "elo": 1300.2,
+      "year": "2026",
+      "result": "loss"
+    }
+  ],
+  "ReturnZ": [
     {
       "event": "owcs_2026_china_s2",
       "elo": 1400,
@@ -4205,38 +4483,6 @@
     {
       "event": "owcs_2026_china_s2",
       "elo": 1400,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "ReturnZ": [
-    {
-      "event": "owcs_2026_china_s2",
-      "elo": 1400,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "1234": [
-    {
-      "event": "owcs_2026_emea_s2",
-      "elo": 1407.4,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "Telacy": [
-    {
-      "event": "owcs_2026_emea_s2",
-      "elo": 1400,
-      "year": "2026",
-      "result": "start"
-    }
-  ],
-  "The Kafe": [
-    {
-      "event": "owcs_2026_na_s2",
-      "elo": 1339.3,
       "year": "2026",
       "result": "start"
     }

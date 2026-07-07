@@ -2118,160 +2118,182 @@
   "2026": [
     {
       "rank": 1,
-      "team": "Twisted Minds",
-      "elo": 1874.4,
-      "region": "EMEA",
-      "maps_played": 51,
-      "maps_won": 39,
-      "maps_lost": 12,
+      "team": "Crazy Raccoon",
+      "elo": 1900.0,
+      "region": "Korea",
+      "maps_played": 131,
+      "maps_won": 91,
+      "maps_lost": 40,
       "maps_drawn": 0,
-      "win_pct": 76.5
+      "win_pct": 69.5
     },
     {
       "rank": 2,
-      "team": "Crazy Raccoon",
-      "elo": 1871.7,
+      "team": "T1",
+      "elo": 1810.4,
       "region": "Korea",
-      "maps_played": 91,
-      "maps_won": 59,
-      "maps_lost": 32,
+      "maps_played": 103,
+      "maps_won": 65,
+      "maps_lost": 38,
       "maps_drawn": 0,
-      "win_pct": 64.8
+      "win_pct": 63.1
     },
     {
       "rank": 3,
       "team": "ZETA DIVISION",
-      "elo": 1814.7,
+      "elo": 1783.8,
       "region": "Korea",
-      "maps_played": 89,
-      "maps_won": 64,
-      "maps_lost": 25,
+      "maps_played": 131,
+      "maps_won": 91,
+      "maps_lost": 40,
       "maps_drawn": 0,
-      "win_pct": 71.9
+      "win_pct": 69.5
     },
     {
       "rank": 4,
-      "team": "Weibo Gaming",
-      "elo": 1737.2,
-      "region": "China",
-      "maps_played": 40,
-      "maps_won": 30,
-      "maps_lost": 10,
+      "team": "VARREL",
+      "elo": 1778.0,
+      "region": "Japan",
+      "maps_played": 80,
+      "maps_won": 65,
+      "maps_lost": 15,
       "maps_drawn": 0,
-      "win_pct": 75.0
+      "win_pct": 81.2
     },
     {
       "rank": 5,
-      "team": "Team Falcons",
-      "elo": 1725.8,
-      "region": "Korea",
-      "maps_played": 60,
-      "maps_won": 37,
-      "maps_lost": 23,
+      "team": "Virtus.pro",
+      "elo": 1766.0,
+      "region": "EMEA",
+      "maps_played": 79,
+      "maps_won": 51,
+      "maps_lost": 28,
       "maps_drawn": 0,
-      "win_pct": 61.7
+      "win_pct": 64.6
     },
     {
       "rank": 6,
-      "team": "Virtus.pro",
-      "elo": 1706.4,
-      "region": "EMEA",
-      "maps_played": 49,
-      "maps_won": 28,
-      "maps_lost": 21,
-      "maps_drawn": 0,
-      "win_pct": 57.1
+      "team": "Weibo Gaming",
+      "elo": 1764.5,
+      "region": "China",
+      "maps_played": 68,
+      "maps_won": 53,
+      "maps_lost": 14,
+      "maps_drawn": 1,
+      "win_pct": 79.1
     },
     {
       "rank": 7,
-      "team": "T1",
-      "elo": 1702.0,
-      "region": "Korea",
-      "maps_played": 64,
-      "maps_won": 37,
-      "maps_lost": 27,
+      "team": "Twisted Minds",
+      "elo": 1706.7,
+      "region": "EMEA",
+      "maps_played": 86,
+      "maps_won": 58,
+      "maps_lost": 28,
       "maps_drawn": 0,
-      "win_pct": 57.8
+      "win_pct": 67.4
     },
     {
       "rank": 8,
-      "team": "VARREL",
-      "elo": 1701.3,
-      "region": "Japan",
-      "maps_played": 50,
-      "maps_won": 36,
-      "maps_lost": 14,
+      "team": "Team Falcons",
+      "elo": 1695.3,
+      "region": "Korea",
+      "maps_played": 98,
+      "maps_won": 58,
+      "maps_lost": 40,
       "maps_drawn": 0,
-      "win_pct": 72.0
+      "win_pct": 59.2
     },
     {
       "rank": 9,
-      "team": "Al Qadsiah",
-      "elo": 1621.0,
+      "team": "Geekay Esports",
+      "elo": 1675.0,
       "region": "EMEA",
-      "maps_played": 26,
-      "maps_won": 9,
-      "maps_lost": 17,
+      "maps_played": 72,
+      "maps_won": 33,
+      "maps_lost": 39,
       "maps_drawn": 0,
-      "win_pct": 34.6
+      "win_pct": 45.8
     },
     {
       "rank": 10,
       "team": "Dallas Fuel",
-      "elo": 1609.1,
+      "elo": 1633.6,
       "region": "NA",
-      "maps_played": 40,
-      "maps_won": 28,
-      "maps_lost": 12,
+      "maps_played": 73,
+      "maps_won": 50,
+      "maps_lost": 23,
       "maps_drawn": 0,
-      "win_pct": 70.0
+      "win_pct": 68.5
     },
     {
       "rank": 11,
-      "team": "Enter Force.36",
-      "elo": 1599.3,
-      "region": "Japan",
-      "maps_played": 42,
-      "maps_won": 28,
-      "maps_lost": 14,
+      "team": "Spacestation Gaming",
+      "elo": 1623.7,
+      "region": "NA",
+      "maps_played": 71,
+      "maps_won": 45,
+      "maps_lost": 26,
       "maps_drawn": 0,
-      "win_pct": 66.7
+      "win_pct": 63.4
     },
     {
       "rank": 12,
-      "team": "Geekay Esports",
-      "elo": 1587.2,
-      "region": "EMEA",
-      "maps_played": 32,
-      "maps_won": 14,
-      "maps_lost": 18,
-      "maps_drawn": 0,
-      "win_pct": 43.8
+      "team": "SHENGSHI Esports",
+      "elo": 1614.3,
+      "region": "Pacific",
+      "maps_played": 18,
+      "maps_won": 15,
+      "maps_lost": 2,
+      "maps_drawn": 1,
+      "win_pct": 88.2
     },
     {
       "rank": 13,
-      "team": "Spacestation Gaming",
-      "elo": 1553.1,
-      "region": "NA",
-      "maps_played": 41,
-      "maps_won": 22,
-      "maps_lost": 19,
+      "team": "Al Qadsiah",
+      "elo": 1587.2,
+      "region": "EMEA",
+      "maps_played": 53,
+      "maps_won": 21,
+      "maps_lost": 32,
       "maps_drawn": 0,
-      "win_pct": 53.7
+      "win_pct": 39.6
     },
     {
       "rank": 14,
-      "team": "Team Secret",
-      "elo": 1542.5,
-      "region": "Pacific",
-      "maps_played": 26,
-      "maps_won": 19,
-      "maps_lost": 7,
+      "team": "Enter Force.36",
+      "elo": 1585.1,
+      "region": "Japan",
+      "maps_played": 77,
+      "maps_won": 51,
+      "maps_lost": 26,
       "maps_drawn": 0,
-      "win_pct": 73.1
+      "win_pct": 66.2
     },
     {
       "rank": 15,
+      "team": "JD Gaming",
+      "elo": 1576.3,
+      "region": "China",
+      "maps_played": 64,
+      "maps_won": 38,
+      "maps_lost": 26,
+      "maps_drawn": 0,
+      "win_pct": 59.4
+    },
+    {
+      "rank": 16,
+      "team": "Team Secret",
+      "elo": 1552.4,
+      "region": "Pacific",
+      "maps_played": 43,
+      "maps_won": 30,
+      "maps_lost": 13,
+      "maps_drawn": 0,
+      "win_pct": 69.8
+    },
+    {
+      "rank": 17,
       "team": "The Gatos Guapos",
       "elo": 1527.5,
       "region": "Pacific",
@@ -2282,29 +2304,51 @@
       "win_pct": 61.3
     },
     {
-      "rank": 16,
-      "team": "SHENGSHI Esports",
-      "elo": 1527.5,
-      "region": "Pacific",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 17,
-      "team": "Team Liquid",
-      "elo": 1521.9,
-      "region": "NA",
-      "maps_played": 30,
-      "maps_won": 12,
-      "maps_lost": 18,
-      "maps_drawn": 0,
-      "win_pct": 40.0
-    },
-    {
       "rank": 18,
+      "team": "Team Liquid",
+      "elo": 1527.3,
+      "region": "NA",
+      "maps_played": 59,
+      "maps_won": 27,
+      "maps_lost": 32,
+      "maps_drawn": 0,
+      "win_pct": 45.8
+    },
+    {
+      "rank": 19,
+      "team": "All Gamers",
+      "elo": 1516.3,
+      "region": "China",
+      "maps_played": 71,
+      "maps_won": 38,
+      "maps_lost": 33,
+      "maps_drawn": 0,
+      "win_pct": 53.5
+    },
+    {
+      "rank": 20,
+      "team": "ZANSIDE GAMING",
+      "elo": 1515.7,
+      "region": "Korea",
+      "maps_played": 31,
+      "maps_won": 14,
+      "maps_lost": 17,
+      "maps_drawn": 0,
+      "win_pct": 45.2
+    },
+    {
+      "rank": 21,
+      "team": "MURASH GAMING",
+      "elo": 1501.4,
+      "region": "Japan",
+      "maps_played": 36,
+      "maps_won": 20,
+      "maps_lost": 16,
+      "maps_drawn": 0,
+      "win_pct": 55.6
+    },
+    {
+      "rank": 22,
       "team": "Onside Gaming",
       "elo": 1499.6,
       "region": "Korea",
@@ -2315,40 +2359,29 @@
       "win_pct": 45.8
     },
     {
-      "rank": 19,
-      "team": "ZANSIDE GAMING",
-      "elo": 1499.6,
-      "region": "Korea",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 20,
-      "team": "All Gamers",
-      "elo": 1493.3,
-      "region": "China",
-      "maps_played": 43,
-      "maps_won": 22,
-      "maps_lost": 21,
-      "maps_drawn": 0,
-      "win_pct": 51.2
-    },
-    {
-      "rank": 21,
-      "team": "JD Gaming",
-      "elo": 1469.2,
-      "region": "China",
-      "maps_played": 29,
-      "maps_won": 17,
+      "rank": 23,
+      "team": "1234",
+      "elo": 1483.7,
+      "region": "EMEA",
+      "maps_played": 22,
+      "maps_won": 10,
       "maps_lost": 12,
       "maps_drawn": 0,
-      "win_pct": 58.6
+      "win_pct": 45.5
     },
     {
-      "rank": 22,
+      "rank": 24,
+      "team": "Najdorf Esports",
+      "elo": 1480.8,
+      "region": "Pacific",
+      "maps_played": 21,
+      "maps_won": 13,
+      "maps_lost": 8,
+      "maps_drawn": 0,
+      "win_pct": 61.9
+    },
+    {
+      "rank": 25,
       "team": "Rankers",
       "elo": 1440.5,
       "region": "Pacific",
@@ -2359,18 +2392,18 @@
       "win_pct": 54.5
     },
     {
-      "rank": 23,
-      "team": "Najdorf Esports",
-      "elo": 1440.5,
-      "region": "Pacific",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
+      "rank": 26,
+      "team": "O2 Blast",
+      "elo": 1438.5,
+      "region": "Korea",
+      "maps_played": 33,
+      "maps_won": 15,
+      "maps_lost": 18,
       "maps_drawn": 0,
-      "win_pct": 0.0
+      "win_pct": 45.5
     },
     {
-      "rank": 24,
+      "rank": 27,
       "team": "ZAN Esports",
       "elo": 1434.2,
       "region": "Korea",
@@ -2381,18 +2414,7 @@
       "win_pct": 40.5
     },
     {
-      "rank": 25,
-      "team": "Please Not Hero Ban",
-      "elo": 1420.2,
-      "region": "Japan",
-      "maps_played": 35,
-      "maps_won": 15,
-      "maps_lost": 20,
-      "maps_drawn": 0,
-      "win_pct": 42.9
-    },
-    {
-      "rank": 26,
+      "rank": 28,
       "team": "Tokyo Ta1yo's",
       "elo": 1418.7,
       "region": "Japan",
@@ -2403,7 +2425,18 @@
       "win_pct": 46.4
     },
     {
-      "rank": 27,
+      "rank": 29,
+      "team": "Please Not Hero Ban",
+      "elo": 1415.6,
+      "region": "Japan",
+      "maps_played": 69,
+      "maps_won": 29,
+      "maps_lost": 40,
+      "maps_drawn": 0,
+      "win_pct": 42.0
+    },
+    {
+      "rank": 30,
       "team": "Anyone's Legend",
       "elo": 1407.4,
       "region": "EMEA",
@@ -2414,117 +2447,7 @@
       "win_pct": 26.3
     },
     {
-      "rank": 28,
-      "team": "1234",
-      "elo": 1407.4,
-      "region": "EMEA",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 29,
-      "team": "O2 Blast",
-      "elo": 1400,
-      "region": "Korea",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 30,
-      "team": "SuperBad",
-      "elo": 1400,
-      "region": "Korea",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
       "rank": 31,
-      "team": "REVATI",
-      "elo": 1400,
-      "region": "Japan",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 32,
-      "team": "Uwinks",
-      "elo": 1400,
-      "region": "Japan",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 33,
-      "team": "MURASH GAMING",
-      "elo": 1400,
-      "region": "Japan",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 34,
-      "team": "MENG GONG 3",
-      "elo": 1400,
-      "region": "Pacific",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 35,
-      "team": "ELMT",
-      "elo": 1400,
-      "region": "Pacific",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 36,
-      "team": "HUNENG Gaming",
-      "elo": 1400,
-      "region": "China",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 37,
-      "team": "Four Angry Men",
-      "elo": 1400,
-      "region": "China",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 38,
       "team": "Kitsune Kage",
       "elo": 1400,
       "region": "China",
@@ -2535,7 +2458,7 @@
       "win_pct": 0.0
     },
     {
-      "rank": 39,
+      "rank": 32,
       "team": "ReturnZ",
       "elo": 1400,
       "region": "China",
@@ -2546,51 +2469,40 @@
       "win_pct": 0.0
     },
     {
-      "rank": 40,
-      "team": "Telacy",
-      "elo": 1400,
-      "region": "EMEA",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 41,
-      "team": "99DIVINE",
-      "elo": 1396.1,
+      "rank": 33,
+      "team": "Uwinks",
+      "elo": 1397.2,
       "region": "Japan",
       "maps_played": 29,
-      "maps_won": 13,
-      "maps_lost": 16,
+      "maps_won": 14,
+      "maps_lost": 15,
       "maps_drawn": 0,
-      "win_pct": 44.8
+      "win_pct": 48.3
     },
     {
-      "rank": 42,
-      "team": "Disguised",
-      "elo": 1390.5,
-      "region": "NA",
-      "maps_played": 19,
-      "maps_won": 7,
-      "maps_lost": 12,
+      "rank": 34,
+      "team": "Trap12",
+      "elo": 1385.2,
+      "region": "Pacific",
+      "maps_played": 18,
+      "maps_won": 8,
+      "maps_lost": 10,
       "maps_drawn": 0,
-      "win_pct": 36.8
+      "win_pct": 44.4
     },
     {
-      "rank": 43,
+      "rank": 35,
       "team": "LuneX Gaming",
-      "elo": 1385.3,
+      "elo": 1379.9,
       "region": "NA",
-      "maps_played": 25,
-      "maps_won": 9,
-      "maps_lost": 16,
+      "maps_played": 48,
+      "maps_won": 17,
+      "maps_lost": 31,
       "maps_drawn": 0,
-      "win_pct": 36.0
+      "win_pct": 35.4
     },
     {
-      "rank": 44,
+      "rank": 36,
       "team": "Team Peps",
       "elo": 1379.4,
       "region": "EMEA",
@@ -2601,7 +2513,18 @@
       "win_pct": 21.1
     },
     {
-      "rank": 45,
+      "rank": 37,
+      "team": "Telacy",
+      "elo": 1377.9,
+      "region": "EMEA",
+      "maps_played": 18,
+      "maps_won": 3,
+      "maps_lost": 15,
+      "maps_drawn": 0,
+      "win_pct": 16.7
+    },
+    {
+      "rank": 38,
       "team": "Quasar Esports",
       "elo": 1377.0,
       "region": "Pacific",
@@ -2612,18 +2535,18 @@
       "win_pct": 39.1
     },
     {
-      "rank": 46,
-      "team": "Trap12",
-      "elo": 1377.0,
+      "rank": 39,
+      "team": "ELMT",
+      "elo": 1364.9,
       "region": "Pacific",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
+      "maps_played": 17,
+      "maps_won": 5,
+      "maps_lost": 12,
       "maps_drawn": 0,
-      "win_pct": 0.0
+      "win_pct": 29.4
     },
     {
-      "rank": 47,
+      "rank": 40,
       "team": "Naive Piggy",
       "elo": 1357.3,
       "region": "China",
@@ -2634,7 +2557,18 @@
       "win_pct": 27.8
     },
     {
-      "rank": 48,
+      "rank": 41,
+      "team": "Lazuli",
+      "elo": 1351.7,
+      "region": "Japan",
+      "maps_played": 52,
+      "maps_won": 18,
+      "maps_lost": 34,
+      "maps_drawn": 0,
+      "win_pct": 34.6
+    },
+    {
+      "rank": 42,
       "team": "FURY",
       "elo": 1349.1,
       "region": "Pacific",
@@ -2645,7 +2579,29 @@
       "win_pct": 25.0
     },
     {
-      "rank": 49,
+      "rank": 43,
+      "team": "Solus Victorem",
+      "elo": 1347.9,
+      "region": "China",
+      "maps_played": 42,
+      "maps_won": 12,
+      "maps_lost": 29,
+      "maps_drawn": 1,
+      "win_pct": 29.3
+    },
+    {
+      "rank": 44,
+      "team": "Cheeseburger",
+      "elo": 1341.5,
+      "region": "Korea",
+      "maps_played": 65,
+      "maps_won": 18,
+      "maps_lost": 47,
+      "maps_drawn": 0,
+      "win_pct": 27.7
+    },
+    {
+      "rank": 45,
       "team": "Extinction",
       "elo": 1339.3,
       "region": "NA",
@@ -2656,40 +2612,29 @@
       "win_pct": 29.4
     },
     {
-      "rank": 50,
-      "team": "The Kafe",
-      "elo": 1339.3,
-      "region": "NA",
-      "maps_played": 0,
-      "maps_won": 0,
-      "maps_lost": 0,
-      "maps_drawn": 0,
-      "win_pct": 0.0
-    },
-    {
-      "rank": 51,
-      "team": "Poker Face",
-      "elo": 1335.7,
-      "region": "Korea",
-      "maps_played": 29,
-      "maps_won": 8,
-      "maps_lost": 21,
-      "maps_drawn": 0,
-      "win_pct": 27.6
-    },
-    {
-      "rank": 52,
-      "team": "Solus Victorem",
-      "elo": 1333.1,
+      "rank": 46,
+      "team": "HUNENG Gaming",
+      "elo": 1327.6,
       "region": "China",
-      "maps_played": 21,
-      "maps_won": 5,
-      "maps_lost": 16,
+      "maps_played": 16,
+      "maps_won": 3,
+      "maps_lost": 13,
       "maps_drawn": 0,
-      "win_pct": 23.8
+      "win_pct": 18.8
     },
     {
-      "rank": 53,
+      "rank": 47,
+      "team": "99DIVINE",
+      "elo": 1323.6,
+      "region": "Japan",
+      "maps_played": 54,
+      "maps_won": 20,
+      "maps_lost": 34,
+      "maps_drawn": 0,
+      "win_pct": 37.0
+    },
+    {
+      "rank": 48,
       "team": "Milk Tea",
       "elo": 1321.0,
       "region": "China",
@@ -2700,18 +2645,40 @@
       "win_pct": 21.1
     },
     {
-      "rank": 54,
-      "team": "Lazuli",
-      "elo": 1320.1,
-      "region": "Japan",
-      "maps_played": 24,
-      "maps_won": 7,
-      "maps_lost": 17,
+      "rank": 49,
+      "team": "Disguised",
+      "elo": 1320.2,
+      "region": "NA",
+      "maps_played": 37,
+      "maps_won": 10,
+      "maps_lost": 27,
       "maps_drawn": 0,
-      "win_pct": 29.2
+      "win_pct": 27.0
     },
     {
-      "rank": 55,
+      "rank": 50,
+      "team": "The Kafe",
+      "elo": 1314.5,
+      "region": "NA",
+      "maps_played": 17,
+      "maps_won": 4,
+      "maps_lost": 13,
+      "maps_drawn": 0,
+      "win_pct": 23.5
+    },
+    {
+      "rank": 51,
+      "team": "Four Angry Men",
+      "elo": 1300.2,
+      "region": "China",
+      "maps_played": 16,
+      "maps_won": 1,
+      "maps_lost": 15,
+      "maps_drawn": 0,
+      "win_pct": 6.2
+    },
+    {
+      "rank": 52,
       "team": "MMY",
       "elo": 1296.2,
       "region": "Pacific",
@@ -2722,18 +2689,29 @@
       "win_pct": 16.7
     },
     {
-      "rank": 56,
-      "team": "Cheeseburger",
-      "elo": 1282.6,
-      "region": "Korea",
-      "maps_played": 32,
-      "maps_won": 6,
-      "maps_lost": 26,
-      "maps_drawn": 0,
-      "win_pct": 18.8
+      "rank": 53,
+      "team": "MENG GONG 3",
+      "elo": 1289.8,
+      "region": "Pacific",
+      "maps_played": 17,
+      "maps_won": 1,
+      "maps_lost": 15,
+      "maps_drawn": 1,
+      "win_pct": 6.2
     },
     {
-      "rank": 57,
+      "rank": 54,
+      "team": "SuperBad",
+      "elo": 1286.7,
+      "region": "Korea",
+      "maps_played": 29,
+      "maps_won": 4,
+      "maps_lost": 25,
+      "maps_drawn": 0,
+      "win_pct": 13.8
+    },
+    {
+      "rank": 55,
       "team": "Nyam Gaming",
       "elo": 1269.7,
       "region": "Japan",
@@ -2744,7 +2722,18 @@
       "win_pct": 34.6
     },
     {
-      "rank": 58,
+      "rank": 56,
+      "team": "Poker Face",
+      "elo": 1260.3,
+      "region": "Korea",
+      "maps_played": 56,
+      "maps_won": 11,
+      "maps_lost": 45,
+      "maps_drawn": 0,
+      "win_pct": 19.6
+    },
+    {
+      "rank": 57,
       "team": "New Era",
       "elo": 1231.9,
       "region": "Korea",
@@ -2755,7 +2744,7 @@
       "win_pct": 0.0
     },
     {
-      "rank": 59,
+      "rank": 58,
       "team": "Telomere",
       "elo": 1223.9,
       "region": "Japan",
@@ -2764,6 +2753,17 @@
       "maps_lost": 21,
       "maps_drawn": 0,
       "win_pct": 12.5
+    },
+    {
+      "rank": 59,
+      "team": "REVATI",
+      "elo": 1214.1,
+      "region": "Japan",
+      "maps_played": 23,
+      "maps_won": 2,
+      "maps_lost": 21,
+      "maps_drawn": 0,
+      "win_pct": 8.7
     }
   ]
 }

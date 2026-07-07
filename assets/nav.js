@@ -1,6 +1,6 @@
 // ── Data version (cache-busting) ──────────────────────────────────────────────
 // 데이터 파일(JSON) 업데이트 시 이 번호를 올려주세요 → 브라우저 캐시 자동 무효화
-window.DATA_V = '20260708c';
+window.DATA_V = '20260708d';
 
 // Inject shared navigation
 (function() {
