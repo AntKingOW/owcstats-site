@@ -177,8 +177,20 @@ async function loadHome() {
       <div class="stat-card"><div class="label">2026 Teams</div><div class="value">${all2026.length}</div><div class="sub">Global</div></div>
       <div class="stat-card"><div class="label">Regions</div><div class="value">${regions}</div><div class="sub">Tracked</div></div>
       <div class="stat-card"><div class="label">Top ELO</div><div class="value">${all2026[0]?.elo || '—'}</div><div class="sub">${all2026[0]?.team || ''}</div></div>
-      <div class="stat-card"><div class="label">Ban Records</div><div class="value">315</div><div class="sub">KR · NA · EMEA</div></div>
+      <div class="stat-card"><div class="label">Ban Records</div><div class="value" id="ban-count">—</div><div class="sub" id="ban-regions">Loading</div></div>
     `;
+
+    // Ban record count는 실데이터에서 계산 (하드코딩 방지)
+    fetch(`assets/data/ban_history.json?v=${window.DATA_V||'0'}`)
+      .then(r => r.json())
+      .then(bh => {
+        const recs = bh.records || [];
+        const regionLabels = { 'Korea':'KR', 'NA':'NA', 'EMEA':'EMEA', 'Asia':'Asia' };
+        const regs = [...new Set(recs.map(r => r.region))].map(r => regionLabels[r] || r);
+        document.getElementById('ban-count').textContent = recs.length;
+        document.getElementById('ban-regions').textContent = regs.join(' · ') || '—';
+      })
+      .catch(() => {});
   } catch(e) {
     console.error('Failed to load home data', e);
   }
