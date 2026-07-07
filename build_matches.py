@@ -397,7 +397,145 @@ def adapter_bans(matches):
     run(OUT_DIR / "clash_2026_ban_events.json", "clash", {"ban_1": "initial", "ban_2": "followup"})
 
 
-# ── 5. emit ───────────────────────────────────────────────────────────────────
+# ── 5. owtv 어댑터: Stage 2 / Midseason (PLAN_02 수집 산출물) ─────────────────
+
+OWTV_EVENTS = {
+    "korea-stage-2-owcs-2026":   ("owcs_2026_asia_s2_korea",   "Korea",   "Stage 2"),
+    "na-stage-2-owcs-2026":      ("owcs_2026_na_s2",           "NA",      "Stage 2"),
+    "emea-stage-2-owcs-2026":    ("owcs_2026_emea_s2",         "EMEA",    "Stage 2"),
+    "china-stage-2-owcs-2026":   ("owcs_2026_china_s2",        "China",   "Stage 2"),
+    "pacific-stage-2-owcs-2026": ("owcs_2026_asia_s2_pacific", "Pacific", "Stage 2"),
+    "japan-stage-2-owcs-2026":   ("owcs_2026_asia_s2_japan",   "Japan",   "Stage 2"),
+    "midseason-championship-owcs-2026": ("owcs_2026_midseason", "INTL", "Midseason"),
+}
+
+
+def _owtv_phase(slug, tournament):
+    """슬러그에서 표시용 phase 추출: 대회 접두사·팀 대결 접미사 제거 후 타이틀케이스."""
+    s = slug[len(tournament):].strip("-")
+    s = re.sub(r"-[a-z0-9]+-vs-[a-z0-9]+$", "", s)
+    s = re.sub(r"-match-\d+$", "", s)
+    return s.replace("-", " ").title()
+
+
+def adapter_owtv(matches, canon, map_modes):
+    raw_dir = SITE / "owtv_raw" / "2026_stage2"
+    if not raw_dir.exists():
+        report["warn"].append("owtv: raw dir not found — S2 스킵 (scrape_owtv_stage2.py 먼저 실행)")
+        return
+    n_added = 0
+    for f in sorted(raw_dir.glob("*.json")):
+        if f.name.startswith("_"):
+            continue
+        d = json.loads(f.read_text(encoding="utf-8"))
+        meta, t1, t2 = d["meta"], d["team1"], d["team2"]
+        ev = OWTV_EVENTS.get(meta["tournament"])
+        if ev is None:
+            report["warn"].append(f"owtv: unknown tournament {meta['tournament']}")
+            continue
+        event_id, region, stage = ev
+        name1 = canon.get(norm(t1.get("name", "")), t1.get("name", "?"))
+        name2 = canon.get(norm(t2.get("name", "")), t2.get("name", "?"))
+        date = (meta.get("startDate") or "")[:10]
+        # 같은 날짜 내 정렬용 순서: 시작 시각(HHMM)
+        try:
+            order = int(meta["startDate"][11:13] + meta["startDate"][14:16])
+        except (TypeError, ValueError, IndexError):
+            order = 0
+        # 승자: 세트 스코어로 판정 (meta.winningTeam은 flight $ref 문자열일 수 있음)
+        sc1, sc2 = meta.get("team1Score") or 0, meta.get("team2Score") or 0
+        winner = 1 if sc1 > sc2 else 2 if sc2 > sc1 else 0
+
+        # 경기 페이지의 maps docs는 하이드레이션 스키마: map.name/map.mode 중첩,
+        # 게임 번호는 faceitIndex, 밴은 team1Ban.name. Next.js flight 중복 제거로
+        # 일부 팀 필드가 "$ref:...maps:docs:<i>:<field>" 문자열 → 배열 내 참조로 해소.
+        raw_maps = [g for g in d["maps"] if isinstance(g, dict)]
+
+        def resolve_tid(val, depth=0):
+            """team 오브젝트/$ref 문자열 → 팀 id (해소 불가 시 None)."""
+            if isinstance(val, dict):
+                return val.get("id")
+            if isinstance(val, str) and depth < 4:
+                if val.endswith(":team1"):
+                    return t1.get("id")
+                if val.endswith(":team2"):
+                    return t2.get("id")
+                mm = re.search(r"maps:docs:(\d+):(mapPicker|winningTeam|firstBan)$", val)
+                if mm:
+                    i = int(mm.group(1))
+                    if i < len(raw_maps):
+                        return resolve_tid(raw_maps[i].get(mm.group(2)), depth + 1)
+            return None
+
+        def tid_to_idx(tid):
+            return 1 if tid == t1.get("id") else 2 if tid == t2.get("id") else None
+
+        maps_by_id = {}
+        maps_out = []
+        for pos, g in enumerate(raw_maps):
+            if not g.get("complete"):
+                continue
+            mp = g.get("map")
+            if isinstance(mp, str):  # 맵 오브젝트가 $ref면 참조 대상에서 가져옴
+                mm = re.search(r"maps:docs:(\d+):map$", mp)
+                mp = raw_maps[int(mm.group(1))].get("map") if mm else None
+            if not isinstance(mp, dict) or not mp.get("name"):
+                report["warn"].append(f"owtv:{meta['slug']}: unresolved map at pos {pos}")
+                continue
+            s1, s2 = g.get("team1Score") or 0, g.get("team2Score") or 0
+            b1, b2 = g.get("team1Ban"), g.get("team2Ban")
+            n = g.get("faceitIndex") or (len(raw_maps) - pos)
+            gm = {
+                "n": int(n),
+                "name": mp["name"],
+                "mode": (mp.get("mode") or "").title() or map_modes.get(mnorm(mp["name"]), ""),
+                "winner": 1 if s1 > s2 else 2 if s2 > s1 else 0,
+                "ban1": (b1.get("name") if isinstance(b1, dict) else None),
+                "ban2": (b2.get("name") if isinstance(b2, dict) else None),
+                "firstBan": tid_to_idx(resolve_tid(g.get("firstBan"))),
+                "duration_min": None,  # owtv에 시간 데이터 없음 — 사용자 제공 대기 (PLAN_05)
+                "stats_available": False,
+            }
+            maps_by_id[str(g["id"])] = gm
+            maps_out.append(gm)
+        maps_out.sort(key=lambda x: x["n"])
+
+        stats_out = []
+        for s in d.get("stats", []):
+            if not isinstance(s, dict):
+                continue  # flight $ref 문자열은 스킵
+            gm = maps_by_id.get(str(s.get("mapId")))
+            if gm is None:
+                continue
+            ti = 1 if str(s.get("teamId")) == str(t1.get("id")) else 2 if str(s.get("teamId")) == str(t2.get("id")) else 0
+            if ti == 0:
+                continue
+            gm["stats_available"] = True
+            stats_out.append({
+                "map": gm["n"], "team": ti, "player": s.get("personName", "?"),
+                "role": ROLE_MAP.get(s.get("role"), s.get("role", "")),
+                "E": int(s.get("eliminations") or 0), "A": int(s.get("assists") or 0),
+                "D": int(s.get("deaths") or 0), "DMG": int(s.get("damageDealt") or 0),
+                "H": int(s.get("healingDone") or 0), "MIT": int(s.get("damageMitigated") or 0),
+            })
+
+        mid = "owtv__" + meta["slug"]
+        matches[mid] = {
+            "id": mid, "event_id": event_id, "region": region, "stage": stage,
+            "phase": _owtv_phase(meta["slug"], meta["tournament"]),
+            "date": date, "match_order": order,
+            "team1": name1, "team2": name2,
+            "score1": meta.get("team1Score") or 0, "score2": meta.get("team2Score") or 0,
+            "winner": winner,
+            "format": f"bo{meta['firstTo']*2-1}" if meta.get("firstTo") else "",
+            "source_url": f"https://owtv.gg/matches/{meta['slug']}",
+            "maps": maps_out, "stats": stats_out,
+        }
+        n_added += 1
+    print(f"owtv: {n_added} S2/Midseason matches added")
+
+
+# ── 6. emit ───────────────────────────────────────────────────────────────────
 
 def emit(matches):
     ordered = sorted(matches.values(), key=lambda m: (m["date"], m["match_order"]), reverse=True)
@@ -458,6 +596,16 @@ def main():
         idx, STATS_DIR / "CLASH_MATCH_REVIEW_CSV" / "clash_2026_per_map.csv",
         "clash", sparse=False)
     adapter_bans(matches)
+    # S1 스파인의 팀명을 canonical로, 맵명→모드 사전 구축 후 owtv S2 합류
+    canon = {}
+    map_modes = {}
+    for m in matches.values():
+        canon.setdefault(norm(m["team1"]), m["team1"])
+        canon.setdefault(norm(m["team2"]), m["team2"])
+        for g in m["maps"]:
+            if g["mode"]:
+                map_modes.setdefault(mnorm(g["name"]), g["mode"])
+    adapter_owtv(matches, canon, map_modes)
     emit(matches)
     write_report()
 
