@@ -20,3 +20,4 @@
 | [ARCHITECTURE.md](data_notes/ARCHITECTURE.md) | 사이트 구조·페이지별 특이사항·디자인 토큰 |
 | [ELO_POLICY.md](data_notes/ELO_POLICY.md) | ELO 계산 규칙·승계 정책·중국 특이사항 |
 | [STAGE2_ROSTERS.md](data_notes/STAGE2_ROSTERS.md) | 2026 Stage 2 지역별 로스터 전체 |
+| [plans/PLAN_00_OVERVIEW.md](data_notes/plans/PLAN_00_OVERVIEW.md) | 작업 계획 총괄: 이슈 수정·owtv 스크레이핑·ELO 갱신·매치 스탯 개편·Stage 2 시간 정책 |
