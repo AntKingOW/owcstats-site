@@ -1,19 +1,21 @@
 // ── Data version (cache-busting) ──────────────────────────────────────────────
 // 데이터 파일(JSON) 업데이트 시 이 번호를 올려주세요 → 브라우저 캐시 자동 무효화
-window.DATA_V = '20260615c';
+window.DATA_V = '20260708b';
 
 // Inject shared navigation
 (function() {
   const pages = [
-    { href: 'index.html', label: 'Home' },
+    { href: 'index.html', label: 'Matches' },
     { href: 'tournaments.html', label: 'Tournaments' },
-    { href: 'elo.html',   label: 'ELO Rating' },
     { href: 'teams.html', label: 'Teams' },
     { href: 'players.html', label: 'Player Stats' },
+    { href: 'elo.html',   label: 'ELO Rating' },
     { href: 'ban-calculator.html', label: 'Ban Calculator' },
   ];
 
-  const current = location.pathname.split('/').pop() || 'index.html';
+  // match.html은 Matches(index)의 하위 페이지로 취급
+  let current = location.pathname.split('/').pop() || 'index.html';
+  if (current === 'match.html') current = 'index.html';
 
   const nav = document.createElement('nav');
   nav.innerHTML = `

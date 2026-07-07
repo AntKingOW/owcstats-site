@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Match — OWCStats</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.page { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+.back-link { font-size: 12px; color: var(--accent2); text-decoration: none; }
+
+/* 매치 헤더 */
+.match-header {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px 18px; margin-top: 12px;
+}
+.mh-meta { text-align: center; font-size: 12px; color: var(--text-dim); margin-bottom: 14px; }
+.mh-meta .region-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700;
+  background: var(--panel2); border: 1px solid var(--border); color: var(--accent2); margin-right: 8px;
+}
+.mh-teams { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
+.mh-team { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mh-team.right { flex-direction: row-reverse; }
+.mh-team .name { font-size: clamp(15px, 2.6vw, 22px); font-weight: 800; line-height: 1.2; }
+.mh-team.loser .name { color: var(--text-dim); }
+.mh-score { font-size: clamp(26px, 5vw, 40px); font-weight: 800; white-space: nowrap; }
+.mh-score .win { color: var(--accent); }
+.mh-score .sep { color: var(--text-dim); padding: 0 8px; }
+
+/* 맵 카드 */
+.section-title { font-size: 13px; font-weight: 700; color: var(--text-dim); text-transform: uppercase;
+  letter-spacing: 1px; margin: 28px 0 10px; }
+.maps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.map-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.map-card .mc-top { display: flex; justify-content: space-between; align-items: baseline; }
+.map-card .mc-n { font-size: 11px; color: var(--text-dim); font-weight: 700; }
+.map-card .mc-mode { font-size: 10px; color: var(--text-dim); }
+.map-card .mc-name { font-size: 15px; font-weight: 700; margin: 4px 0 2px; }
+.map-card .mc-winner { font-size: 12px; color: var(--good); margin-bottom: 8px; }
+.map-card .mc-dur { font-size: 11px; color: var(--text-dim); }
+.mc-bans { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px; font-size: 12px; }
+.mc-bans .ban-row { display: flex; justify-content: space-between; gap: 6px; color: var(--text-dim); }
+.mc-bans .hero { color: var(--bad); font-weight: 600; }
+.mc-bans .first { color: var(--accent); font-size: 10px; }
+
+/* 스탯 테이블 */
+.map-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.map-tabs button {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text-dim); font-size: 12px; padding: 6px 12px; cursor: pointer;
+}
+.map-tabs button.active { background: var(--panel2); color: var(--accent); border-color: var(--accent); }
+.stats-team-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; margin: 16px 0 8px; }
+.stats-wrap { overflow-x: auto; }
+table.stats { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+table.stats th, table.stats td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+table.stats th { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+table.stats th:first-child, table.stats td:first-child,
+table.stats th:nth-child(2), table.stats td:nth-child(2) { text-align: left; }
+table.stats td.player { font-weight: 700; }
+table.stats td.role { color: var(--text-dim); font-size: 12px; }
+.no-stats { color: var(--text-dim); font-size: 13px; padding: 16px; background: var(--panel);
+  border: 1px solid var(--border); border-radius: var(--radius); }
+.err-box { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+@media (max-width: 640px) {
+  .mh-team { flex-direction: column; text-align: center; gap: 6px; }
+  .mh-team.right { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<script src="assets/i18n.js"></script>
+<script src="assets/nav.js?v=20260708b"></script>
+<script src="assets/team-logos.js?v=20260708b"></script>
+
+<div class="page">
+  <a class="back-link" href="index.html">&larr; Matches</a>
+  <div id="content"><div class="err-box">Loading...</div></div>
+</div>
+
+<script>
+const ROLE_ORDER = { 'Tank': 0, 'DPS': 1, 'Support': 2 };
+const fmt = n => n.toLocaleString('en-US');
+
+async function load() {
+  const id = new URLSearchParams(location.search).get('m');
+  const el = document.getElementById('content');
+  if (!id || !/^[a-z0-9_\-]+$/i.test(id)) {
+    el.innerHTML = '<div class="err-box">경기를 찾을 수 없습니다. <a class="back-link" href="index.html">경기 목록으로</a></div>';
+    return;
+  }
+  let d;
+  try {
+    const res = await fetch(`assets/data/matches/${id}.json?v=${window.DATA_V||'0'}`);
+    if (!res.ok) throw new Error(res.status);
+    d = await res.json();
+  } catch (e) {
+    el.innerHTML = '<div class="err-box">경기를 찾을 수 없습니다. <a class="back-link" href="index.html">경기 목록으로</a></div>';
+    return;
+  }
+  render(d, el);
+}
+
+function render(d, el) {
+  const m = d.meta;
+  document.title = `${m.team1} ${m.score1}:${m.score2} ${m.team2} — OWCStats`;
+
+  const header = `
+    <div class="match-header">
+      <div class="mh-meta">
+        <span class="region-badge">${m.region}</span>
+        ${m.stage}${m.phase ? ' · ' + m.phase : ''} · ${m.date} · ${(m.format||'').toUpperCase()}
+      </div>
+      <div class="mh-teams">
+        <div class="mh-team ${m.winner === 2 ? 'loser' : ''}">${teamLogoImg(m.team1, 56)}<span class="name">${m.team1}</span></div>
+        <div class="mh-score">
+          <span class="${m.winner === 1 ? 'win' : ''}">${m.score1}</span><span class="sep">:</span><span class="${m.winner === 2 ? 'win' : ''}">${m.score2}</span>
+        </div>
+        <div class="mh-team right ${m.winner === 1 ? 'loser' : ''}">${teamLogoImg(m.team2, 56)}<span class="name">${m.team2}</span></div>
+      </div>
+    </div>`;
+
+  const mapCards = d.maps.map(g => {
+    const winnerName = g.winner === 1 ? m.team1 : g.winner === 2 ? m.team2 : '—';
+    const bans = (g.ban1 || g.ban2) ? `
+      <div class="mc-bans">
+        <div class="ban-row"><span>${m.team1} 🚫 <span class="hero">${g.ban1 || '—'}</span></span>${g.firstBan === 1 ? '<span class="first">선밴</span>' : ''}</div>
+        <div class="ban-row"><span>${m.team2} 🚫 <span class="hero">${g.ban2 || '—'}</span></span>${g.firstBan === 2 ? '<span class="first">선밴</span>' : ''}</div>
+      </div>` : '';
+    return `
+      <div class="map-card">
+        <div class="mc-top"><span class="mc-n">MAP ${g.n}</span><span class="mc-mode">${g.mode || ''}</span></div>
+        <div class="mc-name">${g.name}</div>
+        <div class="mc-winner">🏆 ${winnerName}</div>
+        ${g.duration_min ? `<div class="mc-dur">⏱ ${g.duration_min}분</div>` : ''}
+        ${bans}
+      </div>`;
+  }).join('');
+
+  const statMaps = d.maps.filter(g => g.stats_available).map(g => g.n);
+  let statsSection = '<div class="no-stats">이 경기의 선수 스탯 데이터는 아직 없습니다.</div>';
+  if (statMaps.length) {
+    statsSection = `
+      <div class="map-tabs" id="map-tabs">
+        <button data-map="all" class="active">전체 합계</button>
+        ${statMaps.map(n => `<button data-map="${n}">Map ${n}</button>`).join('')}
+      </div>
+      <div id="stats-tables"></div>`;
+  }
+
+  el.innerHTML = header +
+    `<div class="section-title">Maps</div><div class="maps-grid">${mapCards}</div>` +
+    `<div class="section-title">Player Stats</div>` + statsSection +
+    (m.source_url ? `<div style="margin-top:24px;font-size:11px;color:var(--text-dim)">Source: <a class="back-link" href="${m.source_url}" target="_blank" rel="noopener">${m.source_url}</a></div>` : '');
+
+  if (statMaps.length) {
+    const tabs = document.getElementById('map-tabs');
+    tabs.addEventListener('click', e => {
+      const btn = e.target.closest('button'); if (!btn) return;
+      tabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderStats(d, btn.dataset.map);
+    });
+    renderStats(d, 'all');
+  }
+}
+
+function renderStats(d, which) {
+  const m = d.meta;
+  const rows = which === 'all' ? d.stats : d.stats.filter(s => s.map === Number(which));
+  // 선수별 집계 (전체 탭) 또는 단일 맵 rows
+  const agg = new Map();
+  for (const s of rows) {
+    const key = s.team + '|' + s.player;
+    const a = agg.get(key) || { team: s.team, player: s.player, role: s.role, maps: 0, E: 0, A: 0, D: 0, DMG: 0, H: 0, MIT: 0 };
+    a.maps += 1; a.E += s.E; a.A += s.A; a.D += s.D; a.DMG += s.DMG; a.H += s.H; a.MIT += s.MIT;
+    if (ROLE_ORDER[s.role] < ROLE_ORDER[a.role]) a.role = s.role;
+    agg.set(key, a);
+  }
+  const players = [...agg.values()].sort((a, b) =>
+    (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9) || b.DMG - a.DMG);
+
+  const table = ti => {
+    const ps = players.filter(p => p.team === ti);
+    if (!ps.length) return '';
+    return `
+      <div class="stats-team-title">${teamLogoImg(ti === 1 ? m.team1 : m.team2, 24)} ${ti === 1 ? m.team1 : m.team2}</div>
+      <div class="stats-wrap"><table class="stats">
+        <thead><tr><th>Player</th><th>Role</th>${which === 'all' ? '<th>Maps</th>' : ''}<th>E</th><th>A</th><th>D</th><th>E/D</th><th>DMG</th><th>Heal</th><th>Mit</th></tr></thead>
+        <tbody>${ps.map(p => `
+          <tr>
+            <td class="player">${p.player}</td><td class="role">${p.role}</td>
+            ${which === 'all' ? `<td>${p.maps}</td>` : ''}
+            <td>${p.E}</td><td>${p.A}</td><td>${p.D}</td>
+            <td>${p.D ? (p.E / p.D).toFixed(2) : p.E.toFixed(2)}</td>
+            <td>${fmt(p.DMG)}</td><td>${fmt(p.H)}</td><td>${fmt(p.MIT)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>`;
+  };
+  document.getElementById('stats-tables').innerHTML = table(1) + table(2);
+}
+
+load();
+</script>
+</body>
+</html>
