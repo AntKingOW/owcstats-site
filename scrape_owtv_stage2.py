@@ -97,6 +97,7 @@ def scrape_match(slug):
 
 def main():
     index = []
+    upcoming = []
     for t in TOURNAMENTS:
         try:
             html = fetch(f"https://owtv.gg/tournaments/{t}")
@@ -105,7 +106,19 @@ def main():
             continue
         docs = collect_match_docs(flight_payload(html))
         done = {d["slug"]: d for d in docs if d.get("complete")}
-        print(f"{t}: {len(docs)} matches in payload, {len(done)} complete")
+        # 미완료 경기 = 예정 일정. 팀은 숫자 id 또는 placeholder(Winner of G1 등).
+        for d in docs:
+            if d.get("complete") or d["slug"] in done:
+                continue
+            upcoming.append({
+                "slug": d["slug"], "tournament": t,
+                "startDate": d.get("startDate"), "firstTo": d.get("firstTo"),
+                "team1": d.get("team1"), "team2": d.get("team2"),
+                "team1Placeholder": d.get("team1Placeholder"),
+                "team2Placeholder": d.get("team2Placeholder"),
+            })
+        print(f"{t}: {len(docs)} matches in payload, {len(done)} complete, "
+              f"{sum(1 for d in docs if not d.get('complete'))} upcoming")
         time.sleep(1)
         for slug, doc in done.items():
             out = OUT / f"{slug}.json"
@@ -135,8 +148,33 @@ def main():
             print(f"  ok {slug} ({meta['team1Score']}:{meta['team2Score']}, maps={len(detail['maps'])}, stats={len(detail['stats'])})")
             time.sleep(1.2)
     (OUT / "_index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
+    # 예정 경기의 팀 id -> 이름 해석: 완료 경기 raw의 team1/team2 오브젝트에서 사전 구축
+    team_names = {}
+    for f in OUT.glob("*.json"):
+        if f.name.startswith("_"):
+            continue
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            for tk in ("team1", "team2"):
+                obj = data.get(tk)
+                if isinstance(obj, dict) and obj.get("id") is not None:
+                    team_names[obj["id"]] = obj.get("name")
+        except (json.JSONDecodeError, OSError):
+            pass
+    for u in upcoming:
+        for tk, pk in (("team1", "team1Placeholder"), ("team2", "team2Placeholder")):
+            v = u.get(tk)
+            if isinstance(v, dict):
+                u[tk + "Name"] = v.get("name")
+            elif isinstance(v, int):
+                u[tk + "Name"] = team_names.get(v)
+            else:
+                u[tk + "Name"] = None
+            if not u[tk + "Name"]:
+                u[tk + "Name"] = u.get(pk) or "TBD"
+    (OUT / "_upcoming.json").write_text(json.dumps(upcoming, ensure_ascii=False, indent=1), encoding="utf-8")
     errs = [x for x in index if x.get("error")]
-    print(f"done: {len(index)} matches, {len(errs)} errors")
+    print(f"done: {len(index)} matches, {len(errs)} errors, {len(upcoming)} upcoming")
 
 
 if __name__ == "__main__":

@@ -538,6 +538,54 @@ def adapter_owtv(matches, canon, map_modes):
     print(f"owtv: {n_added} S2/Midseason matches added")
 
 
+def adapter_upcoming(matches, canon):
+    """owtv 미완료 경기(_upcoming.json) → status:upcoming 엔트리 (일정 표시용).
+    경기가 완료되면 재수집 시 완료 데이터로 대체된다."""
+    f = SITE / "owtv_raw" / "2026_stage2" / "_upcoming.json"
+    if not f.exists():
+        return
+    # 같은 슬러그가 payload 여러 섹션에 중복 등장 — 실팀명이 더 많이 해석된 문서를 채택
+    def quality(u):
+        return sum(1 for k in ("team1Name", "team2Name")
+                   if u.get(k) and u[k] != "TBD" and "Winner" not in u[k] and "Loser" not in u[k])
+    best = {}
+    for u in json.loads(f.read_text(encoding="utf-8")):
+        s = u["slug"]
+        if s not in best or quality(u) > quality(best[s]):
+            best[s] = u
+    n = 0
+    for u in best.values():
+        slug = u["slug"]
+        if ("owtv__" + slug) in matches:
+            continue  # 이미 완료 수집된 경기
+        ev = OWTV_EVENTS.get(u["tournament"])
+        if ev is None:
+            continue
+        event_id, region, stage = ev
+        date = (u.get("startDate") or "")[:10]
+        if not date:
+            continue
+        try:
+            order = int(u["startDate"][11:13] + u["startDate"][14:16])
+        except (TypeError, ValueError, IndexError):
+            order = 0
+        def nm(v):
+            return canon.get(norm(v), v) if v else "TBD"
+        matches["owtv__" + slug] = {
+            "id": "owtv__" + slug, "event_id": event_id, "region": region, "stage": stage,
+            "phase": _owtv_phase(slug, u["tournament"]),
+            "date": date, "match_order": order,
+            "team1": nm(u.get("team1Name")), "team2": nm(u.get("team2Name")),
+            "score1": None, "score2": None, "winner": 0,
+            "format": f"bo{u['firstTo']*2-1}" if u.get("firstTo") else "",
+            "source_url": f"https://owtv.gg/matches/{slug}",
+            "status": "upcoming",
+            "maps": [], "stats": [],
+        }
+        n += 1
+    print(f"upcoming: {n} scheduled matches added")
+
+
 # ── 6. emit ───────────────────────────────────────────────────────────────────
 
 def emit(matches):
@@ -555,7 +603,10 @@ def emit(matches):
             "team1": m["team1"], "team2": m["team2"],
             "score1": m["score1"], "score2": m["score2"], "winner": m["winner"],
             "format": m["format"], "coverage": cov,
+            "status": m.get("status", "done"),
         })
+        if m.get("status") == "upcoming":
+            continue  # 예정 경기는 상세 JSON 없음 (완료 후 재수집 시 생성)
         detail = {
             "id": m["id"],
             "meta": {**index[-1], "source_url": m["source_url"]},
@@ -609,6 +660,7 @@ def main():
             if g["mode"]:
                 map_modes.setdefault(mnorm(g["name"]), g["mode"])
     adapter_owtv(matches, canon, map_modes)
+    adapter_upcoming(matches, canon)
     emit(matches)
     write_report()
 

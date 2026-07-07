@@ -57,8 +57,8 @@
 </head>
 <body>
 <script src="assets/i18n.js"></script>
-<script src="assets/nav.js?v=20260708d"></script>
-<script src="assets/team-logos.js?v=20260708d"></script>
+<script src="assets/nav.js?v=20260708e"></script>
+<script src="assets/team-logos.js?v=20260708e"></script>
 
 <div class="page">
   <div class="feed-head">
@@ -107,34 +107,56 @@ function buildChips() {
   mk(document.getElementById('stage-chips'), stages, 'stage');
 }
 
+function matchCardHTML(m) {
+  const upcoming = m.status === 'upcoming';
+  const cov = upcoming ? '' :
+    [m.coverage.stats ? '📊 stats' : '', m.coverage.bans ? '🚫 bans' : ''].filter(Boolean).join(' · ');
+  const score = upcoming
+    ? '<span class="s">vs</span>'
+    : `<span class="${m.winner === 1 ? 'w' : ''}">${m.score1}</span><span class="s">:</span><span class="${m.winner === 2 ? 'w' : ''}">${m.score2}</span>`;
+  const inner = `
+    <div class="mc-left">
+      <span class="mc-region">${m.region}</span>
+      <span class="mc-phase">${m.stage}${m.phase ? ' · ' + m.phase : ''}</span>
+      ${cov ? `<span class="mc-cov">${cov}</span>` : ''}
+      ${upcoming ? '<span class="mc-cov">📅 예정</span>' : ''}
+    </div>
+    <div class="mc-teams">
+      <div class="mc-team ${m.winner === 2 ? 'loser' : ''}">${teamLogoImg(m.team1, 26)}<span>${m.team1}</span></div>
+      <div class="mc-score">${score}</div>
+      <div class="mc-team right ${m.winner === 1 ? 'loser' : ''}">${teamLogoImg(m.team2, 26)}<span>${m.team2}</span></div>
+    </div>`;
+  // 예정 경기는 상세 JSON이 없으므로 링크 없이 표시 (완료 후 재수집 시 자동으로 결과 카드로 전환)
+  return upcoming
+    ? `<div class="match-card" style="opacity:0.75">${inner}</div>`
+    : `<a class="match-card" href="match.html?m=${m.id}">${inner}</a>`;
+}
+
 function renderFeed() {
-  const list = state.matches.filter(m =>
+  const filt = m =>
     (state.region === 'All' || m.region === state.region) &&
-    (state.stage === 'All' || m.stage === state.stage));
-  if (!list.length) {
+    (state.stage === 'All' || m.stage === state.stage);
+  const upcoming = state.matches.filter(m => m.status === 'upcoming' && filt(m))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const done = state.matches.filter(m => m.status !== 'upcoming' && filt(m));
+  if (!upcoming.length && !done.length) {
     document.getElementById('feed').innerHTML = '<div class="feed-empty">해당 조건의 경기가 없습니다.</div>';
     return;
   }
-  let html = '', lastDate = '';
-  for (const m of list) {
-    if (m.date !== lastDate) {
-      lastDate = m.date;
-      html += `<div class="date-head">${m.date}</div>`;
+  let html = '';
+  if (upcoming.length) {
+    html += '<div class="date-head" style="color:var(--accent)">📅 예정 경기</div>';
+    let lastU = '';
+    for (const m of upcoming) {
+      if (m.date !== lastU) { lastU = m.date; html += `<div class="date-head">${m.date}</div>`; }
+      html += matchCardHTML(m);
     }
-    const cov = [m.coverage.stats ? '📊 stats' : '', m.coverage.bans ? '🚫 bans' : ''].filter(Boolean).join(' · ');
-    html += `
-      <a class="match-card" href="match.html?m=${m.id}">
-        <div class="mc-left">
-          <span class="mc-region">${m.region}</span>
-          <span class="mc-phase">${m.stage}${m.phase ? ' · ' + m.phase : ''}</span>
-          ${cov ? `<span class="mc-cov">${cov}</span>` : ''}
-        </div>
-        <div class="mc-teams">
-          <div class="mc-team ${m.winner === 2 ? 'loser' : ''}">${teamLogoImg(m.team1, 26)}<span>${m.team1}</span></div>
-          <div class="mc-score"><span class="${m.winner === 1 ? 'w' : ''}">${m.score1}</span><span class="s">:</span><span class="${m.winner === 2 ? 'w' : ''}">${m.score2}</span></div>
-          <div class="mc-team right ${m.winner === 1 ? 'loser' : ''}">${teamLogoImg(m.team2, 26)}<span>${m.team2}</span></div>
-        </div>
-      </a>`;
+    html += '<div class="date-head" style="color:var(--accent)">✅ 결과</div>';
+  }
+  let lastDate = '';
+  for (const m of done) {
+    if (m.date !== lastDate) { lastDate = m.date; html += `<div class="date-head">${m.date}</div>`; }
+    html += matchCardHTML(m);
   }
   document.getElementById('feed').innerHTML = html;
 }

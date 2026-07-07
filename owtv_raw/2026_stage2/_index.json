@@ -7,7 +7,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-28T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-zsg-vs-t1",
@@ -17,7 +18,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-28T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-o2-vs-pf",
@@ -27,7 +29,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-28T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-sb-vs-cr",
@@ -37,7 +40,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-27T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-cb-vs-flc",
@@ -47,7 +51,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team2",
   "startDate": "2026-06-27T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-pf-vs-t1",
@@ -57,7 +62,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-27T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-sb-vs-zsg",
@@ -67,7 +73,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-26T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-zeta-vs-flc",
@@ -77,7 +84,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-26T09:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-4-cb-vs-o2",
@@ -87,7 +95,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-26T08:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-zeta-vs-pf",
@@ -97,7 +106,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-21T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-last-chance-qualifier-cb-vs-o2",
@@ -107,7 +117,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-07-05T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-last-chance-qualifier-cb-vs-sb",
@@ -117,7 +128,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team1",
   "startDate": "2026-07-04T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-last-chance-qualifier-o2-vs-zsg",
@@ -127,7 +139,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-07-03T08:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-playoffs-seeding-decider-matches-day-3-t1-vs-flc",
@@ -137,7 +150,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-07-05T09:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-playoffs-seeding-decider-matches-day-3-cr-vs-zeta",
@@ -147,7 +161,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-05T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-playoffs-seeding-decider-matches-day-2-zeta-vs-flc",
@@ -157,7 +172,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-07-04T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-playoffs-seeding-decider-matches-day-2-cr-vs-t1",
@@ -167,7 +183,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-04T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-playoffs-seeding-decider-matches-day-1-zeta-vs-t1",
@@ -177,7 +194,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-07-03T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-playoffs-seeding-decider-matches-day-1-cr-vs-flc",
@@ -187,7 +205,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-03T09:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-o2-vs-cr",
@@ -197,7 +216,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-21T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-flc-vs-sb",
@@ -207,7 +227,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team2",
   "startDate": "2026-06-21T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-cb-vs-t1",
@@ -217,7 +238,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-20T10:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-zeta-vs-zsg",
@@ -227,7 +249,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-20T08:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-pf-vs-sb",
@@ -237,7 +260,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-20T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-t1-vs-cr",
@@ -247,7 +271,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-19T11:35:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-flc-vs-o2",
@@ -257,7 +282,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team2",
   "startDate": "2026-06-19T10:10:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-3-zsg-vs-cb",
@@ -267,7 +293,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-19T08:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-flc-vs-t1",
@@ -277,7 +304,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team2",
   "startDate": "2026-06-14T08:20:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-cr-vs-cb",
@@ -287,7 +315,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-14T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-zsg-vs-pf",
@@ -297,7 +326,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-14T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-sb-vs-zeta",
@@ -307,7 +337,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-13T08:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-t1-vs-o2",
@@ -317,7 +348,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-13T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-pf-vs-flc",
@@ -327,7 +359,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team2",
   "startDate": "2026-06-13T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-cr-vs-zsg",
@@ -337,7 +370,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-12T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-o2-vs-zeta",
@@ -347,7 +381,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-12T09:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-2-cb-vs-sb",
@@ -357,7 +392,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team1",
   "startDate": "2026-06-12T08:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-cr-vs-pf",
@@ -367,7 +403,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-07T08:45:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-zeta-vs-cb",
@@ -377,7 +414,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-07T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-sb-vs-o2",
@@ -387,7 +425,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-07T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-zsg-vs-flc",
@@ -397,7 +436,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team2",
   "startDate": "2026-06-06T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-t1-vs-sb",
@@ -407,7 +447,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-06T07:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-pf-vs-cb",
@@ -417,7 +458,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:4:team1",
   "startDate": "2026-06-06T06:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-t1-vs-zeta",
@@ -427,7 +469,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-05T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-flc-vs-cr",
@@ -437,7 +480,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-05T09:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "korea-stage-2-owcs-2026-regular-season-week-1-o2-vs-zsg",
@@ -447,7 +491,8 @@
   "winningTeam": "$2c:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-05T08:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-3-dal-vs-lnx",
@@ -457,7 +502,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-28T23:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-3-ssg-vs-dsg",
@@ -467,7 +513,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-28T21:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-3-tl-vs-tk",
@@ -477,7 +524,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-28T20:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-3-dal-vs-dsg",
@@ -487,7 +535,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-27T22:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-3-ssg-vs-tl",
@@ -497,7 +546,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-27T21:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-2-dal-vs-tl",
@@ -507,7 +557,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-21T23:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-2-tk-vs-dsg",
@@ -517,7 +568,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-06-21T21:25:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-2-ssg-vs-lnx",
@@ -527,7 +579,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-21T20:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-2-ssg-vs-tk",
@@ -537,7 +590,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-20T23:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-2-lnx-vs-dsg",
@@ -547,7 +601,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-20T21:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-playoffs-day-3-ssg-vs-dal",
@@ -557,7 +612,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-05T23:30:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-playoffs-day-3-dal-vs-tl",
@@ -567,7 +623,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-05T22:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-playoffs-day-2-lnx-vs-dal",
@@ -577,7 +634,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-04T20:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-playoffs-day-2-ssg-vs-tl",
@@ -587,7 +645,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-07-04T21:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-playoffs-day-1-dal-vs-tl",
@@ -597,7 +656,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-07-03T21:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-playoffs-day-1-ssg-vs-lnx",
@@ -607,7 +667,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-07-03T20:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-1-tl-vs-lnx",
@@ -617,7 +678,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-14T22:39:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-1-dal-vs-tk",
@@ -627,7 +689,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-14T21:15:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-1-lnx-vs-tk",
@@ -637,7 +700,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-13T22:09:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-1-tl-vs-dsg",
@@ -647,7 +711,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-13T20:46:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "na-stage-2-owcs-2026-regular-season-week-1-dal-vs-ssg",
@@ -657,7 +722,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-13T19:58:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-3-tm-vs-alq",
@@ -667,7 +733,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-28T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-3-1234-vs-tel",
@@ -677,7 +744,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-28T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-3-tm-vs-gk",
@@ -687,7 +755,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-27T19:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-3-vp-vs-1234",
@@ -697,7 +766,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-27T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-3-alq-vs-tel",
@@ -707,7 +777,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-27T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-2-vp-vs-tel",
@@ -717,7 +788,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-21T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-2-gk-vs-1234",
@@ -727,7 +799,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-06-21T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-2-vp-vs-alq",
@@ -737,7 +810,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-20T20:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-2-tm-vs-1234",
@@ -747,7 +821,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-20T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-2-gk-vs-tel",
@@ -757,7 +832,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-06-20T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-playoffs-day-3-vp-vs-gk",
@@ -767,7 +843,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-07-05T18:30:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-playoffs-day-3-tm-vs-gk",
@@ -777,7 +854,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-07-05T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-playoffs-day-2-alq-vs-tm",
@@ -787,7 +865,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-04T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-playoffs-day-2-vp-vs-gk",
@@ -797,7 +876,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-07-04T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-playoffs-day-1-tm-vs-gk",
@@ -807,7 +887,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-07-03T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-playoffs-day-1-vp-vs-alq",
@@ -817,7 +898,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-07-03T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-1-vp-vs-gk",
@@ -827,7 +909,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-14T20:24:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-1-tm-vs-tel",
@@ -837,7 +920,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-14T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-1-alq-vs-1234",
@@ -847,7 +931,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-14T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-1-tm-vs-vp",
@@ -857,7 +942,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-13T18:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "emea-stage-2-owcs-2026-regular-season-week-1-gk-vs-alq",
@@ -867,7 +953,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-13T17:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-decider-matches-4am-vs-hng",
@@ -877,7 +964,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-14T12:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-decider-matches-ag-vs-sv",
@@ -887,7 +975,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-14T09:40:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-4-hng-vs-rtz",
@@ -897,7 +986,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-14T08:20:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-4-4am-vs-tkk",
@@ -907,7 +997,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-14T07:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-3-sv-vs-4am",
@@ -917,7 +1008,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-13T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-3-ag-vs-hng",
@@ -927,7 +1019,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-13T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-decider-matches-wei-vs-jd",
@@ -937,7 +1030,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-13T07:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-2-ag-vs-jd",
@@ -947,7 +1041,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-07T11:10:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-2-wei-vs-hng",
@@ -957,7 +1052,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-07T09:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-2-4am-vs-rtz",
@@ -967,7 +1063,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-07T08:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-jd-vs-ag",
@@ -977,7 +1074,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-19T12:45:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-4am-vs-hng",
@@ -987,7 +1085,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-19T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-jd-vs-wei",
@@ -997,7 +1096,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-28T10:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-sv-vs-ag",
@@ -1007,7 +1107,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-28T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-jd-vs-4am",
@@ -1017,7 +1118,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-27T13:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-wei-vs-ag",
@@ -1027,7 +1129,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-27T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-sv-vs-hng",
@@ -1037,7 +1140,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-27T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-wei-vs-hng",
@@ -1047,7 +1151,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-26T10:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-2-ag-vs-4am",
@@ -1057,7 +1162,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-26T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-wei-vs-4am",
@@ -1067,7 +1173,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-21T11:40:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-playoffs-day-2-wei-vs-jd",
@@ -1077,7 +1184,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-07-05T13:00:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-playoffs-day-2-jd-vs-ag",
@@ -1087,7 +1195,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-07-05T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-playoffs-day-2-sv-vs-ag",
@@ -1097,7 +1206,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-07-05T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-playoffs-day-1-wei-vs-jd",
@@ -1107,7 +1217,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-07-04T12:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-playoffs-day-1-jd-vs-ag",
@@ -1117,7 +1228,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-07-04T10:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-playoffs-day-1-wei-vs-sv",
@@ -1127,7 +1239,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-07-04T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-2-sv-vs-tkk",
@@ -1137,7 +1250,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-07T07:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-1-ag-vs-rtz",
@@ -1147,7 +1261,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-06T12:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-1-wei-vs-tkk",
@@ -1157,7 +1272,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-06T10:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-1-jd-vs-4am",
@@ -1167,7 +1283,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-06T08:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-swiss-stage-day-1-sv-vs-hng",
@@ -1177,7 +1294,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-06T07:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-jd-vs-sv",
@@ -1187,7 +1305,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-21T10:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-ag-vs-hng",
@@ -1197,7 +1316,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-21T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-jd-vs-hng",
@@ -1207,7 +1327,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team2",
   "startDate": "2026-06-20T10:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-sv-vs-4am",
@@ -1217,7 +1338,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-20T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "china-stage-2-owcs-2026-regular-season-week-1-wei-vs-sv",
@@ -1227,7 +1349,8 @@
   "winningTeam": "$26:props:phases:0:matches:docs:6:team1",
   "startDate": "2026-06-19T10:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-5-sse-vs-ne",
@@ -1237,7 +1360,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-07-02T14:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-5-ts-vs-t12",
@@ -1247,7 +1371,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-07-02T12:10:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-5-mg3-vs-elmt",
@@ -1257,7 +1382,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-07-02T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-4-ts-vs-mg3",
@@ -1267,7 +1393,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-25T14:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-4-elmt-vs-ne",
@@ -1277,7 +1404,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-25T12:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-4-t12-vs-sse",
@@ -1287,7 +1415,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-25T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-3-mg3-vs-ne",
@@ -1297,7 +1426,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-18T14:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-3-sse-vs-ts",
@@ -1307,7 +1437,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-18T12:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-3-elmt-vs-t12",
@@ -1317,7 +1448,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-18T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-2-mg3-vs-sse",
@@ -1327,7 +1459,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-11T14:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-2-ts-vs-elmt",
@@ -1337,7 +1470,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-11T13:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-2-t12-vs-ne",
@@ -1347,7 +1481,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-11T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-1-ts-vs-ne",
@@ -1357,7 +1492,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team2",
   "startDate": "2026-06-04T14:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-1-mg3-vs-t12",
@@ -1367,7 +1503,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-04T12:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "pacific-stage-2-owcs-2026-regular-season-week-1-elmt-vs-sse",
@@ -1377,7 +1514,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-04T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-pnhb-vs-rv",
@@ -1387,7 +1525,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-24T13:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-vl-vs-99d",
@@ -1397,7 +1536,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-24T11:35:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-lz-vs-uks",
@@ -1407,7 +1547,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-24T10:15:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-mg-vs-ef36",
@@ -1417,7 +1558,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team2",
   "startDate": "2026-06-24T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-99d-vs-rv",
@@ -1427,7 +1569,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-23T12:25:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-lz-vs-pnhb",
@@ -1437,7 +1580,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-23T10:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-mg-vs-uks",
@@ -1447,7 +1591,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-23T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-lz-vs-ef36",
@@ -1457,7 +1602,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team2",
   "startDate": "2026-06-22T11:45:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-vl-vs-rv",
@@ -1467,7 +1613,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-22T10:40:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-4-99d-vs-uks",
@@ -1477,7 +1624,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-06-22T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-playoffs-day-2-ef36-vs-pnhb",
@@ -1487,7 +1635,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team2",
   "startDate": "2026-06-30T09:00:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-playoffs-day-2-mg-vs-vl",
@@ -1497,7 +1646,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-30T10:50:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-playoffs-day-1-vl-vs-pnhb",
@@ -1507,7 +1657,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-29T12:20:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-playoffs-day-1-ef36-vs-mg",
@@ -1517,7 +1668,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-29T09:00:00.000Z",
   "firstTo": 4,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-3-ef36-vs-pnhb",
@@ -1527,7 +1679,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team2",
   "startDate": "2026-06-16T11:50:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-3-rv-vs-uks",
@@ -1537,7 +1690,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-06-16T10:20:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-3-vl-vs-lz",
@@ -1547,7 +1701,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-16T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-3-vl-vs-uks",
@@ -1557,7 +1712,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-15T11:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-3-rv-vs-ef36",
@@ -1567,7 +1723,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team2",
   "startDate": "2026-06-15T10:20:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-3-99d-vs-mg",
@@ -1577,7 +1734,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-15T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-2-99d-vs-ef36",
@@ -1587,7 +1745,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team2",
   "startDate": "2026-06-09T11:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-2-pnhb-vs-mg",
@@ -1597,7 +1756,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-09T10:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-2-rv-vs-lz",
@@ -1607,7 +1767,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team1",
   "startDate": "2026-06-09T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-2-vl-vs-ef36",
@@ -1617,7 +1778,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-08T12:30:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-2-mg-vs-lz",
@@ -1627,7 +1789,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-08T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-2-pnhb-vs-99d",
@@ -1637,7 +1800,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-08T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-1-mg-vs-vl",
@@ -1647,7 +1811,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-02T13:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-1-pnhb-vs-uks",
@@ -1657,7 +1822,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:0:team1",
   "startDate": "2026-06-02T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-1-lz-vs-99d",
@@ -1667,7 +1833,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team2",
   "startDate": "2026-06-02T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-1-pnhb-vs-vl",
@@ -1677,7 +1844,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:1:team1",
   "startDate": "2026-06-01T13:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-1-ef36-vs-uks",
@@ -1687,7 +1855,8 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:2:team2",
   "startDate": "2026-06-01T11:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  },
  {
   "slug": "japan-stage-2-owcs-2026-regular-season-week-1-mg-vs-rv",
@@ -1697,6 +1866,7 @@
   "winningTeam": "$2a:props:phases:0:matches:docs:3:team1",
   "startDate": "2026-06-01T09:00:00.000Z",
   "firstTo": 3,
-  "resultType": "normal"
+  "resultType": "normal",
+  "cached": true
  }
 ]
