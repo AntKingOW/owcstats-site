@@ -1,5 +1,9 @@
 # PLAN 04 — 경기별 스탯 제공을 위한 사이트 개편
 
+> 2026-07-08 업데이트: 상위 IA 문서 [PLAN_07](PLAN_07_SITE_IA_REDESIGN.md)이 추가됨 (홈 제거 → 경기 피드).
+> S1 데이터 소급은 [PLAN_06](PLAN_06_S1_MATCH_DATA_BACKFILL.md)이 담당 — matches 데이터는 2026 Stage 2 시작이 아니라
+> **S1부터 전체 백필**로 변경. match_id 체계도 PLAN_06 §2a의 canonical id를 따른다.
+
 목표: owtv.gg처럼 **경기(매치) 단위 상세 페이지**를 제공 — 맵별 결과, 히어로 밴, 선수별 맵 스탯.
 의존: [PLAN_02](PLAN_02_OWTV_STAGE2_SCRAPING.md) 산출물 (경기·맵·밴·스탯 데이터).
 제약: GitHub Pages **정적 호스팅** — 서버 없음, 빌드 타임에 JSON 생성 + 클라이언트 fetch 방식 유지.

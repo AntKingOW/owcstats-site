@@ -22,6 +22,8 @@
 | 3 | [PLAN_03_ELO_UPDATE_2026_STAGE2.md](PLAN_03_ELO_UPDATE_2026_STAGE2.md) | Stage 2 결과로 ELO 최신화 (owtv 또는 Liquipedia) | PLAN_02 |
 | 4 | [PLAN_04_MATCH_STATS_SITE_REVAMP.md](PLAN_04_MATCH_STATS_SITE_REVAMP.md) | owtv처럼 경기별 스탯 제공하는 사이트 개편 | PLAN_02 |
 | 5 | [PLAN_05_PLAYER_STATS_STAGE2_POLICY.md](PLAN_05_PLAYER_STATS_STAGE2_POLICY.md) | Stage 2 선수 스탯: 경기시간 공란 정책 및 per-10 제외 처리 | PLAN_02 |
+| 6 | [PLAN_06_S1_MATCH_DATA_BACKFILL.md](PLAN_06_S1_MATCH_DATA_BACKFILL.md) | S1+Champions Clash 데이터를 경기별/세트별 구조로 변환 (스파인+어댑터 설계) | 없음 (S2 합류만 PLAN_02) |
+| 7 | [PLAN_07_SITE_IA_REDESIGN.md](PLAN_07_SITE_IA_REDESIGN.md) | 사이트 전체 IA 개편: 홈 제거 → 경기 피드, 대회 허브 중심 재편 | PLAN_04·06 |
 
 ## 공통 규칙 (모든 계획에 적용)
 
